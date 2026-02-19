@@ -1,0 +1,2 @@
+Sentinel framing guesses packet boundaries from samples;
+tagged-stream framing declares packet boundaries explicitly — and that’s why it works.
