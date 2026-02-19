@@ -1,0 +1,20 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# GNU Radio generated files
+*.grc.py
+
+# Log and data files
+*.log
+*.dat
+*.bin
+*.txt
+
+# IQ samples
+iq_samples*
+timestamps*
+
+# OS files
+Thumbs.db
+.DS_Store
