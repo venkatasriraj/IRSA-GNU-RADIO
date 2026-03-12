@@ -32,7 +32,7 @@ import threading
 
 class chan_loopback(gr.top_block, Qt.QWidget):
 
-    def __init__(self):
+    def __init__(self, addr1='tcp://127.0.0.1:49212', addr2='tcp://127.0.0.1:49213'):
         gr.top_block.__init__(self, "chan_loopback", catch_exceptions=True)
         Qt.QWidget.__init__(self)
         self.setWindowTitle("chan_loopback")
@@ -62,6 +62,12 @@ class chan_loopback(gr.top_block, Qt.QWidget):
         except BaseException as exc:
             print(f"Qt GUI: Could not restore geometry: {str(exc)}", file=sys.stderr)
         self.flowgraph_started = threading.Event()
+
+        ##################################################
+        # Parameters
+        ##################################################
+        self.addr1 = addr1
+        self.addr2 = addr2
 
         ##################################################
         # Variables
@@ -101,8 +107,8 @@ class chan_loopback(gr.top_block, Qt.QWidget):
         self._freq_offset_range = qtgui.Range(-0.1, 0.1, 0.001, 0, 200)
         self._freq_offset_win = qtgui.RangeWidget(self._freq_offset_range, self.set_freq_offset, "Frequency Offset", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._freq_offset_win)
-        self.zeromq_sub_source_0 = zeromq.sub_source(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49203', 100, False, (-1), '', False)
-        self.zeromq_pub_sink_0 = zeromq.pub_sink(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49201', 100, False, (-1), '', True, True)
+        self.zeromq_pull_source_0 = zeromq.pull_source(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49203', 100, False, (-1), True)
+        self.zeromq_pub_sink_0 = zeromq.pub_sink(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49201', 100, False, (-1), '', True, False)
         self.channels_channel_model_0 = channels.channel_model(
             noise_voltage=noise_volt,
             frequency_offset=freq_offset,
@@ -118,7 +124,7 @@ class chan_loopback(gr.top_block, Qt.QWidget):
         ##################################################
         self.connect((self.blocks_throttle2_0, 0), (self.zeromq_pub_sink_0, 0))
         self.connect((self.channels_channel_model_0, 0), (self.blocks_throttle2_0, 0))
-        self.connect((self.zeromq_sub_source_0, 0), (self.channels_channel_model_0, 0))
+        self.connect((self.zeromq_pull_source_0, 0), (self.channels_channel_model_0, 0))
 
 
     def closeEvent(self, event):
@@ -128,6 +134,18 @@ class chan_loopback(gr.top_block, Qt.QWidget):
         self.wait()
 
         event.accept()
+
+    def get_addr1(self):
+        return self.addr1
+
+    def set_addr1(self, addr1):
+        self.addr1 = addr1
+
+    def get_addr2(self):
+        return self.addr2
+
+    def set_addr2(self, addr2):
+        self.addr2 = addr2
 
     def get_time_offset(self):
         return self.time_offset
@@ -167,12 +185,25 @@ class chan_loopback(gr.top_block, Qt.QWidget):
 
 
 
+def argument_parser():
+    description = 'TX / RX loopback'
+    parser = ArgumentParser(description=description)
+    parser.add_argument(
+        "--addr1", dest="addr1", type=str, default='tcp://127.0.0.1:49212',
+        help="Set tcp [default=%(default)r]")
+    parser.add_argument(
+        "--addr2", dest="addr2", type=str, default='tcp://127.0.0.1:49213',
+        help="Set tcp [default=%(default)r]")
+    return parser
+
 
 def main(top_block_cls=chan_loopback, options=None):
+    if options is None:
+        options = argument_parser().parse_args()
 
     qapp = Qt.QApplication(sys.argv)
 
-    tb = top_block_cls()
+    tb = top_block_cls(addr1=options.addr1, addr2=options.addr2)
 
     tb.start()
     tb.flowgraph_started.set()

@@ -1,0 +1,228 @@
+options:
+  parameters:
+    author: Barry Duggan
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: Multi-user ALOHA TX/RX loopback channel with slot-aware collision
+      detection
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: chan_loopback_multiuser
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: chan_loopback_multiuser
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+
+# ─── Variables ────────────────────────────────────────────────────────────────
+
+- name: samp_rate
+  id: variable_qtgui_chooser
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Sample rate
+    mutable: 'True'
+    num_opts: '2'
+    option_attributes: {}
+    option0: '768000'
+    option1: '576000'
+    options: '[768000, 576000]'
+    type: int
+    value: '768000'
+    widget: combo_box
+  states:
+    coordinate: [160, 148]
+    rotation: 0
+    state: enabled
+
+- name: noise_volt
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Noise Voltage
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    stop: '1'
+    step: '10m'
+    value: '0'
+    widget: counter_slider
+  states:
+    coordinate: [296, 148]
+    rotation: 0
+    state: enabled
+
+- name: freq_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Frequency Offset
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-100m'
+    stop: 100m
+    step: 1m
+    value: '0'
+    widget: counter_slider
+  states:
+    coordinate: [416, 148]
+    rotation: 0
+    state: enabled
+
+- name: time_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Timing Offset
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: 999m
+    stop: '1.001'
+    step: 100u
+    value: '1'
+    widget: counter_slider
+  states:
+    coordinate: [536, 148]
+    rotation: 0
+    state: enabled
+
+- name: taps
+  id: variable
+  parameters:
+    comment: ''
+    value: '1'
+  states:
+    coordinate: [648, 148]
+    rotation: 0
+    state: enabled
+
+# ─── Slot Combiner (Embedded Python Block) ────────────────────────────────────
+#
+#   This is the core new block. In GRC, add it via:
+#     Blocks → Misc → Embedded Python Block
+#   Then paste epy_slot_combiner.py as its source.
+#
+#   Parameters exposed in GRC:
+#     addr1           = tcp://127.0.0.1:49212    ← User 1 ZMQ PUSH connects here
+#     addr2           = tcp://127.0.0.1:49213    ← User 2 ZMQ PUSH connects here
+#     packet_samples  = 34079                    ← must match seq_tagger
+#     slot_timeout_ms = 50                       ← ~1 packet duration at 768k
+
+- name: epy_slot_combiner
+  id: epy_block
+  parameters:
+    _io_cache: ('ALOHA Slot Combiner', 'blk', [('addr1', "'tcp://127.0.0.1:49212'"),
+      ('addr2', "'tcp://127.0.0.1:49213'"), ('packet_samples', '34079'), ('slot_timeout_ms',
+      '50')], [], [('0', 'complex', 1)], 'ALOHA Slot Combiner\n\nSource block:\n  -
+      Pulls IQ samples from 2 ZMQ PULL sockets (one per user)\n  - Detects slot collisions
+      via arrival timing\n  - Adds samples on collision, passes through on no-collision\n  -
+      Outputs zeros during silence\n', [])
+    _source_code: "\"\"\"\nepy_slot_combiner.py — paste full content of epy_slot_combiner.py\
+      \ here\n\"\"\"\n# See epy_slot_combiner.py for the full implementation.\n# In\
+      \ GRC, open this block, click '...' next to source code,\n# and paste the entire\
+      \ content of epy_slot_combiner.py\n"
+    addr1: tcp://127.0.0.1:49212
+    addr2: tcp://127.0.0.1:49213
+    packet_samples: '34079'
+    slot_timeout_ms: '50'
+    comment: "ALOHA Slot Combiner\nBinds to :49212 (User1) and :49213 (User2)\nTX\
+      \ flowgraphs must PUSH+connect to these ports\nNo stream inputs — source block"
+  states:
+    coordinate: [40, 320]
+    rotation: 0
+    state: enabled
+
+# ─── Channel Model ────────────────────────────────────────────────────────────
+
+- name: channels_channel_model
+  id: channels_channel_model
+  parameters:
+    K: '4.0'
+    N: '8'
+    bandwidth: '0'
+    comment: ''
+    epsilon: time_offset
+    fc: '0.0'
+    fv: freq_offset
+    ift_len: '512'
+    noise_volt: noise_volt
+    seed: '0'
+    taps: '[taps]'
+  states:
+    coordinate: [280, 308]
+    rotation: 0
+    state: enabled
+
+# ─── Throttle ─────────────────────────────────────────────────────────────────
+
+- name: blocks_throttle
+  id: blocks_throttle
+  parameters:
+    comment: ''
+    ignoretag: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: complex
+    vlen: '1'
+  states:
+    coordinate: [480, 320]
+    rotation: 0
+    state: enabled
+
+# ─── ZMQ PUB Sink → Receiver ──────────────────────────────────────────────────
+
+- name: zeromq_pub_sink
+  id: zeromq_pub_sink
+  parameters:
+    address: tcp://127.0.0.1:49201
+    comment: Broadcasts combined channel output to all receivers
+    hwm: '-1'
+    key: ''
+    pass_tags: 'False'
+    timeout: '100'
+    type: complex
+    vlen: '1'
+  states:
+    coordinate: [640, 308]
+    rotation: 0
+    state: enabled
+
+# ─── Connections ──────────────────────────────────────────────────────────────
+
+connections:
+- [epy_slot_combiner, '0', channels_channel_model, '0']
+- [channels_channel_model, '0', blocks_throttle, '0']
+- [blocks_throttle, '0', zeromq_pub_sink, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.9.2
