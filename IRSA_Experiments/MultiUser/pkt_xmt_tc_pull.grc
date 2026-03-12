@@ -203,7 +203,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 440.0]
+    coordinate: [480, 520.0]
     rotation: 0
     state: enabled
 - name: blocks_repack_bits_bb_0_0
@@ -223,7 +223,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 620.0]
+    coordinate: [224, 664.0]
     rotation: 0
     state: true
 - name: blocks_tagged_stream_mux_0
@@ -264,7 +264,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [216, 748.0]
+    coordinate: [216, 816.0]
     rotation: 0
     state: true
 - name: blocks_uchar_to_float_0_0_0_0
@@ -279,7 +279,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 640.0]
+    coordinate: [448, 680.0]
     rotation: 0
     state: enabled
 - name: digital_constellation_modulator_0
@@ -301,7 +301,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 340.0]
+    coordinate: [200, 424.0]
     rotation: 0
     state: enabled
 - name: digital_crc32_bb_0
@@ -492,7 +492,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 356.0]
+    coordinate: [480, 440.0]
     rotation: 0
     state: enabled
 - name: epy_block_1_0
@@ -532,7 +532,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [448, 748.0]
+    coordinate: [432, 816.0]
     rotation: 0
     state: enabled
 - name: epy_block_2
@@ -620,9 +620,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1304, 380.0]
+    coordinate: [1312, 464.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: fft_filter_xxx_0_0_0
   id: fft_filter_xxx
   parameters:
@@ -640,7 +640,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [744, 348.0]
+    coordinate: [752, 432.0]
     rotation: 0
     state: true
 - name: iq
@@ -692,7 +692,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1024, 376.0]
+    coordinate: [1032, 456.0]
     rotation: 0
     state: true
 - name: pdu_pdu_to_tagged_stream_0
@@ -806,7 +806,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [624, 604.0]
+    coordinate: [640, 648.0]
     rotation: 0
     state: enabled
 - name: timestamp
@@ -853,7 +853,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1536, 400.0]
+    coordinate: [1544, 480.0]
     rotation: 0
     state: enabled
 - name: virtual_sink_0_0
@@ -879,7 +879,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 368.0]
+    coordinate: [16, 448.0]
     rotation: 0
     state: true
 - name: virtual_source_1
@@ -892,7 +892,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 760.0]
+    coordinate: [16, 824.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0
@@ -914,9 +914,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [808, 592.0]
+    coordinate: [824, 792.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: zeromq_push_sink_0
   id: zeromq_push_sink
   parameters:
@@ -934,9 +934,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [808, 732.0]
+    coordinate: [824, 936.0]
     rotation: 0
-    state: enabled
+    state: disabled
 
 connections:
 - [blocks_repack_bits_bb_0_0, '0', blocks_uchar_to_float_0_0_0_0, '0']
@@ -956,6 +956,7 @@ connections:
 - [epy_block_3_0, '0', virtual_sink_0, '0']
 - [fft_filter_xxx_0_0_0, '0', mmse_resampler_xx_0, '0']
 - [mmse_resampler_xx_0, '0', epy_block_3_0, '0']
+- [mmse_resampler_xx_0, '0', virtual_sink_0, '0']
 - [pdu_pdu_to_tagged_stream_0, '0', digital_crc32_bb_0, '0']
 - [virtual_source_0, '0', blocks_repack_bits_bb_0_0, '0']
 - [virtual_source_0, '0', digital_constellation_modulator_0, '0']

@@ -31,7 +31,6 @@ from gnuradio import zeromq
 import pkt_xmt_epy_block_1 as epy_block_1  # embedded python block
 import pkt_xmt_epy_block_1_0 as epy_block_1_0  # embedded python block
 import pkt_xmt_epy_block_2 as epy_block_2  # embedded python block
-import pkt_xmt_epy_block_3_0 as epy_block_3_0  # embedded python block
 import sip
 import threading
 
@@ -98,7 +97,7 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         # Blocks
         ##################################################
 
-        self.zeromq_push_sink_0 = zeromq.push_sink(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49212', 100, False, (-1), False)
+        self.zeromq_pub_sink_0 = zeromq.pub_sink(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49203', 100, False, (-1), '', True, True)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
             256, #size
             samp_rate, #samp_rate
@@ -155,7 +154,6 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         self.mmse_resampler_xx_0 = filter.mmse_resampler_cc(0, (1.0/((usrp_rate/samp_rate)*rs_ratio)))
         self.fft_filter_xxx_0_0_0 = filter.fft_filter_ccc(1, low_pass_filter_taps, 1)
         self.fft_filter_xxx_0_0_0.declare_sample_delay(0)
-        self.epy_block_3_0 = epy_block_3_0.blk(user_id=user_id, samp_rate=samp_rate, packet_samples=34079)
         self.epy_block_2 = epy_block_2.Random_Packet_Generator(mean_interval=0.035, packet_size=52)
         self.epy_block_1_0 = epy_block_1_0.iq_logger_with_timestamp(iq_filename=iq1, timestamp_filename=timestamp1)
         self.epy_block_1 = epy_block_1.iq_logger_with_timestamp(iq_filename=iq, timestamp_filename=timestamp)
@@ -193,10 +191,9 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         self.connect((self.digital_crc32_bb_0, 0), (self.digital_protocol_formatter_bb_0, 0))
         self.connect((self.digital_protocol_formatter_bb_0, 0), (self.blocks_tagged_stream_mux_0, 0))
         self.connect((self.epy_block_1, 0), (self.fft_filter_xxx_0_0_0, 0))
-        self.connect((self.epy_block_1_0, 0), (self.zeromq_push_sink_0, 0))
-        self.connect((self.epy_block_3_0, 0), (self.blocks_throttle2_0_0, 0))
+        self.connect((self.epy_block_1_0, 0), (self.zeromq_pub_sink_0, 0))
         self.connect((self.fft_filter_xxx_0_0_0, 0), (self.mmse_resampler_xx_0, 0))
-        self.connect((self.mmse_resampler_xx_0, 0), (self.epy_block_3_0, 0))
+        self.connect((self.mmse_resampler_xx_0, 0), (self.blocks_throttle2_0_0, 0))
         self.connect((self.pdu_pdu_to_tagged_stream_0, 0), (self.digital_crc32_bb_0, 0))
 
 
@@ -244,7 +241,6 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
         self.set_low_pass_filter_taps(firdes.low_pass(1.0, self.samp_rate, 20000, 2000, window.WIN_HAMMING, 6.76))
-        self.epy_block_3_0.samp_rate = self.samp_rate
         self.mmse_resampler_xx_0.set_resamp_ratio((1.0/((self.usrp_rate/self.samp_rate)*self.rs_ratio)))
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
 
@@ -268,7 +264,6 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
 
     def set_user_id(self, user_id):
         self.user_id = user_id
-        self.epy_block_3_0.user_id = self.user_id
 
     def get_sps(self):
         return self.sps
