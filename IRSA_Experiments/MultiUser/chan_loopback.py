@@ -107,7 +107,7 @@ class chan_loopback(gr.top_block, Qt.QWidget):
         self._freq_offset_range = qtgui.Range(-0.1, 0.1, 0.001, 0, 200)
         self._freq_offset_win = qtgui.RangeWidget(self._freq_offset_range, self.set_freq_offset, "Frequency Offset", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._freq_offset_win)
-        self.zeromq_pull_source_0 = zeromq.pull_source(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49203', 100, False, (-1), True)
+        self.zeromq_sub_source_0 = zeromq.sub_source(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49203', 100, True, (-1), '', False)
         self.zeromq_pub_sink_0 = zeromq.pub_sink(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:49201', 100, False, (-1), '', True, False)
         self.channels_channel_model_0 = channels.channel_model(
             noise_voltage=noise_volt,
@@ -124,7 +124,7 @@ class chan_loopback(gr.top_block, Qt.QWidget):
         ##################################################
         self.connect((self.blocks_throttle2_0, 0), (self.zeromq_pub_sink_0, 0))
         self.connect((self.channels_channel_model_0, 0), (self.blocks_throttle2_0, 0))
-        self.connect((self.zeromq_pull_source_0, 0), (self.channels_channel_model_0, 0))
+        self.connect((self.zeromq_sub_source_0, 0), (self.channels_channel_model_0, 0))
 
 
     def closeEvent(self, event):

@@ -190,7 +190,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [552, 412.0]
+    coordinate: [520, 408.0]
     rotation: 0
     state: true
 - name: channels_channel_model_0
@@ -211,7 +211,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [328, 384.0]
+    coordinate: [272, 384.0]
     rotation: 0
     state: enabled
 - name: epy_block_0
@@ -413,7 +413,7 @@ blocks:
     address: tcp://127.0.0.1:49201
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
     drop_on_hwm: 'True'
     hwm: '-1'
@@ -426,7 +426,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [760, 384.0]
+    coordinate: [800, 384.0]
     rotation: 0
     state: true
 - name: zeromq_pull_source_0
@@ -457,13 +457,13 @@ blocks:
     address: tcp://127.0.0.1:49203
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
     hwm: '-1'
     key: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    pass_tags: 'False'
+    pass_tags: 'True'
     timeout: '100'
     type: complex
     vlen: '1'

@@ -143,7 +143,7 @@ blocks:
     coordinate: [288, 12.0]
     rotation: 0
     state: enabled
-- name: user_id
+- name: user_id1
   id: variable
   parameters:
     comment: ''
@@ -211,9 +211,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 2064.0]
+    coordinate: [472, 1984.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_file_meta_sink_0
   id: blocks_file_meta_sink
   parameters:
@@ -257,7 +257,7 @@ blocks:
     bus_structure: null
     coordinate: [480, 1608.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_message_debug_0
   id: blocks_message_debug
   parameters:
@@ -272,7 +272,7 @@ blocks:
     bus_structure: null
     coordinate: [256, 864.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_message_debug_0_0
   id: blocks_message_debug
   parameters:
@@ -287,7 +287,7 @@ blocks:
     bus_structure: null
     coordinate: [240, 1624.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_repack_bits_bb_0_0
   id: blocks_repack_bits_bb
   parameters:
@@ -327,7 +327,7 @@ blocks:
     bus_structure: null
     coordinate: [192, 1784.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: blocks_tagged_stream_mux_0
   id: blocks_tagged_stream_mux
   parameters:
@@ -367,7 +367,7 @@ blocks:
     bus_structure: null
     coordinate: [1168, 1368.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: blocks_throttle2_0_0
   id: blocks_throttle2
   parameters:
@@ -388,7 +388,7 @@ blocks:
     bus_structure: null
     coordinate: [216, 1160.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_uchar_to_float_0_0_0_0
   id: blocks_uchar_to_float
   parameters:
@@ -418,7 +418,7 @@ blocks:
     bus_structure: null
     coordinate: [432, 1800.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_constellation_modulator_0
   id: digital_constellation_modulator
   parameters:
@@ -460,9 +460,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 1512.0]
+    coordinate: [200, 1504.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_crc32_bb_0
   id: digital_crc32_bb
   parameters:
@@ -498,7 +498,7 @@ blocks:
     bus_structure: null
     coordinate: [576, 1368.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: digital_protocol_formatter_bb_0
   id: digital_protocol_formatter_bb
   parameters:
@@ -530,9 +530,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [880, 1344.0]
+    coordinate: [864, 1328.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_0
   id: epy_block
   parameters:
@@ -646,7 +646,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [32, 656.0]
+    coordinate: [16, 664.0]
     rotation: 0
     state: disabled
 - name: epy_block_0_0
@@ -762,7 +762,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 1416.0]
+    coordinate: [16, 1424.0]
     rotation: 0
     state: disabled
 - name: epy_block_1
@@ -844,7 +844,7 @@ blocks:
     bus_structure: null
     coordinate: [432, 1160.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: epy_block_1_0_0
   id: epy_block
   parameters:
@@ -882,9 +882,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [216, 2016.0]
+    coordinate: [216, 1968.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_1_0_0_0
   id: epy_block
   parameters:
@@ -922,9 +922,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [216, 2120.0]
+    coordinate: [224, 2176.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_1_0_0_1
   id: epy_block
   parameters:
@@ -962,9 +962,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [576, 2064.0]
+    coordinate: [832, 2064.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_1_1
   id: epy_block
   parameters:
@@ -1004,85 +1004,225 @@ blocks:
     bus_structure: null
     coordinate: [480, 1520.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_2
   id: epy_block
   parameters:
     _source_code: "from gnuradio import gr\nimport pmt\nimport random\nimport time\n\
-      import threading\n\nclass Random_Packet_Generator(gr.basic_block):\n    def\
-      \ __init__(self, mean_interval=0.1, packet_size=100):\n        gr.basic_block.__init__(self,\n\
-      \            name=\"random_packet_generator\",\n            in_sig=None,\n \
-      \           out_sig=None)\n        self.message_port_register_out(pmt.intern('pdu_out'))\n\
+      import threading\nimport csv\nimport os\n\nclass Random_Packet_Generator(gr.basic_block):\n\
+      \    def __init__(self, mean_interval=0.1, packet_size=100, log_file=\"transmitted_packets.csv\"\
+      ):\n        gr.basic_block.__init__(self,\n            name=\"random_packet_generator\"\
+      ,\n            in_sig=None,\n            out_sig=None)\n        self.message_port_register_out(pmt.intern('pdu_out'))\n\
       \        self.mean_interval = mean_interval\n        self.packet_size = packet_size\n\
-      \        self.total_packets = 100\n        self.packet_count = 0\n        self.thread\
+      \        self.total_packets = 100\n        self.packet_count = 0\n        self.log_file\
+      \ = log_file\n\n        # Initialize log file with header\n        with open(self.log_file,\
+      \ 'w', newline='') as f:\n            writer = csv.writer(f)\n            writer.writerow(['packet_id',\
+      \ 'timestamp', 'wait_time_s', 'data_hex', 'data_bytes'])\n\n        self.thread\
       \ = threading.Thread(target=self.generate_packets)\n        self.thread.daemon\
-      \ = True\n        self.thread.start()\n    \n    def generate_packets(self):\n\
-      \        while self.packet_count < self.total_packets:\n            # Random\
-      \ wait time (uniform distribution)\n            #wait_time = random.uniform(0,\
-      \ 2 * self.mean_interval)\n            wait_time = random.expovariate(1.0 /\
-      \ self.mean_interval)\n            time.sleep(wait_time)\n            \n   \
-      \         # Generate random packet data\n            data = [random.randint(0,\
-      \ 255) for _ in range(self.packet_size)]\n            #print(data)\n       \
-      \     pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(data), data))\n    \
-      \        self.packet_count += 1\n            self.message_port_pub(pmt.intern('pdu_out'),\
-      \ pdu)\n            print(f\"Packet transmitted after {wait_time:.3f}s wait\"\
-      )"
+      \ = True\n        self.thread.start()\n\n    def generate_packets(self):\n \
+      \       while self.packet_count < self.total_packets:\n            wait_time\
+      \ = random.expovariate(1.0 / self.mean_interval)\n            time.sleep(wait_time)\n\
+      \n            # Generate random packet data\n            data = [random.randint(0,\
+      \ 255) for _ in range(self.packet_size)]\n\n            # Publish to GNU Radio\
+      \ message port\n            pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(data),\
+      \ data))\n            self.packet_count += 1\n            self.message_port_pub(pmt.intern('pdu_out'),\
+      \ pdu)\n\n            # \u2500\u2500 Log the packet \u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n \
+      \           timestamp = time.strftime('%Y-%m-%d %H:%M:%S') + f\".{int((time.time()\
+      \ % 1) * 1000):03d}\"\n            data_hex   = ' '.join(f'{b:02X}' for b in\
+      \ data)   # e.g. \"A3 FF 01 ...\"\n            data_bytes = list(data)     \
+      \                        # plain int list\n\n            with open(self.log_file,\
+      \ 'a', newline='') as f:\n                writer = csv.writer(f)\n         \
+      \       writer.writerow([\n                    self.packet_count,\n        \
+      \            timestamp,\n                    f\"{wait_time:.4f}\",\n       \
+      \             data_hex,\n                    data_bytes\n                ])\n\
+      \            # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\n            print(f\"\
+      [PKT {self.packet_count:03d}] Transmitted after {wait_time:.3f}s | \"\n    \
+      \              f\"First 4 bytes: {data_hex.split()[:4]}\")"
     affinity: ''
     alias: ''
     comment: ''
+    log_file: log_file1
     maxoutbuf: '0'
-    mean_interval: '5'
+    mean_interval: '0.1'
     minoutbuf: '0'
     packet_size: '52'
   states:
     _io_cache: ('random_packet_generator', 'Random_Packet_Generator', [('mean_interval',
-      '0.1'), ('packet_size', '100')], [], [('pdu_out', 'message', 1)], '', ['mean_interval',
-      'packet_size'])
+      '0.1'), ('packet_size', '100'), ('log_file', "'transmitted_packets.csv'")],
+      [], [('pdu_out', 'message', 1)], '', ['log_file', 'mean_interval', 'packet_size'])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [40, 584.0]
+    coordinate: [16, 576.0]
     rotation: 0
     state: enabled
 - name: epy_block_2_0
   id: epy_block
   parameters:
     _source_code: "from gnuradio import gr\nimport pmt\nimport random\nimport time\n\
-      import threading\n\nclass Random_Packet_Generator(gr.basic_block):\n    def\
-      \ __init__(self, mean_interval=0.1, packet_size=100):\n        gr.basic_block.__init__(self,\n\
-      \            name=\"random_packet_generator\",\n            in_sig=None,\n \
-      \           out_sig=None)\n        self.message_port_register_out(pmt.intern('pdu_out'))\n\
+      import threading\nimport csv\nimport os\n\nclass Random_Packet_Generator(gr.basic_block):\n\
+      \    def __init__(self, mean_interval=0.1, packet_size=100, log_file=\"transmitted_packets.csv\"\
+      ):\n        gr.basic_block.__init__(self,\n            name=\"random_packet_generator\"\
+      ,\n            in_sig=None,\n            out_sig=None)\n        self.message_port_register_out(pmt.intern('pdu_out'))\n\
       \        self.mean_interval = mean_interval\n        self.packet_size = packet_size\n\
-      \        self.total_packets = 100\n        self.packet_count = 0\n        self.thread\
+      \        self.total_packets = 100\n        self.packet_count = 0\n        self.log_file\
+      \ = log_file\n\n        # Initialize log file with header\n        with open(self.log_file,\
+      \ 'w', newline='') as f:\n            writer = csv.writer(f)\n            writer.writerow(['packet_id',\
+      \ 'timestamp', 'wait_time_s', 'data_hex', 'data_bytes'])\n\n        self.thread\
       \ = threading.Thread(target=self.generate_packets)\n        self.thread.daemon\
-      \ = True\n        self.thread.start()\n    \n    def generate_packets(self):\n\
-      \        while self.packet_count < self.total_packets:\n            # Random\
-      \ wait time (uniform distribution)\n            #wait_time = random.uniform(0,\
-      \ 2 * self.mean_interval)\n            wait_time = random.expovariate(1.0 /\
-      \ self.mean_interval)\n            time.sleep(wait_time)\n            \n   \
-      \         # Generate random packet data\n            data = [random.randint(0,\
-      \ 255) for _ in range(self.packet_size)]\n            #print(data)\n       \
-      \     pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(data), data))\n    \
-      \        self.packet_count += 1\n            self.message_port_pub(pmt.intern('pdu_out'),\
-      \ pdu)\n            print(f\"Packet transmitted after {wait_time:.3f}s wait\"\
-      )"
+      \ = True\n        self.thread.start()\n\n    def generate_packets(self):\n \
+      \       while self.packet_count < self.total_packets:\n            wait_time\
+      \ = random.expovariate(1.0 / self.mean_interval)\n            time.sleep(wait_time)\n\
+      \n            # Generate random packet data\n            data = [random.randint(0,\
+      \ 255) for _ in range(self.packet_size)]\n\n            # Publish to GNU Radio\
+      \ message port\n            pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(data),\
+      \ data))\n            self.packet_count += 1\n            self.message_port_pub(pmt.intern('pdu_out'),\
+      \ pdu)\n\n            # \u2500\u2500 Log the packet \u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n \
+      \           timestamp = time.strftime('%Y-%m-%d %H:%M:%S') + f\".{int((time.time()\
+      \ % 1) * 1000):03d}\"\n            data_hex   = ' '.join(f'{b:02X}' for b in\
+      \ data)   # e.g. \"A3 FF 01 ...\"\n            data_bytes = list(data)     \
+      \                        # plain int list\n\n            with open(self.log_file,\
+      \ 'a', newline='') as f:\n                writer = csv.writer(f)\n         \
+      \       writer.writerow([\n                    self.packet_count,\n        \
+      \            timestamp,\n                    f\"{wait_time:.4f}\",\n       \
+      \             data_hex,\n                    data_bytes\n                ])\n\
+      \            # \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\n            print(f\"\
+      [PKT {self.packet_count:03d}] Transmitted after {wait_time:.3f}s | \"\n    \
+      \              f\"First 4 bytes: {data_hex.split()[:4]}\")\n"
     affinity: ''
     alias: ''
     comment: ''
+    log_file: log_file2
     maxoutbuf: '0'
-    mean_interval: '5'
+    mean_interval: '1.3'
     minoutbuf: '0'
     packet_size: '52'
   states:
     _io_cache: ('random_packet_generator', 'Random_Packet_Generator', [('mean_interval',
-      '0.1'), ('packet_size', '100')], [], [('pdu_out', 'message', 1)], '', ['mean_interval',
-      'packet_size'])
+      '0.1'), ('packet_size', '100'), ('log_file', "'transmitted_packets.csv'")],
+      [], [('pdu_out', 'message', 1)], '', ['log_file', 'mean_interval', 'packet_size'])
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [32, 1336.0]
     rotation: 0
-    state: enabled
+    state: disabled
+- name: epy_block_3
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\n\nclass\
+      \ blk(gr.sync_block):\n    \"\"\"\n    Energy-Based Tag Deduplicator for ALOHA\
+      \ Add-Block Channel\n    ----------------------------------------------------------\n\
+      \    Takes THREE inputs:\n      in0 = Add block output  (combined signal  \u2192\
+      \ passed to output)\n      in1 = User 1 stream     (energy monitor only, not\
+      \ passed out)\n      in2 = User 2 stream     (energy monitor only, not passed\
+      \ out)\n\n    Detects which users are ACTUALLY transmitting based on signal\n\
+      \    energy, then emits clean tags accordingly.\n    \"\"\"\n\n    # Threshold\
+      \ below which a stream is considered silent\n    ENERGY_THRESHOLD = 1e-6\n\n\
+      \    def __init__(self, packet_samples=34079):\n        gr.sync_block.__init__(\n\
+      \            self,\n            name=\"aloha_tag_dedup\",\n            in_sig=[np.complex64,\
+      \   # in0: Add output  \u2192 goes to out\n                    np.complex64,\
+      \   # in1: User 1 raw stream\n                    np.complex64],  # in2: User\
+      \ 2 raw stream\n            out_sig=[np.complex64]\n        )\n        self.packet_samples\
+      \ = packet_samples\n        self.set_tag_propagation_policy(gr.TPP_DONT)  #\
+      \ block all auto tags\n\n    def _stream_has_energy(self, samples):\n      \
+      \  \"\"\"Returns True if stream has actual packet data (non-silence).\"\"\"\n\
+      \        power = np.mean(np.abs(samples) ** 2)\n        return power > self.ENERGY_THRESHOLD\n\
+      \n    def work(self, input_items, output_items):\n        combined = input_items[0]\
+      \   # Add block output\n        user1    = input_items[1]   # User 1 raw\n \
+      \       user2    = input_items[2]   # User 2 raw\n\n        output_items[0][:]\
+      \ = combined  # pass combined signal through\n\n        # \u2500\u2500 Get packet_len\
+      \ tags from the combined stream \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\n        tags = self.get_tags_in_window(\n        \
+      \    0, 0, len(combined), pmt.intern(\"packet_len\")\n        )\n\n        for\
+      \ tag in tags:\n            offset = tag.offset\n\n            # Window of samples\
+      \ around this tag in each user stream\n            # (relative to this work()\
+      \ call's starting offset)\n            abs_start = self.nitems_written(0)\n\
+      \            rel_offset = offset - abs_start\n\n            # Slice packet window\
+      \ from each user's stream\n            start = rel_offset\n            end \
+      \  = min(rel_offset + self.packet_samples, len(user1))\n\n            u1_active\
+      \ = self._stream_has_energy(user1[start:end])\n            u2_active = self._stream_has_energy(user2[start:end])\n\
+      \n            # \u2500\u2500 Decision \u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n            if\
+      \ u1_active and u2_active:\n                # COLLISION \u2014 emit single packet_len\
+      \ tag\n                # RX will attempt decode \u2192 CRC will fail \u2192\
+      \ correct\n                self.add_item_tag(0, offset, tag.key, tag.value)\n\
+      \                print(f\"[TagDedup] offset={offset} \u2192 COLLISION \"\n \
+      \                     f\"(both users active) \u2014 1 tag emitted, CRC will\
+      \ fail\")\n\n            elif u1_active:\n                # Only User 1 \u2014\
+      \ emit clean tags\n                self.add_item_tag(0, offset, tag.key, tag.value)\n\
+      \                self._copy_user_tags(0, offset)\n                print(f\"\
+      [TagDedup] offset={offset} \u2192 User 1 only \u2014 clean\")\n\n          \
+      \  elif u2_active:\n                # Only User 2 \u2014 emit clean tags\n \
+      \               self.add_item_tag(0, offset, tag.key, tag.value)\n         \
+      \       self._copy_user_tags(1, offset)\n                print(f\"[TagDedup]\
+      \ offset={offset} \u2192 User 2 only \u2014 clean\")\n\n            else:\n\
+      \                # Neither active \u2014 silence, no tag needed\n          \
+      \      print(f\"[TagDedup] offset={offset} \u2192 silence, tag dropped\")\n\n\
+      \        return len(combined)\n\n    def _copy_user_tags(self, port, offset):\n\
+      \        \"\"\"Copy user_id and seq_num tags from a specific input port.\"\"\
+      \"\n        for key in [\"user_id\", \"seq_num\", \"tx_time\"]:\n          \
+      \  tags = self.get_tags_in_window(\n                port, 0,\n             \
+      \   len(self.input_items[port]),   # full window\n                pmt.intern(key)\n\
+      \            )\n            for t in tags:\n                if t.offset == offset:\n\
+      \                    self.add_item_tag(0, offset, t.key, t.value)\n\"\"\"\n\
+      ### Updated Flowgraph\n\nf_samp1 \u2500\u2500\u25BA iq_logger \u2500\u2500\u252C\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u25BA in1 (energy monitor)\n                      \
+      \   \u2502                                      \u2502\n                   \
+      \      \u251C\u2500\u2500\u25BA Add \u2500\u2500\u25BA in0 [aloha_tag_dedup]\
+      \ \u2500\u2500\u25BA out \u2500\u2500\u25BA ZMQ PUB\n                      \
+      \   \u2502                    \u25B2\nf_samp2 \u2500\u2500\u25BA iq_logger \u2500\
+      \u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u25BA in2 (energy monitor)\n\n\n\
+      ### What Changes Per Scenario\n\nSlot where only User 1 transmits:\n  u1_active\
+      \ = True  (high energy)\n  u2_active = False (near-zero energy)\n  \u2192 emit\
+      \ packet_len + user_id=1 + seq_num=N\n  \u2192 RX decodes \u2192 CRC passes\
+      \ \u2713\n\nSlot where only User 2 transmits:\n  u1_active = False\n  u2_active\
+      \ = True\n  \u2192 emit packet_len + user_id=2 + seq_num=M\n  \u2192 RX decodes\
+      \ \u2192 CRC passes \u2713\n\nSlot where both transmit (collision):\n  u1_active\
+      \ = True\n  u2_active = True\n  \u2192 emit single packet_len only (no user\
+      \ identity)\n  \u2192 RX attempts decode \u2192 CRC FAILS \u2192 packet lost\
+      \ \u2713\n\nSilence slot:\n  u1_active = False\n  u2_active = False\n  \u2192\
+      \ no tag emitted \u2713\n\"\"\"\n\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    packet_samples: '34079'
+  states:
+    _io_cache: "('aloha_tag_dedup', 'blk', [('packet_samples', '34079')], [('0', 'complex',\
+      \ 1), ('1', 'complex', 1), ('2', 'complex', 1)], [('0', 'complex', 1)], '\\\
+      n    Energy-Based Tag Deduplicator for ALOHA Add-Block Channel\\n    ----------------------------------------------------------\\\
+      n    Takes THREE inputs:\\n      in0 = Add block output  (combined signal  \u2192\
+      \ passed to output)\\n      in1 = User 1 stream     (energy monitor only, not\
+      \ passed out)\\n      in2 = User 2 stream     (energy monitor only, not passed\
+      \ out)\\n\\n    Detects which users are ACTUALLY transmitting based on signal\\\
+      n    energy, then emits clean tags accordingly.\\n    ', ['packet_samples'])"
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 2080.0]
+    rotation: 0
+    state: disabled
 - name: epy_block_3_0
   id: epy_block
   parameters:
@@ -1122,7 +1262,7 @@ blocks:
     minoutbuf: '0'
     packet_samples: '34079'
     samp_rate: samp_rate
-    user_id: user_id
+    user_id: user_id1
   states:
     _io_cache: ('seq_tagger', 'blk', [('user_id', '0'), ('samp_rate', '768000'), ('packet_samples',
       '100000')], [('0', 'complex', 1)], [('0', 'complex', 1)], '', ['packet_samples',
@@ -1172,7 +1312,7 @@ blocks:
     minoutbuf: '0'
     packet_samples: '34079'
     samp_rate: samp_rate
-    user_id: user_id
+    user_id: user_id2
   states:
     _io_cache: ('seq_tagger', 'blk', [('user_id', '0'), ('samp_rate', '768000'), ('packet_samples',
       '100000')], [('0', 'complex', 1)], [('0', 'complex', 1)], '', ['packet_samples',
@@ -1182,7 +1322,7 @@ blocks:
     bus_structure: null
     coordinate: [1312, 1544.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: fft_filter_xxx_0_0_0
   id: fft_filter_xxx
   parameters:
@@ -1222,7 +1362,7 @@ blocks:
     bus_structure: null
     coordinate: [752, 1512.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: iq1_1
   id: parameter
   parameters:
@@ -1308,6 +1448,40 @@ blocks:
     coordinate: [1656, 8.0]
     rotation: 0
     state: true
+- name: log_file1
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: File Name
+    short_id: ''
+    type: str
+    value: data_tx1.csv
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1792, 8.0]
+    rotation: 0
+    state: true
+- name: log_file2
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: File Name
+    short_id: ''
+    type: str
+    value: data_tx2.csv
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1800, 112.0]
+    rotation: 0
+    state: true
 - name: mmse_resampler_xx_0
   id: mmse_resampler_xx
   parameters:
@@ -1341,9 +1515,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1024, 1544.0]
+    coordinate: [1024, 1536.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: pdu_pdu_to_tagged_stream_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -1377,7 +1551,7 @@ blocks:
     bus_structure: null
     coordinate: [304, 1352.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: qtgui_time_sink_x_0
   id: qtgui_time_sink_x
   parameters:
@@ -1431,7 +1605,7 @@ blocks:
     marker7: '-1'
     marker8: '-1'
     marker9: '-1'
-    name: Transmit data
+    name: Transmit data 1
     nconnections: '1'
     size: '256'
     srate: samp_rate
@@ -1528,7 +1702,7 @@ blocks:
     marker7: '-1'
     marker8: '-1'
     marker9: '-1'
-    name: Transmit data
+    name: Transmit data 2
     nconnections: '1'
     size: '256'
     srate: samp_rate
@@ -1571,7 +1745,7 @@ blocks:
     bus_structure: null
     coordinate: [624, 1768.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: timestamp1_1
   id: parameter
   parameters:
@@ -1695,7 +1869,7 @@ blocks:
     bus_structure: null
     coordinate: [1408, 1384.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: virtual_sink_0_1
   id: virtual_sink
   parameters:
@@ -1708,7 +1882,7 @@ blocks:
     bus_structure: null
     coordinate: [1536, 1560.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_source_0
   id: virtual_source
   parameters:
@@ -1734,7 +1908,7 @@ blocks:
     bus_structure: null
     coordinate: [16, 1528.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: virtual_source_1
   id: virtual_source
   parameters:
@@ -1747,7 +1921,7 @@ blocks:
     bus_structure: null
     coordinate: [32, 1168.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: virtual_source_1_1
   id: virtual_source
   parameters:
@@ -1758,9 +1932,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [24, 2024.0]
+    coordinate: [16, 2048.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_source_1_1_0
   id: virtual_source
   parameters:
@@ -1773,7 +1947,7 @@ blocks:
     bus_structure: null
     coordinate: [16, 2128.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: zeromq_pub_sink_0
   id: zeromq_pub_sink
   parameters:
@@ -1793,7 +1967,29 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [832, 2040.0]
+    coordinate: [1128, 2040.0]
+    rotation: 0
+    state: disabled
+- name: zeromq_pub_sink_0_0
+  id: zeromq_pub_sink
+  parameters:
+    address: tcp://127.0.0.1:49203
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    drop_on_hwm: 'True'
+    hwm: '-1'
+    key: ''
+    pass_tags: 'False'
+    timeout: '100'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [848, 1016.0]
     rotation: 0
     state: enabled
 - name: zeromq_push_sink_0
@@ -1819,6 +2015,7 @@ blocks:
 
 connections:
 - [blocks_add_xx_0, '0', epy_block_1_0_0_1, '0']
+- [blocks_add_xx_0, '0', epy_block_3, '0']
 - [blocks_repack_bits_bb_0_0, '0', blocks_uchar_to_float_0_0_0_0, '0']
 - [blocks_repack_bits_bb_0_0_0, '0', blocks_uchar_to_float_0_0_0_0_0, '0']
 - [blocks_tagged_stream_mux_0, '0', virtual_sink_0_0, '0']
@@ -1839,6 +2036,7 @@ connections:
 - [epy_block_0, '0', digital_crc32_bb_0, '0']
 - [epy_block_0_0, '0', digital_crc32_bb_0_0, '0']
 - [epy_block_1, '0', fft_filter_xxx_0_0_0, '0']
+- [epy_block_1_0, '0', zeromq_pub_sink_0_0, '0']
 - [epy_block_1_0, '0', zeromq_push_sink_0, '0']
 - [epy_block_1_0_0, '0', blocks_add_xx_0, '0']
 - [epy_block_1_0_0_0, '0', blocks_add_xx_0, '1']
@@ -1848,6 +2046,7 @@ connections:
 - [epy_block_2, pdu_out, pdu_pdu_to_tagged_stream_0, pdus]
 - [epy_block_2_0, pdu_out, blocks_message_debug_0_0, print]
 - [epy_block_2_0, pdu_out, pdu_pdu_to_tagged_stream_0_0, pdus]
+- [epy_block_3, '0', epy_block_1_0_0_1, '0']
 - [epy_block_3_0, '0', virtual_sink_0, '0']
 - [epy_block_3_0_0, '0', virtual_sink_0_1, '0']
 - [fft_filter_xxx_0_0_0, '0', mmse_resampler_xx_0, '0']
@@ -1862,7 +2061,9 @@ connections:
 - [virtual_source_0_0, '0', digital_constellation_modulator_0_0, '0']
 - [virtual_source_1, '0', blocks_throttle2_0_0, '0']
 - [virtual_source_1_1, '0', epy_block_1_0_0, '0']
+- [virtual_source_1_1, '0', epy_block_3, '1']
 - [virtual_source_1_1_0, '0', epy_block_1_0_0_0, '0']
+- [virtual_source_1_1_0, '0', epy_block_3, '2']
 
 metadata:
   file_format: 1

@@ -38,7 +38,7 @@ import threading
 
 class pkt_rcv_strip(gr.top_block, Qt.QWidget):
 
-    def __init__(self, Infile='log.txt', iq='iq_samplesRx.dat', output_filename='output.bin', timestamp='timestampsRx.txt'):
+    def __init__(self, Infile='log.txt', iq='iq_samplesRx.dat', output_filename='output.bin', rx_log='rx_log.csv', timestamp='timestampsRx.txt'):
         gr.top_block.__init__(self, "pkt_rcv_strip", catch_exceptions=True)
         Qt.QWidget.__init__(self)
         self.setWindowTitle("pkt_rcv_strip")
@@ -75,6 +75,7 @@ class pkt_rcv_strip(gr.top_block, Qt.QWidget):
         self.Infile = Infile
         self.iq = iq
         self.output_filename = output_filename
+        self.rx_log = rx_log
         self.timestamp = timestamp
 
         ##################################################
@@ -298,7 +299,7 @@ class pkt_rcv_strip(gr.top_block, Qt.QWidget):
         self.pdu_pdu_to_tagged_stream_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self.epy_block_2 = epy_block_2.iq_logger_with_timestamp(iq_filename=iq, timestamp_filename=timestamp)
         self.epy_block_1 = epy_block_1.blk(filename=Infile)
-        self.epy_block_0 = epy_block_0.blk(output_file=output_filename)
+        self.epy_block_0 = epy_block_0.blk(output_file=output_filename, log_file=rx_log)
         self.digital_symbol_sync_xx_0 = digital.symbol_sync_cc(
             digital.TED_MUELLER_AND_MULLER,
             sps,
@@ -332,8 +333,8 @@ class pkt_rcv_strip(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.epy_block_0, 'msg_out'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
-        self.msg_connect((self.epy_block_1, 'pdu_out'), (self.epy_block_0, 'msg_in'))
+        self.msg_connect((self.epy_block_0, 'pdu_out'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
+        self.msg_connect((self.epy_block_1, 'pdu_out'), (self.epy_block_0, 'pdu_in'))
         self.msg_connect((self.pdu_tagged_stream_to_pdu_0, 'pdus'), (self.blocks_message_debug_0, 'print'))
         self.msg_connect((self.pdu_tagged_stream_to_pdu_0, 'pdus'), (self.epy_block_1, 'pdu_in'))
         self.connect((self.analog_agc_xx_0, 0), (self.digital_fll_band_edge_cc_0, 0))
@@ -384,7 +385,13 @@ class pkt_rcv_strip(gr.top_block, Qt.QWidget):
 
     def set_output_filename(self, output_filename):
         self.output_filename = output_filename
-        self.epy_block_0.output_file = self.output_filename
+
+    def get_rx_log(self):
+        return self.rx_log
+
+    def set_rx_log(self, rx_log):
+        self.rx_log = rx_log
+        self.epy_block_0.log_file = self.rx_log
 
     def get_timestamp(self):
         return self.timestamp
@@ -458,6 +465,9 @@ def argument_parser():
         "--output-filename", dest="output_filename", type=str, default='output.bin',
         help="Set file [default=%(default)r]")
     parser.add_argument(
+        "--rx-log", dest="rx_log", type=str, default='rx_log.csv',
+        help="Set file [default=%(default)r]")
+    parser.add_argument(
         "--timestamp", dest="timestamp", type=str, default='timestampsRx.txt',
         help="Set filename [default=%(default)r]")
     return parser
@@ -469,7 +479,7 @@ def main(top_block_cls=pkt_rcv_strip, options=None):
 
     qapp = Qt.QApplication(sys.argv)
 
-    tb = top_block_cls(Infile=options.Infile, iq=options.iq, output_filename=options.output_filename, timestamp=options.timestamp)
+    tb = top_block_cls(Infile=options.Infile, iq=options.iq, output_filename=options.output_filename, rx_log=options.rx_log, timestamp=options.timestamp)
 
     tb.start()
     tb.flowgraph_started.set()

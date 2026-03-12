@@ -2,61 +2,68 @@ import numpy as np
 from gnuradio import gr
 import pmt
 
-class blk(gr.sync_block):
-    def __init__(self, output_file="decoded_packets.bin"):
-        gr.sync_block.__init__(
-            self,
-            name='EPB: Decode Packet',
-            in_sig=None,
-            out_sig=None)
-        self.message_port_register_in(pmt.intern('msg_in'))
-        self.message_port_register_out(pmt.intern('msg_out'))
-        self.set_msg_handler(pmt.intern('msg_in'), self.handle_msg)
-        
-        self.output_file = output_file
-        self.packet_count = 0
-        
-    def handle_msg(self, msg):
-        _debug = 1  # set to 1 for diagnostics, 0 to disable
-        
-        try:
-            # Extract the data portion from PDU
-            buff = pmt.to_python(pmt.cdr(msg))
-        except Exception as e:
-            gr.log.error("Error with message conversion: %s" % str(e))
-            return
-        
-        if buff is None or len(buff) == 0:
-            gr.log.warn("Received empty packet")
-            return
-            
-        b_len = len(buff)
-        self.packet_count += 1
-        
-        if _debug:
-            print(f"\n=== Packet #{self.packet_count} ===")
-            print(f"Length: {b_len} bytes")
-            print(f"Data (hex): {' '.join(f'{b:02x}' for b in buff[:min(32, b_len)])}")
-            if b_len > 32:
-                print(f"... ({b_len - 32} more bytes)")
-        
-        # Convert to numpy array for easier manipulation
-        data = np.frombuffer(buff, dtype=np.uint8)
-        
-        # Store to file
-        try:
-            with open(self.output_file, 'ab') as f:  # append binary mode
-                # Write packet with header: [packet_len (2 bytes)][data]
-                header = np.array([b_len & 0xFF, (b_len >> 8) & 0xFF], dtype=np.uint8)
-                header.tofile(f)
-                data.tofile(f)
-            
-            if _debug:
-                print(f"Saved to: {self.output_file}")
-                
-        except Exception as e:
-            gr.log.error(f"Error writing to file: {str(e)}")
-        
-        # Forward the packet downstream
-        pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(data), list(data)))
-        self.message_port_pub(pmt.intern('msg_out'), pdu)
+class blk(gr.basic_block):
+    def __init__(self, output_file="output.bin", log_file="rx_log.csv"):
+        gr.basic_block.__init__(self, name="EPB: Decode Packet",
+            in_sig=None, out_sig=None)
+        self.message_port_register_in(pmt.intern("pdu_in"))
+        self.message_port_register_out(pmt.intern("pdu_out"))
+        self.set_msg_handler(pmt.intern("pdu_in"), self.handle_pdu)
+        self.log_file = log_file
+        self.rx_count = 0
+
+        # Initialize log
+        with open(self.log_file, 'w', newline='') as f:
+            import csv
+            csv.writer(f).writerow([
+                'rx_count', 'timestamp', 'user_id', 
+                'seq_num', 'crc_ok', 'data_hex'
+            ])
+
+    def handle_pdu(self, pdu):
+        meta = pmt.car(pdu)
+        data = pmt.cdr(pdu)
+
+        # ── Extract user_id and seq_num from metadata ──────────────
+        user_id = -1
+        seq_num = -1
+        if pmt.is_dict(meta):
+            if pmt.dict_has_key(meta, pmt.intern("user_id")):
+                user_id = pmt.to_long(
+                    pmt.dict_ref(meta, pmt.intern("user_id"), pmt.PMT_NIL))
+            if pmt.dict_has_key(meta, pmt.intern("seq_num")):
+                seq_num = pmt.to_long(
+                    pmt.dict_ref(meta, pmt.intern("seq_num"), pmt.PMT_NIL))
+
+        # ── Decode payload ──────────────────────────────────────────
+        bytes_out = bytes(pmt.u8vector_elements(data))
+        data_hex  = ' '.join(f'{b:02X}' for b in bytes_out)
+
+        self.rx_count += 1
+        timestamp = time.strftime('%H:%M:%S')
+
+        print(f"[RX {self.rx_count:03d}] User={user_id} "
+              f"Seq={seq_num} | {data_hex[:20]}...")
+
+        # ── Log ────────────────────────────────────────────────────
+        with open(self.log_file, 'a', newline='') as f:
+            import csv
+            csv.writer(f).writerow([
+                self.rx_count, timestamp, user_id,
+                seq_num, True, data_hex
+            ])
+
+        self.message_port_pub(pmt.intern("pdu_out"), pdu)
+
+'''
+How to Measure ALOHA Performance from the Logs
+
+Once both TX logs and this RX log are running, you can directly compute:
+
+Packet Delivery Ratio = RX packets decoded / TX packets sent per user
+
+Collision rate = slots where both users tagged same offset /
+                 total slots
+
+Throughput = successfully decoded packets / total slots
+'''
