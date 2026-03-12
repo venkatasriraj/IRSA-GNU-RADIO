@@ -42,7 +42,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1584, 16.0]
+    coordinate: [728, 104.0]
     rotation: 0
     state: enabled
 - name: bpsk
@@ -74,7 +74,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [288, 84.0]
+    coordinate: [360, 104.0]
     rotation: 0
     state: enabled
 - name: hdr_format
@@ -116,7 +116,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [400, 84.0]
+    coordinate: [288, 88.0]
     rotation: 0
     state: true
 - name: samp_rate
@@ -152,7 +152,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1744, 16.0]
+    coordinate: [1288, 8.0]
+    rotation: 0
+    state: enabled
+- name: user_id2
+  id: variable
+  parameters:
+    comment: ''
+    value: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1280, 112.0]
     rotation: 0
     state: enabled
 - name: usrp_rate
@@ -164,7 +176,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 92.0]
+    coordinate: [192, 88.0]
     rotation: 0
     state: true
 - name: InFile
@@ -184,6 +196,24 @@ blocks:
     coordinate: [920, 12.0]
     rotation: 0
     state: true
+- name: blocks_add_xx_0
+  id: blocks_add_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 2064.0]
+    rotation: 0
+    state: enabled
 - name: blocks_file_meta_sink_0
   id: blocks_file_meta_sink
   parameters:
@@ -203,7 +233,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 440.0]
+    coordinate: [488, 848.0]
     rotation: 0
     state: enabled
 - name: blocks_file_meta_sink_0_0
@@ -225,7 +255,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [488, 1192.0]
+    coordinate: [480, 1608.0]
     rotation: 0
     state: enabled
 - name: blocks_message_debug_0
@@ -240,7 +270,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [240, 456.0]
+    coordinate: [256, 864.0]
     rotation: 0
     state: enabled
 - name: blocks_message_debug_0_0
@@ -255,7 +285,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [248, 1208.0]
+    coordinate: [240, 1624.0]
     rotation: 0
     state: enabled
 - name: blocks_repack_bits_bb_0_0
@@ -275,7 +305,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 620.0]
+    coordinate: [200, 1024.0]
     rotation: 0
     state: true
 - name: blocks_repack_bits_bb_0_0_0
@@ -295,7 +325,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 1368.0]
+    coordinate: [192, 1784.0]
     rotation: 0
     state: true
 - name: blocks_tagged_stream_mux_0
@@ -315,7 +345,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1160, 208.0]
+    coordinate: [1176, 616.0]
     rotation: 0
     state: true
 - name: blocks_tagged_stream_mux_0_0
@@ -335,7 +365,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1176, 952.0]
+    coordinate: [1168, 1368.0]
     rotation: 0
     state: true
 - name: blocks_throttle2_0_0
@@ -356,30 +386,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 752.0]
+    coordinate: [216, 1160.0]
     rotation: 0
-    state: true
-- name: blocks_throttle2_0_0_0
-  id: blocks_throttle2
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    ignoretag: 'True'
-    limit: auto
-    maximum: '0.1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samples_per_second: usrp_rate
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [216, 1496.0]
-    rotation: 0
-    state: true
+    state: disabled
 - name: blocks_uchar_to_float_0_0_0_0
   id: blocks_uchar_to_float
   parameters:
@@ -392,7 +401,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 640.0]
+    coordinate: [448, 1040.0]
     rotation: 0
     state: enabled
 - name: blocks_uchar_to_float_0_0_0_0_0
@@ -407,7 +416,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [440, 1384.0]
+    coordinate: [432, 1800.0]
     rotation: 0
     state: enabled
 - name: digital_constellation_modulator_0
@@ -429,7 +438,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 344.0]
+    coordinate: [208, 752.0]
     rotation: 0
     state: enabled
 - name: digital_constellation_modulator_0_0
@@ -451,7 +460,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 1096.0]
+    coordinate: [192, 1512.0]
     rotation: 0
     state: enabled
 - name: digital_crc32_bb_0
@@ -469,7 +478,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [568, 208.0]
+    coordinate: [584, 616.0]
     rotation: 0
     state: true
 - name: digital_crc32_bb_0_0
@@ -487,7 +496,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [584, 952.0]
+    coordinate: [576, 1368.0]
     rotation: 0
     state: true
 - name: digital_protocol_formatter_bb_0
@@ -504,7 +513,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [872, 180.0]
+    coordinate: [888, 592.0]
     rotation: 0
     state: enabled
 - name: digital_protocol_formatter_bb_0_0
@@ -521,7 +530,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [888, 928.0]
+    coordinate: [880, 1344.0]
     rotation: 0
     state: enabled
 - name: epy_block_0
@@ -637,7 +646,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 248.0]
+    coordinate: [32, 656.0]
     rotation: 0
     state: disabled
 - name: epy_block_0_0
@@ -753,7 +762,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [24, 1000.0]
+    coordinate: [16, 1416.0]
     rotation: 0
     state: disabled
 - name: epy_block_1
@@ -782,10 +791,10 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    iq_filename: iq
+    iq_filename: iq1_1
     maxoutbuf: '0'
     minoutbuf: '0'
-    timestamp_filename: timestamp
+    timestamp_filename: timestamp1_1
   states:
     _io_cache: ('iq_logger_with_timestamp', 'iq_logger_with_timestamp', [('iq_filename',
       "'iq_samples.dat'"), ('timestamp_filename', "'timestamps.txt'")], [('0', 'complex',
@@ -793,7 +802,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 356.0]
+    coordinate: [488, 768.0]
     rotation: 0
     state: enabled
 - name: epy_block_1_0
@@ -822,10 +831,10 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    iq_filename: iq1
+    iq_filename: iq1_2
     maxoutbuf: '0'
     minoutbuf: '0'
-    timestamp_filename: timestamp1
+    timestamp_filename: timestamp1_2
   states:
     _io_cache: ('iq_logger_with_timestamp', 'iq_logger_with_timestamp', [('iq_filename',
       "'iq_samples.dat'"), ('timestamp_filename', "'timestamps.txt'")], [('0', 'complex',
@@ -833,9 +842,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [416, 752.0]
+    coordinate: [432, 1160.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_1_0_0
   id: epy_block
   parameters:
@@ -862,10 +871,10 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    iq_filename: iq1
+    iq_filename: iq1_2
     maxoutbuf: '0'
     minoutbuf: '0'
-    timestamp_filename: timestamp1
+    timestamp_filename: timestamp1_2
   states:
     _io_cache: ('iq_logger_with_timestamp', 'iq_logger_with_timestamp', [('iq_filename',
       "'iq_samples.dat'"), ('timestamp_filename', "'timestamps.txt'")], [('0', 'complex',
@@ -873,7 +882,87 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [424, 1496.0]
+    coordinate: [216, 2016.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_1_0_0_0
+  id: epy_block
+  parameters:
+    _source_code: "#!/usr/bin/env python\nfrom gnuradio import gr\nimport numpy as\
+      \ np\nimport time\nimport struct\n\nclass iq_logger_with_timestamp(gr.sync_block):\n\
+      \    def __init__(self, iq_filename=\"iq_samples.dat\", \n                 timestamp_filename=\"\
+      timestamps.txt\"):\n        gr.sync_block.__init__(\n            self,\n   \
+      \         name=\"iq_logger_with_timestamp\",\n            in_sig=[np.complex64],\n\
+      \            out_sig=[np.complex64]\n        )\n        \n        self.iq_file\
+      \ = open(iq_filename, 'wb')\n        self.timestamp_file = open(timestamp_filename,\
+      \ 'w')\n        self.sample_count = 0\n        \n    def work(self, input_items,\
+      \ output_items):\n        in0 = input_items[0]\n        out0 = output_items[0]\n\
+      \        \n        # Get current timestamp\n        timestamp = time.time()\n\
+      \        \n        # Write I-Q samples to binary file\n        self.iq_file.write(in0.tobytes())\n\
+      \        \n        # Log timestamp with sample count\n        num_samples =\
+      \ len(in0)\n        log_entry = f\"{timestamp},{self.sample_count},{num_samples}\\\
+      n\"\n        self.timestamp_file.write(log_entry)\n        self.timestamp_file.flush()\n\
+      \        \n        self.sample_count += num_samples\n        \n        # Pass\
+      \ samples through\n        out0[:] = in0\n        \n        return len(out0)\n\
+      \    \n    def stop(self):\n        self.iq_file.close()\n        self.timestamp_file.close()\n\
+      \        return True\n\n\n# ```\n\n# Save this as `iq_logger_with_timestamp.py`\n\
+      \n# ### In GRC:\n# ```\n# [Modulator] \u2192 [Custom IQ Logger] \u2192 [USRP\
+      \ Sink]\n\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    iq_filename: iq2_2
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    timestamp_filename: timestamp2_2
+  states:
+    _io_cache: ('iq_logger_with_timestamp', 'iq_logger_with_timestamp', [('iq_filename',
+      "'iq_samples.dat'"), ('timestamp_filename', "'timestamps.txt'")], [('0', 'complex',
+      1)], [('0', 'complex', 1)], '', [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [216, 2120.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_1_0_0_1
+  id: epy_block
+  parameters:
+    _source_code: "#!/usr/bin/env python\nfrom gnuradio import gr\nimport numpy as\
+      \ np\nimport time\nimport struct\n\nclass iq_logger_with_timestamp(gr.sync_block):\n\
+      \    def __init__(self, iq_filename=\"iq_samples.dat\", \n                 timestamp_filename=\"\
+      timestamps.txt\"):\n        gr.sync_block.__init__(\n            self,\n   \
+      \         name=\"iq_logger_with_timestamp\",\n            in_sig=[np.complex64],\n\
+      \            out_sig=[np.complex64]\n        )\n        \n        self.iq_file\
+      \ = open(iq_filename, 'wb')\n        self.timestamp_file = open(timestamp_filename,\
+      \ 'w')\n        self.sample_count = 0\n        \n    def work(self, input_items,\
+      \ output_items):\n        in0 = input_items[0]\n        out0 = output_items[0]\n\
+      \        \n        # Get current timestamp\n        timestamp = time.time()\n\
+      \        \n        # Write I-Q samples to binary file\n        self.iq_file.write(in0.tobytes())\n\
+      \        \n        # Log timestamp with sample count\n        num_samples =\
+      \ len(in0)\n        log_entry = f\"{timestamp},{self.sample_count},{num_samples}\\\
+      n\"\n        self.timestamp_file.write(log_entry)\n        self.timestamp_file.flush()\n\
+      \        \n        self.sample_count += num_samples\n        \n        # Pass\
+      \ samples through\n        out0[:] = in0\n        \n        return len(out0)\n\
+      \    \n    def stop(self):\n        self.iq_file.close()\n        self.timestamp_file.close()\n\
+      \        return True\n\n\n# ```\n\n# Save this as `iq_logger_with_timestamp.py`\n\
+      \n# ### In GRC:\n# ```\n# [Modulator] \u2192 [Custom IQ Logger] \u2192 [USRP\
+      \ Sink]\n\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    iq_filename: iq_add
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    timestamp_filename: timestamp_add
+  states:
+    _io_cache: ('iq_logger_with_timestamp', 'iq_logger_with_timestamp', [('iq_filename',
+      "'iq_samples.dat'"), ('timestamp_filename', "'timestamps.txt'")], [('0', 'complex',
+      1)], [('0', 'complex', 1)], '', [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [576, 2064.0]
     rotation: 0
     state: enabled
 - name: epy_block_1_1
@@ -902,10 +991,10 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    iq_filename: iq
+    iq_filename: iq2_1
     maxoutbuf: '0'
     minoutbuf: '0'
-    timestamp_filename: timestamp
+    timestamp_filename: timestamp2_1
   states:
     _io_cache: ('iq_logger_with_timestamp', 'iq_logger_with_timestamp', [('iq_filename',
       "'iq_samples.dat'"), ('timestamp_filename', "'timestamps.txt'")], [('0', 'complex',
@@ -913,7 +1002,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [488, 1104.0]
+    coordinate: [480, 1520.0]
     rotation: 0
     state: enabled
 - name: epy_block_2
@@ -952,7 +1041,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [24, 176.0]
+    coordinate: [40, 584.0]
     rotation: 0
     state: enabled
 - name: epy_block_2_0
@@ -991,7 +1080,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [40, 920.0]
+    coordinate: [32, 1336.0]
     rotation: 0
     state: enabled
 - name: epy_block_3_0
@@ -1041,7 +1130,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1304, 380.0]
+    coordinate: [1320, 792.0]
     rotation: 0
     state: enabled
 - name: epy_block_3_0_0
@@ -1091,7 +1180,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1320, 1128.0]
+    coordinate: [1312, 1544.0]
     rotation: 0
     state: enabled
 - name: fft_filter_xxx_0_0_0
@@ -1111,7 +1200,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [744, 348.0]
+    coordinate: [760, 760.0]
     rotation: 0
     state: true
 - name: fft_filter_xxx_0_0_0_0
@@ -1131,10 +1220,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [760, 1096.0]
+    coordinate: [752, 1512.0]
     rotation: 0
     state: true
-- name: iq
+- name: iq1_1
   id: parameter
   parameters:
     alias: ''
@@ -1143,15 +1232,15 @@ blocks:
     label: File Name
     short_id: ''
     type: str
-    value: iq_samplesTX.dat
+    value: iq_samplesTX1.dat
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1048, 12.0]
+    coordinate: [1016, 8.0]
     rotation: 0
     state: true
-- name: iq1
+- name: iq1_2
   id: parameter
   parameters:
     alias: ''
@@ -1165,7 +1254,58 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1456, 12.0]
+    coordinate: [1368, 8.0]
+    rotation: 0
+    state: true
+- name: iq2_1
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: File Name
+    short_id: ''
+    type: str
+    value: iq_samplesTX2.dat
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1016, 112.0]
+    rotation: 0
+    state: true
+- name: iq2_2
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: File Name
+    short_id: ''
+    type: str
+    value: iq_samples2.dat
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1368, 112.0]
+    rotation: 0
+    state: true
+- name: iq_add
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: File Name
+    short_id: ''
+    type: str
+    value: iq_add.dat
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1656, 8.0]
     rotation: 0
     state: true
 - name: mmse_resampler_xx_0
@@ -1183,7 +1323,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1024, 376.0]
+    coordinate: [1040, 784.0]
     rotation: 0
     state: true
 - name: mmse_resampler_xx_0_0
@@ -1201,7 +1341,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1032, 1128.0]
+    coordinate: [1024, 1544.0]
     rotation: 0
     state: true
 - name: pdu_pdu_to_tagged_stream_0
@@ -1218,7 +1358,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 184.0]
+    coordinate: [320, 592.0]
     rotation: 0
     state: enabled
 - name: pdu_pdu_to_tagged_stream_0_0
@@ -1235,7 +1375,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [312, 936.0]
+    coordinate: [304, 1352.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -1332,7 +1472,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [624, 604.0]
+    coordinate: [640, 1008.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0_0
@@ -1429,10 +1569,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [632, 1352.0]
+    coordinate: [624, 1768.0]
     rotation: 0
     state: enabled
-- name: timestamp
+- name: timestamp1_1
   id: parameter
   parameters:
     alias: ''
@@ -1441,15 +1581,15 @@ blocks:
     label: File Name
     short_id: ''
     type: str
-    value: timestampsTx.txt
+    value: timestamps1_1.txt
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1168, 12.0]
+    coordinate: [1160, 8.0]
     rotation: 0
     state: true
-- name: timestamp1
+- name: timestamp1_2
   id: parameter
   parameters:
     alias: ''
@@ -1458,12 +1598,63 @@ blocks:
     label: File Name
     short_id: ''
     type: str
-    value: timestamps1.txt
+    value: timestampsTx1_2.txt
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1312, 12.0]
+    coordinate: [1504, 8.0]
+    rotation: 0
+    state: true
+- name: timestamp2_1
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: File Name
+    short_id: ''
+    type: str
+    value: timestamps2_1.txt
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1160, 112.0]
+    rotation: 0
+    state: true
+- name: timestamp2_2
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: File Name
+    short_id: ''
+    type: str
+    value: timestampsTx2_2.txt
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1504, 112.0]
+    rotation: 0
+    state: true
+- name: timestamp_add
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: File Name
+    short_id: ''
+    type: str
+    value: timestamp_add.txt
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1656, 112.0]
     rotation: 0
     state: true
 - name: virtual_sink_0
@@ -1471,12 +1662,12 @@ blocks:
   parameters:
     alias: ''
     comment: ''
-    stream_id: f_samp
+    stream_id: f_samp1
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1528, 392.0]
+    coordinate: [1552, 808.0]
     rotation: 0
     state: enabled
 - name: virtual_sink_0_0
@@ -1489,7 +1680,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1408, 216.0]
+    coordinate: [1424, 624.0]
     rotation: 0
     state: true
 - name: virtual_sink_0_0_0
@@ -1502,7 +1693,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1416, 968.0]
+    coordinate: [1408, 1384.0]
     rotation: 0
     state: true
 - name: virtual_sink_0_1
@@ -1515,7 +1706,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1544, 1144.0]
+    coordinate: [1536, 1560.0]
     rotation: 0
     state: enabled
 - name: virtual_source_0
@@ -1528,7 +1719,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 368.0]
+    coordinate: [24, 776.0]
     rotation: 0
     state: true
 - name: virtual_source_0_0
@@ -1541,7 +1732,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [24, 1112.0]
+    coordinate: [16, 1528.0]
     rotation: 0
     state: true
 - name: virtual_source_1
@@ -1549,15 +1740,28 @@ blocks:
   parameters:
     alias: ''
     comment: ''
-    stream_id: f_samp
+    stream_id: f_samp1
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 760.0]
+    coordinate: [32, 1168.0]
+    rotation: 0
+    state: disabled
+- name: virtual_source_1_1
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: f_samp1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [24, 2024.0]
     rotation: 0
     state: enabled
-- name: virtual_source_1_0
+- name: virtual_source_1_1_0
   id: virtual_source
   parameters:
     alias: ''
@@ -1567,17 +1771,17 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [24, 1512.0]
+    coordinate: [16, 2128.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0
   id: zeromq_pub_sink
   parameters:
-    address: tcp://127.0.0.1:49211
+    address: tcp://127.0.0.1:49203
     affinity: ''
     alias: ''
-    bind: 'True'
-    comment: USRP sample rate = 768kHz
+    bind: 'False'
+    comment: ''
     drop_on_hwm: 'True'
     hwm: '-1'
     key: ''
@@ -1589,31 +1793,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 592.0]
+    coordinate: [832, 2040.0]
     rotation: 0
-    state: disabled
-- name: zeromq_pub_sink_0_0
-  id: zeromq_pub_sink
-  parameters:
-    address: tcp://127.0.0.1:49211
-    affinity: ''
-    alias: ''
-    bind: 'True'
-    comment: USRP sample rate = 768kHz
-    drop_on_hwm: 'True'
-    hwm: '-1'
-    key: ''
-    pass_tags: 'False'
-    timeout: '100'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [856, 1336.0]
-    rotation: 0
-    state: disabled
+    state: enabled
 - name: zeromq_push_sink_0
   id: zeromq_push_sink
   parameters:
@@ -1631,37 +1813,17 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [832, 736.0]
+    coordinate: [848, 1144.0]
     rotation: 0
-    state: enabled
-- name: zeromq_push_sink_0_0
-  id: zeromq_push_sink
-  parameters:
-    address: tcp://127.0.0.1:49203
-    affinity: ''
-    alias: ''
-    bind: 'False'
-    comment: ''
-    hwm: '-1'
-    pass_tags: 'False'
-    timeout: '100'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [840, 1480.0]
-    rotation: 0
-    state: enabled
+    state: disabled
 
 connections:
+- [blocks_add_xx_0, '0', epy_block_1_0_0_1, '0']
 - [blocks_repack_bits_bb_0_0, '0', blocks_uchar_to_float_0_0_0_0, '0']
 - [blocks_repack_bits_bb_0_0_0, '0', blocks_uchar_to_float_0_0_0_0_0, '0']
 - [blocks_tagged_stream_mux_0, '0', virtual_sink_0_0, '0']
 - [blocks_tagged_stream_mux_0_0, '0', virtual_sink_0_0_0, '0']
 - [blocks_throttle2_0_0, '0', epy_block_1_0, '0']
-- [blocks_throttle2_0_0_0, '0', epy_block_1_0_0, '0']
 - [blocks_uchar_to_float_0_0_0_0, '0', qtgui_time_sink_x_0, '0']
 - [blocks_uchar_to_float_0_0_0_0_0, '0', qtgui_time_sink_x_0_0, '0']
 - [digital_constellation_modulator_0, '0', blocks_file_meta_sink_0, '0']
@@ -1677,10 +1839,10 @@ connections:
 - [epy_block_0, '0', digital_crc32_bb_0, '0']
 - [epy_block_0_0, '0', digital_crc32_bb_0_0, '0']
 - [epy_block_1, '0', fft_filter_xxx_0_0_0, '0']
-- [epy_block_1_0, '0', zeromq_pub_sink_0, '0']
 - [epy_block_1_0, '0', zeromq_push_sink_0, '0']
-- [epy_block_1_0_0, '0', zeromq_pub_sink_0_0, '0']
-- [epy_block_1_0_0, '0', zeromq_push_sink_0_0, '0']
+- [epy_block_1_0_0, '0', blocks_add_xx_0, '0']
+- [epy_block_1_0_0_0, '0', blocks_add_xx_0, '1']
+- [epy_block_1_0_0_1, '0', zeromq_pub_sink_0, '0']
 - [epy_block_1_1, '0', fft_filter_xxx_0_0_0_0, '0']
 - [epy_block_2, pdu_out, blocks_message_debug_0, print]
 - [epy_block_2, pdu_out, pdu_pdu_to_tagged_stream_0, pdus]
@@ -1699,7 +1861,8 @@ connections:
 - [virtual_source_0_0, '0', blocks_repack_bits_bb_0_0_0, '0']
 - [virtual_source_0_0, '0', digital_constellation_modulator_0_0, '0']
 - [virtual_source_1, '0', blocks_throttle2_0_0, '0']
-- [virtual_source_1_0, '0', blocks_throttle2_0_0_0, '0']
+- [virtual_source_1_1, '0', epy_block_1_0_0, '0']
+- [virtual_source_1_1_0, '0', epy_block_1_0_0_0, '0']
 
 metadata:
   file_format: 1

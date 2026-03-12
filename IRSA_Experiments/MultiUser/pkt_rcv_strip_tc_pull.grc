@@ -1098,7 +1098,7 @@ blocks:
     address: tcp://127.0.0.1:49201
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: USRP sample rate = 768kHz
     hwm: '-1'
     key: ''

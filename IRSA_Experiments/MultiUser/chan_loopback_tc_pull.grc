@@ -413,7 +413,7 @@ blocks:
     address: tcp://127.0.0.1:49201
     affinity: ''
     alias: ''
-    bind: 'False'
+    bind: 'True'
     comment: ''
     drop_on_hwm: 'True'
     hwm: '-1'
@@ -457,7 +457,7 @@ blocks:
     address: tcp://127.0.0.1:49203
     affinity: ''
     alias: ''
-    bind: 'False'
+    bind: 'True'
     comment: ''
     hwm: '-1'
     key: ''
