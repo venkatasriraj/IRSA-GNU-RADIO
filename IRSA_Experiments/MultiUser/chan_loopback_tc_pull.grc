@@ -463,7 +463,7 @@ blocks:
     key: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    pass_tags: 'True'
+    pass_tags: 'False'
     timeout: '100'
     type: complex
     vlen: '1'

@@ -420,10 +420,49 @@ blocks:
 - name: epy_block_0
   id: epy_block
   parameters:
-    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\n\nclass\
-      \ blk(gr.basic_block):\n    def __init__(self, output_file=\"output.bin\", log_file=\"\
-      rx_log.csv\"):\n        gr.basic_block.__init__(self, name=\"EPB: Decode Packet\"\
-      ,\n            in_sig=None, out_sig=None)\n        self.message_port_register_in(pmt.intern(\"\
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
+      \ time   # \u2190 ADD THIS\nimport csv    # \u2190 Move this here too (avoid\
+      \ re-importing inside the loop)\n\nclass blk(gr.basic_block):\n    def __init__(self,\
+      \ output_file=\"output.bin\", log_file=\"rx_log.csv\"):\n        gr.basic_block.__init__(self,\
+      \ name=\"EPB: Decode Packet\",\n            in_sig=None, out_sig=None)\n   \
+      \     self.message_port_register_in(pmt.intern(\"pdu_in\"))\n        self.message_port_register_out(pmt.intern(\"\
+      pdu_out\"))\n        self.set_msg_handler(pmt.intern(\"pdu_in\"), self.handle_pdu)\n\
+      \        self.log_file = log_file\n        self.rx_count = 0\n        with open(self.log_file,\
+      \ 'w', newline='') as f:\n            csv.writer(f).writerow([\n           \
+      \     'rx_count', 'timestamp', 'user_id',\n                'seq_num', 'crc_ok',\
+      \ 'data_hex'\n            ])\n\n    def handle_pdu(self, pdu):\n        meta\
+      \ = pmt.car(pdu)\n        data = pmt.cdr(pdu)\n\n        # \u2500\u2500 Extract\
+      \ user_id and seq_num from metadata \u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\n        user_id = -1\n        seq_num\
+      \ = -1\n        if pmt.is_dict(meta):\n            if pmt.dict_has_key(meta,\
+      \ pmt.intern(\"user_id\")):\n                user_id = pmt.to_long(\n      \
+      \              pmt.dict_ref(meta, pmt.intern(\"user_id\"), pmt.PMT_NIL))\n \
+      \           if pmt.dict_has_key(meta, pmt.intern(\"seq_num\")):\n          \
+      \      seq_num = pmt.to_long(\n                    pmt.dict_ref(meta, pmt.intern(\"\
+      seq_num\"), pmt.PMT_NIL))\n\n        # \u2500\u2500 Decode payload \u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\n        bytes_out = bytes(pmt.u8vector_elements(data))\n        data_hex\
+      \  = ' '.join(f'{b:02X}' for b in bytes_out)\n\n        self.rx_count += 1\n\
+      \        timestamp = time.strftime('%H:%M:%S')\n\n        print(f\"[RX {self.rx_count:03d}]\
+      \ User={user_id} \"\n              f\"Seq={seq_num} | {data_hex[:20]}...\")\n\
+      \n        # \u2500\u2500 Log \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\n        with open(self.log_file, 'a', newline='')\
+      \ as f:\n            csv.writer(f).writerow([\n                self.rx_count,\
+      \ timestamp, user_id,\n                seq_num, True, data_hex\n           \
+      \ ])\n\n        self.message_port_pub(pmt.intern(\"pdu_out\"), pdu)\n\n'''\n\
+      How to Measure ALOHA Performance from the Logs\n\nOnce both TX logs and this\
+      \ RX log are running, you can directly compute:\n\nPacket Delivery Ratio = RX\
+      \ packets decoded / TX packets sent per user\n\nCollision rate = slots where\
+      \ both users tagged same offset /\n                 total slots\n\nThroughput\
+      \ = successfully decoded packets / total slots\n'''\n\n\nclass blk(gr.basic_block):\n\
+      \    def __init__(self, output_file=\"output.bin\", log_file=\"rx_log.csv\"\
+      ):\n        gr.basic_block.__init__(self, name=\"EPB: Decode Packet\",\n   \
+      \         in_sig=None, out_sig=None)\n        self.message_port_register_in(pmt.intern(\"\
       pdu_in\"))\n        self.message_port_register_out(pmt.intern(\"pdu_out\"))\n\
       \        self.set_msg_handler(pmt.intern(\"pdu_in\"), self.handle_pdu)\n   \
       \     self.log_file = log_file\n        self.rx_count = 0\n\n        # Initialize\
