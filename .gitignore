@@ -10,6 +10,8 @@ __pycache__/
 *.dat
 *.bin
 *.txt
+*.tmp
+*.csv
 
 # IQ samples
 iq_samples*
