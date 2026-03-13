@@ -2,21 +2,20 @@
 __pycache__/
 *.pyc
 
-# GNU Radio generated files
+# GNU Radio generated
 *.grc.py
 
-# Log and data files
+# Logs and experiment outputs
 *.log
 *.dat
 *.bin
-*.txt
 *.tmp
 *.csv
 
-# IQ samples
+# IQ recordings
 iq_samples*
 timestamps*
 
-# OS files
+# OS junk
 Thumbs.db
 .DS_Store

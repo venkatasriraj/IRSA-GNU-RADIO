@@ -1,0 +1,42 @@
+1) chan_loopback(.grc, .py): related to channel in the transmission
+
+2) file.txt: data source for transmission
+
+3) iq_logger_with_timestamps.py: code used in EPB of same name in both Tx and Rx to log I-Q samples with timestamps
+
+4) iq_samples.dat: I-Q samples stored using File Meta Sink
+
+5) iq_samples1.dat: I-Q samples stored using EPB before ZMQ Sink at Tx
+
+6) iq_samplesRx.dat: I-Q samples stored using EPB before constellation decoder at Rx
+
+7) iq_samplesTx.dat: I-Q samples stored using EPB after constellation modulator at Tx
+
+8) log.txt: using EPB:pdu_logger log of packets is stored in this file at Rx
+
+9) pdu_logger.py: code used in EPB block at Rx to log info about packet count along with info on timestamp, packet_size, metadata and 			stored in log.txt
+
+10) pkt_rcv_strip(.grc, .py): related to Rx
+
+11) pkt_rcv_strip_epy_block_0.py: EPB-Decode Packet at Rx used to decode packets at Rx before storing at output.tmp
+
+12) pkt_rcv_strip_epy_block_1.py: code of EPB-pdu_logger in grc
+
+13) pkt_rcv_strip_epy_block_2.py: code of EPB-iq_logger_with_timestamps in grc
+
+14) pkt_xmt(.grc, .py): related to Tx
+
+15) pkt_xmt_epy_block_0.py: EPB-File Source to Tagged Stream at Tx
+
+16) pkt_xmt_epy_block_1.py: code of EPB-iq_logger_with_timestamps in grc
+
+17) pkt_xmt_epy_block_1_0.py: code of EPB-iq_logger_with_timestamps in grc    
+							AS WE USED 2 BLOCKS AT THE TX
+
+18) read_iqTimestamps.py: code to display the I-Q samples along with constellations
+
+19) timestamps1.txt: timestamps of I-Q samples stored using EPB before ZMQ Sink at Tx
+
+20) timestampsRx.txt: timestamps of I-Q samples stored using EPB before constellation decoder at Rx
+
+21) timestampsTx.txt: timestamps of I-Q samples stored using EPB after constellation modulator at Tx

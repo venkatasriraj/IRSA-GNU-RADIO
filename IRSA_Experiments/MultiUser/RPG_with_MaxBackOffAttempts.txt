@@ -1,0 +1,67 @@
+from gnuradio import gr
+import pmt
+import random
+import time
+import threading
+
+class Random_Packet_Generator(gr.basic_block):
+    def __init__(self, mean_interval=0.1, packet_size=100, max_backoff_attempts=5):
+        gr.basic_block.__init__(self,
+            name="random_packet_generator",
+            in_sig=None,
+            out_sig=None)
+        self.message_port_register_out(pmt.intern('pdu_out'))
+        self.message_port_register_in(pmt.intern('ack'))
+        self.set_msg_handler(pmt.intern('ack'), self.handle_ack)
+        
+        self.mean_interval = mean_interval
+        self.packet_size = packet_size
+        self.max_backoff_attempts = max_backoff_attempts
+        self.ack_received = False
+        self.waiting_for_ack = False
+        
+        self.thread = threading.Thread(target=self.generate_packets)
+        self.thread.daemon = True
+        self.thread.start()
+    
+    def handle_ack(self, msg):
+        # ACK received, transmission successful
+        self.ack_received = True
+        self.waiting_for_ack = False
+    
+    def generate_packets(self):
+        while True:
+            # Initial random wait time (uniform or exponential)
+            wait_time = random.uniform(0, self.mean_interval)
+            time.sleep(wait_time)
+            
+            # Generate packet data
+            data = [random.randint(0, 255) for _ in range(self.packet_size)]
+            
+            # Try to transmit with exponential backoff on failure
+            transmitted = False
+            backoff_attempt = 0
+            
+            while not transmitted and backoff_attempt < self.max_backoff_attempts:
+                # Transmit the packet
+                pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(data), data))
+                self.message_port_pub(pmt.intern('pdu_out'), pdu)
+                
+                # Wait for ACK (timeout based approach)
+                self.ack_received = False
+                self.waiting_for_ack = True
+                ack_timeout = 0.05  # 50ms timeout for ACK
+                time.sleep(ack_timeout)
+                
+                if self.ack_received:
+                    transmitted = True
+                    print(f"Packet transmitted successfully")
+                else:
+                    # No ACK received (collision assumed), apply exponential backoff
+                    backoff_time = random.uniform(0, (2**backoff_attempt) * self.mean_interval)
+                    print(f"Collision detected, backoff attempt {backoff_attempt+1}, waiting {backoff_time:.3f}s")
+                    time.sleep(backoff_time)
+                    backoff_attempt += 1
+            
+            if not transmitted:
+                print(f"Packet dropped after {self.max_backoff_attempts} attempts")
