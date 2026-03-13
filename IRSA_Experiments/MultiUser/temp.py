@@ -1,122 +1,68 @@
+import numpy as np
 from gnuradio import gr
 import pmt
-import random
-import time
-import threading
-import csv
+import time   # ← ADD THIS
+import csv    # ← Move this here too (avoid re-importing inside the loop)
 
-class Random_Packet_Generator(gr.basic_block):
-    """
-    Random Packet Generator with embedded userid and sequence number.
-
-    Packet payload layout:
-        [0:2]  – seq_num  : 2 bytes, big-endian uint16
-        [2:4]  – user_id  : 2 bytes, big-endian uint16  (0–65535)
-        [4:]   – random data : fills the rest up to packet_size bytes
-
-    The PMT metadata dict carries:
-        'packet_num' → seq_num  (used by Packet Header Generator block)
-        'user_id'    → user_id  (informational)
-    """
-
-    def __init__(self,
-                 mean_interval=0.1,
-                 packet_size=100,
-                 user_id=1,
-                 log_file="transmitted_packets.csv"):
-
-        gr.basic_block.__init__(self,
-            name="random_packet_generator",
-            in_sig=None,
-            out_sig=None)
-
-        self.message_port_register_out(pmt.intern('pdu_out'))
-
-        # ── Parameters ────────────────────────────────────────────────
-        self.mean_interval = mean_interval
-        self.packet_size   = packet_size
-        self.user_id       = int(user_id) & 0xFFFF   # clamp to uint16
-        self.log_file      = log_file
-        self.total_packets = 100
-        self.packet_count  = 0
-
-        # Header overhead: seq(2) + user_id(2) = 4 bytes
-        if packet_size <= 4:
-            raise ValueError(
-                f"packet_size ({packet_size}) must be > 4 to fit the header"
-            )
-
-        # ── Init CSV log ──────────────────────────────────────────────
+class blk(gr.basic_block):
+    def __init__(self, output_file="output.bin", log_file="rx_log.csv"):
+        gr.basic_block.__init__(self, name="EPB: Decode Packet",
+            in_sig=None, out_sig=None)
+        self.message_port_register_in(pmt.intern("pdu_in"))
+        self.message_port_register_out(pmt.intern("pdu_out"))
+        self.set_msg_handler(pmt.intern("pdu_in"), self.handle_pdu)
+        self.log_file = log_file
+        self.rx_count = 0
         with open(self.log_file, 'w', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow([
-                'packet_id', 'timestamp', 'user_id',
-                'wait_time_s', 'data_hex', 'data_bytes'
+            csv.writer(f).writerow([
+                'rx_count', 'timestamp', 'user_id',
+                'seq_num', 'crc_ok', 'data_hex'
             ])
 
-        # ── Start generator thread ────────────────────────────────────
-        self.thread = threading.Thread(target=self._generate_packets, daemon=True)
-        self.thread.start()
+    def handle_pdu(self, pdu):
+        meta = pmt.car(pdu)
+        data = pmt.cdr(pdu)
 
-    # ─────────────────────────────────────────────────────────────────
-    def _build_payload(self, seq: int) -> list:
-        """
-        Assemble the byte payload:
-            [seq_hi, seq_lo, uid_hi, uid_lo, *random_bytes]
-        """
-        header = [
-            (seq          >> 8) & 0xFF,   # seq high byte
-             seq                & 0xFF,   # seq low byte
-            (self.user_id >> 8) & 0xFF,   # user_id high byte
-             self.user_id       & 0xFF,   # user_id low byte
-        ]
-        random_bytes = [random.randint(0, 255)
-                        for _ in range(self.packet_size - len(header))]
-        return header + random_bytes
+        # ── Extract user_id and seq_num from metadata ──────────────
+        user_id = -1
+        seq_num = -1
+        if pmt.is_dict(meta):
+            if pmt.dict_has_key(meta, pmt.intern("user_id")):
+                user_id = pmt.to_long(
+                    pmt.dict_ref(meta, pmt.intern("user_id"), pmt.PMT_NIL))
+            if pmt.dict_has_key(meta, pmt.intern("seq_num")):
+                seq_num = pmt.to_long(
+                    pmt.dict_ref(meta, pmt.intern("seq_num"), pmt.PMT_NIL))
 
-    # ─────────────────────────────────────────────────────────────────
-    def _generate_packets(self):
-        seq = 0
+        # ── Decode payload ──────────────────────────────────────────
+        bytes_out = bytes(pmt.u8vector_elements(data))
+        data_hex  = ' '.join(f'{b:02X}' for b in bytes_out)
 
-        while self.packet_count < self.total_packets:
-            wait_time = random.expovariate(1.0 / self.mean_interval)
-            time.sleep(wait_time)
+        self.rx_count += 1
+        timestamp = time.strftime('%H:%M:%S')
 
-            data = self._build_payload(seq)
+        print(f"[RX {self.rx_count:03d}] User={user_id} "
+              f"Seq={seq_num} | {data_hex[:20]}...")
 
-            # ── Build PMT metadata dict ───────────────────────────────
-            meta = pmt.make_dict()
-            meta = pmt.dict_add(meta,
-                                pmt.intern('packet_num'),
-                                pmt.from_long(seq))             # Packet Header Generator
-            meta = pmt.dict_add(meta,
-                                pmt.intern('user_id'),
-                                pmt.from_long(self.user_id))    # informational
+        # ── Log ────────────────────────────────────────────────────
+        with open(self.log_file, 'a', newline='') as f:
+            csv.writer(f).writerow([
+                self.rx_count, timestamp, user_id,
+                seq_num, True, data_hex
+            ])
 
-            # ── Publish PDU ───────────────────────────────────────────
-            pdu = pmt.cons(meta, pmt.init_u8vector(len(data), data))
-            self.message_port_pub(pmt.intern('pdu_out'), pdu)
+        self.message_port_pub(pmt.intern("pdu_out"), pdu)
 
-            self.packet_count += 1
-            seq = (seq + 1) & 0xFFFF    # 16-bit rollover
+'''
+How to Measure ALOHA Performance from the Logs
 
-            # ── CSV logging ───────────────────────────────────────────
-            timestamp = (time.strftime('%Y-%m-%d %H:%M:%S') +
-                         f".{int((time.time() % 1) * 1000):03d}")
-            data_hex  = ' '.join(f'{b:02X}' for b in data)
+Once both TX logs and this RX log are running, you can directly compute:
 
-            with open(self.log_file, 'a', newline='') as f:
-                writer = csv.writer(f)
-                writer.writerow([
-                    self.packet_count,
-                    timestamp,
-                    self.user_id,
-                    f"{wait_time:.4f}",
-                    data_hex,
-                    list(data)
-                ])
+Packet Delivery Ratio = RX packets decoded / TX packets sent per user
 
-            print(f"[PKT {self.packet_count:03d}] user_id={self.user_id} "
-                  f"seq={seq - 1 & 0xFFFF:#06x} "
-                  f"after {wait_time:.3f}s | "
-                  f"first 4B: {data_hex.split()[:4]}")
+Collision rate = slots where both users tagged same offset /
+                 total slots
+
+Throughput = successfully decoded packets / total slots
+'''
+

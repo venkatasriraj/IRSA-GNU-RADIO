@@ -1,134 +1,84 @@
 import numpy as np
 from gnuradio import gr
 import pmt
-import time   # ← ADD THIS
-import csv    # ← Move this here too (avoid re-importing inside the loop)
-
-class blk(gr.basic_block):
-    def __init__(self, output_file="output.bin", log_file="rx_log.csv"):
-        gr.basic_block.__init__(self, name="EPB: Decode Packet",
-            in_sig=None, out_sig=None)
-        self.message_port_register_in(pmt.intern("pdu_in"))
-        self.message_port_register_out(pmt.intern("pdu_out"))
-        self.set_msg_handler(pmt.intern("pdu_in"), self.handle_pdu)
-        self.log_file = log_file
-        self.rx_count = 0
-        with open(self.log_file, 'w', newline='') as f:
-            csv.writer(f).writerow([
-                'rx_count', 'timestamp', 'user_id',
-                'seq_num', 'crc_ok', 'data_hex'
-            ])
-
-    def handle_pdu(self, pdu):
-        meta = pmt.car(pdu)
-        data = pmt.cdr(pdu)
-
-        # ── Extract user_id and seq_num from metadata ──────────────
-        user_id = -1
-        seq_num = -1
-        if pmt.is_dict(meta):
-            if pmt.dict_has_key(meta, pmt.intern("user_id")):
-                user_id = pmt.to_long(
-                    pmt.dict_ref(meta, pmt.intern("user_id"), pmt.PMT_NIL))
-            if pmt.dict_has_key(meta, pmt.intern("seq_num")):
-                seq_num = pmt.to_long(
-                    pmt.dict_ref(meta, pmt.intern("seq_num"), pmt.PMT_NIL))
-
-        # ── Decode payload ──────────────────────────────────────────
-        bytes_out = bytes(pmt.u8vector_elements(data))
-        data_hex  = ' '.join(f'{b:02X}' for b in bytes_out)
-
-        self.rx_count += 1
-        timestamp = time.strftime('%H:%M:%S')
-
-        print(f"[RX {self.rx_count:03d}] User={user_id} "
-              f"Seq={seq_num} | {data_hex[:20]}...")
-
-        # ── Log ────────────────────────────────────────────────────
-        with open(self.log_file, 'a', newline='') as f:
-            csv.writer(f).writerow([
-                self.rx_count, timestamp, user_id,
-                seq_num, True, data_hex
-            ])
-
-        self.message_port_pub(pmt.intern("pdu_out"), pdu)
-
-'''
-How to Measure ALOHA Performance from the Logs
-
-Once both TX logs and this RX log are running, you can directly compute:
-
-Packet Delivery Ratio = RX packets decoded / TX packets sent per user
-
-Collision rate = slots where both users tagged same offset /
-                 total slots
-
-Throughput = successfully decoded packets / total slots
-'''
+import time
+import csv
 
 
 class blk(gr.basic_block):
+    """
+    EPB: Decode Packet
+
+    Extracts seq_num and user_id from the fixed 4-byte payload header
+    that was embedded by random_packet_generator at TX:
+
+        byte 0-1 : seq_num  (big-endian uint16)
+        byte 2-3 : user_id  (big-endian uint16)
+        byte 4+  : random payload
+
+    Logs every received packet to CSV and forwards the full PDU
+    downstream (to PDU to Tagged Stream → File Sink).
+    """
+
     def __init__(self, output_file="output.bin", log_file="rx_log.csv"):
-        gr.basic_block.__init__(self, name="EPB: Decode Packet",
-            in_sig=None, out_sig=None)
+        gr.basic_block.__init__(self,
+            name="EPB: Decode Packet",
+            in_sig=None,
+            out_sig=None)
+
         self.message_port_register_in(pmt.intern("pdu_in"))
         self.message_port_register_out(pmt.intern("pdu_out"))
         self.set_msg_handler(pmt.intern("pdu_in"), self.handle_pdu)
-        self.log_file = log_file
-        self.rx_count = 0
 
-        # Initialize log
+        self.log_file  = log_file
+        self.rx_count  = 0
+
+        # Initialise log file with header
         with open(self.log_file, 'w', newline='') as f:
-            import csv
             csv.writer(f).writerow([
-                'rx_count', 'timestamp', 'user_id', 
-                'seq_num', 'crc_ok', 'data_hex'
+                'rx_count', 'timestamp',
+                'user_id', 'seq_num',
+                'payload_len', 'data_hex'
             ])
 
+    # ------------------------------------------------------------------
     def handle_pdu(self, pdu):
-        meta = pmt.car(pdu)
-        data = pmt.cdr(pdu)
+        # PDU = (meta, data)  — data is the full byte vector from CRC32
+        data_bytes = bytes(pmt.u8vector_elements(pmt.cdr(pdu)))
 
-        # ── Extract user_id and seq_num from metadata ──────────────
-        user_id = -1
-        seq_num = -1
-        if pmt.is_dict(meta):
-            if pmt.dict_has_key(meta, pmt.intern("user_id")):
-                user_id = pmt.to_long(
-                    pmt.dict_ref(meta, pmt.intern("user_id"), pmt.PMT_NIL))
-            if pmt.dict_has_key(meta, pmt.intern("seq_num")):
-                seq_num = pmt.to_long(
-                    pmt.dict_ref(meta, pmt.intern("seq_num"), pmt.PMT_NIL))
+        # ── Validate minimum length ────────────────────────────────
+        if len(data_bytes) < 4:
+            print(f"[RX] WARNING: packet too short ({len(data_bytes)} bytes), skipping")
+            return
 
-        # ── Decode payload ──────────────────────────────────────────
-        bytes_out = bytes(pmt.u8vector_elements(data))
-        data_hex  = ' '.join(f'{b:02X}' for b in bytes_out)
+        # ── Extract header fields from payload bytes ───────────────
+        #    DO NOT read from PMT metadata — it is gone after demod
+        seq_num = (data_bytes[0] << 8) | data_bytes[1]   # bytes 0-1
+        user_id = (data_bytes[2] << 8) | data_bytes[3]   # bytes 2-3
+        payload = data_bytes[4:]                          # bytes 4+
 
+        # ── Logging ────────────────────────────────────────────────
         self.rx_count += 1
-        timestamp = time.strftime('%H:%M:%S')
+        timestamp = (time.strftime('%Y-%m-%d %H:%M:%S') +
+                     f".{int((time.time() % 1) * 1000):03d}")
+        data_hex  = ' '.join(f'{b:02X}' for b in data_bytes)
 
-        print(f"[RX {self.rx_count:03d}] User={user_id} "
-              f"Seq={seq_num} | {data_hex[:20]}...")
+        print(f"[RX {self.rx_count:03d}] user_id={user_id} "
+              f"seq={seq_num:#06x} "
+              f"payload_len={len(payload)} "
+              f"| first 4B: {data_hex.split()[:4]}")
 
-        # ── Log ────────────────────────────────────────────────────
         with open(self.log_file, 'a', newline='') as f:
-            import csv
             csv.writer(f).writerow([
-                self.rx_count, timestamp, user_id,
-                seq_num, True, data_hex
+                self.rx_count,
+                timestamp,
+                user_id,
+                seq_num,
+                len(payload),
+                data_hex
             ])
 
+        # ── Forward full PDU downstream ────────────────────────────
+        # Stream CRC32 (Check mode) already discarded bad packets,
+        # so every packet reaching here is CRC-valid.
         self.message_port_pub(pmt.intern("pdu_out"), pdu)
-
-'''
-How to Measure ALOHA Performance from the Logs
-
-Once both TX logs and this RX log are running, you can directly compute:
-
-Packet Delivery Ratio = RX packets decoded / TX packets sent per user
-
-Collision rate = slots where both users tagged same offset /
-                 total slots
-
-Throughput = successfully decoded packets / total slots
-'''

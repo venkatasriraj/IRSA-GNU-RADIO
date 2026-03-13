@@ -37,7 +37,8 @@ class Random_Packet_Generator(gr.basic_block):
         self.packet_size   = packet_size
         self.user_id       = int(user_id) & 0xFFFF   # clamp to uint16
         self.log_file      = log_file
-        self.total_packets = 100
+        self.total_packets = 10
+
         self.packet_count  = 0
 
         # Header overhead: seq(2) + user_id(2) = 4 bytes
