@@ -45,7 +45,7 @@ import threading
 
 class pkt_xmt(gr.top_block, Qt.QWidget):
 
-    def __init__(self, InFile='file.txt', iq1_1='iq_samplesTX1.dat', iq1_2='iq_samples1.dat', iq2_1='iq_samplesTX2.dat', iq2_2='iq_samples2.dat', iq_add='iq_add.dat', log_file1='data_tx1.csv', log_file2='data_tx2.csv', timestamp1_1='timestamps1_1.txt', timestamp1_2='timestampsTx1_2.txt', timestamp2_1='timestamps2_1.txt', timestamp2_2='timestampsTx2_2.txt', timestamp_add='timestamp_add.txt'):
+    def __init__(self, InFile='file.txt', iq1_1='iq_samplesTX1.csv', iq1_2='iq_badd1.csv', iq2_1='iq_samplesTX2.csv', iq2_2='iq_badd2.csv', iq_add='iq_Aadd.csv', log_file1='data_tx1.csv', log_file2='data_tx2.csv', timestamp1_1='timestamps1_1.txt', timestamp1_2='timestampsTx1_2.txt', timestamp2_1='timestamps2_1.txt', timestamp2_2='timestampsTx2_2.txt', timestamp_add='timestamp_add.txt'):
         gr.top_block.__init__(self, "pkt_xmt", catch_exceptions=True)
         Qt.QWidget.__init__(self)
         self.setWindowTitle("pkt_xmt")
@@ -228,13 +228,13 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         self.fft_filter_xxx_0_0_0.declare_sample_delay(0)
         self.epy_block_3_0_0 = epy_block_3_0_0.blk(user_id=user_id2, samp_rate=samp_rate, packet_samples=34079)
         self.epy_block_3_0 = epy_block_3_0.blk(user_id=user_id1, samp_rate=samp_rate, packet_samples=34079)
-        self.epy_block_2_0 = epy_block_2_0.Random_Packet_Generator(mean_interval=5, packet_size=52, log_file=log_file2)
-        self.epy_block_2 = epy_block_2.Random_Packet_Generator(mean_interval=0.1, packet_size=52, log_file=log_file1)
-        self.epy_block_1_1 = epy_block_1_1.iq_logger_with_timestamp(iq_filename=iq2_1, timestamp_filename=timestamp2_1)
-        self.epy_block_1_0_0_1 = epy_block_1_0_0_1.iq_logger_with_timestamp(iq_filename=iq_add, timestamp_filename=timestamp_add)
-        self.epy_block_1_0_0_0 = epy_block_1_0_0_0.iq_logger_with_timestamp(iq_filename=iq2_2, timestamp_filename=timestamp2_2)
-        self.epy_block_1_0_0 = epy_block_1_0_0.iq_logger_with_timestamp(iq_filename=iq1_2, timestamp_filename=timestamp1_2)
-        self.epy_block_1 = epy_block_1.iq_logger_with_timestamp(iq_filename=iq1_1, timestamp_filename=timestamp1_1)
+        self.epy_block_2_0 = epy_block_2_0.Random_Packet_Generator(mean_interval=0.5, packet_size=52, log_file=log_file2)
+        self.epy_block_2 = epy_block_2.Random_Packet_Generator(mean_interval=0.1, packet_size=52, user_id=2, log_file=log_file1)
+        self.epy_block_1_1 = epy_block_1_1.iq_logger_with_timestamp(iq_csv_filename=iq2_1)
+        self.epy_block_1_0_0_1 = epy_block_1_0_0_1.iq_logger_with_timestamp(iq_csv_filename=iq_add)
+        self.epy_block_1_0_0_0 = epy_block_1_0_0_0.iq_logger_with_timestamp(iq_csv_filename=iq2_2)
+        self.epy_block_1_0_0 = epy_block_1_0_0.iq_logger_with_timestamp(iq_csv_filename=iq1_2)
+        self.epy_block_1 = epy_block_1.iq_logger_with_timestamp(iq_csv_filename=iq1_1)
         self.digital_protocol_formatter_bb_0_0 = digital.protocol_formatter_bb(hdr_format, "packet_len")
         self.digital_protocol_formatter_bb_0 = digital.protocol_formatter_bb(hdr_format, "packet_len")
         self.digital_crc32_bb_0_0 = digital.crc32_bb(False, "packet_len", True)
@@ -332,30 +332,35 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
 
     def set_iq1_1(self, iq1_1):
         self.iq1_1 = iq1_1
+        self.epy_block_1.iq_csv_filename = self.iq1_1
 
     def get_iq1_2(self):
         return self.iq1_2
 
     def set_iq1_2(self, iq1_2):
         self.iq1_2 = iq1_2
+        self.epy_block_1_0_0.iq_csv_filename = self.iq1_2
 
     def get_iq2_1(self):
         return self.iq2_1
 
     def set_iq2_1(self, iq2_1):
         self.iq2_1 = iq2_1
+        self.epy_block_1_1.iq_csv_filename = self.iq2_1
 
     def get_iq2_2(self):
         return self.iq2_2
 
     def set_iq2_2(self, iq2_2):
         self.iq2_2 = iq2_2
+        self.epy_block_1_0_0_0.iq_csv_filename = self.iq2_2
 
     def get_iq_add(self):
         return self.iq_add
 
     def set_iq_add(self, iq_add):
         self.iq_add = iq_add
+        self.epy_block_1_0_0_1.iq_csv_filename = self.iq_add
 
     def get_log_file1(self):
         return self.log_file1
@@ -495,19 +500,19 @@ def argument_parser():
         "--InFile", dest="InFile", type=str, default='file.txt',
         help="Set File Name [default=%(default)r]")
     parser.add_argument(
-        "--iq1-1", dest="iq1_1", type=str, default='iq_samplesTX1.dat',
+        "--iq1-1", dest="iq1_1", type=str, default='iq_samplesTX1.csv',
         help="Set File Name [default=%(default)r]")
     parser.add_argument(
-        "--iq1-2", dest="iq1_2", type=str, default='iq_samples1.dat',
+        "--iq1-2", dest="iq1_2", type=str, default='iq_badd1.csv',
         help="Set File Name [default=%(default)r]")
     parser.add_argument(
-        "--iq2-1", dest="iq2_1", type=str, default='iq_samplesTX2.dat',
+        "--iq2-1", dest="iq2_1", type=str, default='iq_samplesTX2.csv',
         help="Set File Name [default=%(default)r]")
     parser.add_argument(
-        "--iq2-2", dest="iq2_2", type=str, default='iq_samples2.dat',
+        "--iq2-2", dest="iq2_2", type=str, default='iq_badd2.csv',
         help="Set File Name [default=%(default)r]")
     parser.add_argument(
-        "--iq-add", dest="iq_add", type=str, default='iq_add.dat',
+        "--iq-add", dest="iq_add", type=str, default='iq_Aadd.csv',
         help="Set File Name [default=%(default)r]")
     parser.add_argument(
         "--log-file1", dest="log_file1", type=str, default='data_tx1.csv',
