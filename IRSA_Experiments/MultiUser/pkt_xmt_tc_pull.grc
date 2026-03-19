@@ -328,6 +328,44 @@ blocks:
     coordinate: [224, 1980.0]
     rotation: 0
     state: enabled
+- name: blocks_tag_debug_0
+  id: blocks_tag_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    display: 'True'
+    filter: '""'
+    name: tx1
+    num_inputs: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1592, 720.0]
+    rotation: 0
+    state: enabled
+- name: blocks_tag_debug_0_0
+  id: blocks_tag_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    display: 'True'
+    filter: '""'
+    name: tx2
+    num_inputs: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1584, 1672.0]
+    rotation: 0
+    state: enabled
 - name: blocks_tagged_stream_mux_0
   id: blocks_tagged_stream_mux
   parameters:
@@ -1067,7 +1105,7 @@ blocks:
       \u2500\u2500\n        self.mean_interval = mean_interval\n        self.packet_size\
       \   = packet_size\n        self.user_id       = int(user_id) & 0xFFFF   # clamp\
       \ to uint16\n        self.log_file      = log_file\n        self.total_packets\
-      \ = 10\n\n        self.packet_count  = 0\n\n        # Header overhead: seq(2)\
+      \ = 3\n\n        self.packet_count  = 0\n\n        # Header overhead: seq(2)\
       \ + user_id(2) = 4 bytes\n        if packet_size <= 4:\n            raise ValueError(\n\
       \                f\"packet_size ({packet_size}) must be > 4 to fit the header\"\
       \n            )\n\n        # \u2500\u2500 Init CSV log \u2500\u2500\u2500\u2500\
@@ -1101,45 +1139,45 @@ blocks:
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n    def _generate_packets(self):\n\
-      \        seq = 0\n\n        while self.packet_count < self.total_packets:\n\
-      \            wait_time = random.expovariate(1.0 / self.mean_interval)\n    \
-      \        time.sleep(wait_time)\n\n            data = self._build_payload(seq)\n\
-      \n            # \u2500\u2500 Build PMT metadata dict \u2500\u2500\u2500\u2500\
+      \        seq = 0\n        time.sleep(random.uniform(0, self.mean_interval))\n\
+      \        while self.packet_count < self.total_packets:\n            wait_time\
+      \ = random.expovariate(1.0 / self.mean_interval)\n            time.sleep(wait_time)\n\
+      \n            data = self._build_payload(seq)\n\n            # \u2500\u2500\
+      \ Build PMT metadata dict \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n            meta = pmt.make_dict()\n\
+      \            meta = pmt.dict_add(meta,\n                                pmt.intern('packet_num'),\n\
+      \                                pmt.from_long(seq))             # Packet Header\
+      \ Generator\n            meta = pmt.dict_add(meta,\n                       \
+      \         pmt.intern('user_id'),\n                                pmt.from_long(self.user_id))\
+      \    # informational\n\n            # \u2500\u2500 Publish PDU \u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
-      \u2500\n            meta = pmt.make_dict()\n            meta = pmt.dict_add(meta,\n\
-      \                                pmt.intern('packet_num'),\n               \
-      \                 pmt.from_long(seq))             # Packet Header Generator\n\
-      \            meta = pmt.dict_add(meta,\n                                pmt.intern('user_id'),\n\
-      \                                pmt.from_long(self.user_id))    # informational\n\
-      \n            # \u2500\u2500 Publish PDU \u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\n            pdu = pmt.cons(meta, pmt.init_u8vector(len(data), data))\n\
+      \            self.message_port_pub(pmt.intern('pdu_out'), pdu)\n\n         \
+      \   self.packet_count += 1\n            seq = (seq + 1) & 0xFFFF    # 16-bit\
+      \ rollover\n\n            # \u2500\u2500 CSV logging \u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
-      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n       \
-      \     pdu = pmt.cons(meta, pmt.init_u8vector(len(data), data))\n           \
-      \ self.message_port_pub(pmt.intern('pdu_out'), pdu)\n\n            self.packet_count\
-      \ += 1\n            seq = (seq + 1) & 0xFFFF    # 16-bit rollover\n\n      \
-      \      # \u2500\u2500 CSV logging \u2500\u2500\u2500\u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
-      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
-      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n            timestamp\
-      \ = (time.strftime('%Y-%m-%d %H:%M:%S') +\n                         f\".{int((time.time()\
-      \ % 1) * 1000):03d}\")\n            data_hex  = ' '.join(f'{b:02X}' for b in\
-      \ data)\n\n            with open(self.log_file, 'a', newline='') as f:\n   \
-      \             writer = csv.writer(f)\n                writer.writerow([\n  \
-      \                  self.packet_count,\n                    timestamp,\n    \
-      \                self.user_id,\n                    f\"{wait_time:.4f}\",\n\
-      \                    data_hex,\n                    list(data)\n           \
-      \     ])\n\n            print(f\"[PKT {self.packet_count:03d}] user_id={self.user_id}\
-      \ \"\n                  f\"seq={seq - 1 & 0xFFFF:#06x} \"\n                \
-      \  f\"after {wait_time:.3f}s | \"\n                  f\"first 4B: {data_hex.split()[:4]}\"\
-      )"
+      \n            timestamp = (time.strftime('%Y-%m-%d %H:%M:%S') +\n          \
+      \               f\".{int((time.time() % 1) * 1000):03d}\")\n            data_hex\
+      \  = ' '.join(f'{b:02X}' for b in data)\n\n            with open(self.log_file,\
+      \ 'a', newline='') as f:\n                writer = csv.writer(f)\n         \
+      \       writer.writerow([\n                    self.packet_count,\n        \
+      \            timestamp,\n                    self.user_id,\n               \
+      \     f\"{wait_time:.4f}\",\n                    data_hex,\n               \
+      \     list(data)\n                ])\n\n            print(f\"[PKT {self.packet_count:03d}]\
+      \ user_id={self.user_id} \"\n                  f\"seq={seq - 1 & 0xFFFF:#06x}\
+      \ \"\n                  f\"after {wait_time:.3f}s | \"\n                  f\"\
+      first 4B: {data_hex.split()[:4]}\")"
     affinity: ''
     alias: ''
     comment: ''
     log_file: log_file1
     maxoutbuf: '0'
-    mean_interval: '10'
+    mean_interval: '3'
     minoutbuf: '0'
     packet_size: '52'
     user_id: '1'
@@ -1183,8 +1221,8 @@ blocks:
       \u2500\u2500\n        self.mean_interval = mean_interval\n        self.packet_size\
       \   = packet_size\n        self.user_id       = int(user_id) & 0xFFFF   # clamp\
       \ to uint16\n        self.log_file      = log_file\n        self.total_packets\
-      \ = 10\n        self.packet_count  = 0\n\n        # Header overhead: seq(2)\
-      \ + user_id(2) = 4 bytes\n        if packet_size <= 4:\n            raise ValueError(\n\
+      \ = 1\n        self.packet_count  = 0\n\n        # Header overhead: seq(2) +\
+      \ user_id(2) = 4 bytes\n        if packet_size <= 4:\n            raise ValueError(\n\
       \                f\"packet_size ({packet_size}) must be > 4 to fit the header\"\
       \n            )\n\n        # \u2500\u2500 Init CSV log \u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
@@ -1217,45 +1255,45 @@ blocks:
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n    def _generate_packets(self):\n\
-      \        seq = 0\n\n        while self.packet_count < self.total_packets:\n\
-      \            wait_time = random.expovariate(1.0 / self.mean_interval)\n    \
-      \        time.sleep(wait_time)\n\n            data = self._build_payload(seq)\n\
-      \n            # \u2500\u2500 Build PMT metadata dict \u2500\u2500\u2500\u2500\
+      \        seq = 0\n        time.sleep(random.uniform(0, self.mean_interval))\n\
+      \        while self.packet_count < self.total_packets:\n            wait_time\
+      \ = random.expovariate(1.0 / self.mean_interval)\n            time.sleep(wait_time)\n\
+      \n            data = self._build_payload(seq)\n\n            # \u2500\u2500\
+      \ Build PMT metadata dict \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n            meta = pmt.make_dict()\n\
+      \            meta = pmt.dict_add(meta,\n                                pmt.intern('packet_num'),\n\
+      \                                pmt.from_long(seq))             # Packet Header\
+      \ Generator\n            meta = pmt.dict_add(meta,\n                       \
+      \         pmt.intern('user_id'),\n                                pmt.from_long(self.user_id))\
+      \    # informational\n\n            # \u2500\u2500 Publish PDU \u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
-      \u2500\n            meta = pmt.make_dict()\n            meta = pmt.dict_add(meta,\n\
-      \                                pmt.intern('packet_num'),\n               \
-      \                 pmt.from_long(seq))             # Packet Header Generator\n\
-      \            meta = pmt.dict_add(meta,\n                                pmt.intern('user_id'),\n\
-      \                                pmt.from_long(self.user_id))    # informational\n\
-      \n            # \u2500\u2500 Publish PDU \u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\n            pdu = pmt.cons(meta, pmt.init_u8vector(len(data), data))\n\
+      \            self.message_port_pub(pmt.intern('pdu_out'), pdu)\n\n         \
+      \   self.packet_count += 1\n            seq = (seq + 1) & 0xFFFF    # 16-bit\
+      \ rollover\n\n            # \u2500\u2500 CSV logging \u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
-      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n       \
-      \     pdu = pmt.cons(meta, pmt.init_u8vector(len(data), data))\n           \
-      \ self.message_port_pub(pmt.intern('pdu_out'), pdu)\n\n            self.packet_count\
-      \ += 1\n            seq = (seq + 1) & 0xFFFF    # 16-bit rollover\n\n      \
-      \      # \u2500\u2500 CSV logging \u2500\u2500\u2500\u2500\u2500\u2500\u2500\
       \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
-      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
-      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n            timestamp\
-      \ = (time.strftime('%Y-%m-%d %H:%M:%S') +\n                         f\".{int((time.time()\
-      \ % 1) * 1000):03d}\")\n            data_hex  = ' '.join(f'{b:02X}' for b in\
-      \ data)\n\n            with open(self.log_file, 'a', newline='') as f:\n   \
-      \             writer = csv.writer(f)\n                writer.writerow([\n  \
-      \                  self.packet_count,\n                    timestamp,\n    \
-      \                self.user_id,\n                    f\"{wait_time:.4f}\",\n\
-      \                    data_hex,\n                    list(data)\n           \
-      \     ])\n\n            print(f\"[PKT {self.packet_count:03d}] user_id={self.user_id}\
-      \ \"\n                  f\"seq={seq - 1 & 0xFFFF:#06x} \"\n                \
-      \  f\"after {wait_time:.3f}s | \"\n                  f\"first 4B: {data_hex.split()[:4]}\"\
-      )"
+      \n            timestamp = (time.strftime('%Y-%m-%d %H:%M:%S') +\n          \
+      \               f\".{int((time.time() % 1) * 1000):03d}\")\n            data_hex\
+      \  = ' '.join(f'{b:02X}' for b in data)\n\n            with open(self.log_file,\
+      \ 'a', newline='') as f:\n                writer = csv.writer(f)\n         \
+      \       writer.writerow([\n                    self.packet_count,\n        \
+      \            timestamp,\n                    self.user_id,\n               \
+      \     f\"{wait_time:.4f}\",\n                    data_hex,\n               \
+      \     list(data)\n                ])\n\n            print(f\"[PKT {self.packet_count:03d}]\
+      \ user_id={self.user_id} \"\n                  f\"seq={seq - 1 & 0xFFFF:#06x}\
+      \ \"\n                  f\"after {wait_time:.3f}s | \"\n                  f\"\
+      first 4B: {data_hex.split()[:4]}\")"
     affinity: ''
     alias: ''
     comment: ''
     log_file: log_file2
     maxoutbuf: '0'
-    mean_interval: '29'
+    mean_interval: '10'
     minoutbuf: '0'
     packet_size: '52'
     user_id: '2'
@@ -2206,8 +2244,10 @@ connections:
 - [epy_block_3_0_0, '0', virtual_sink_0_1, '0']
 - [fft_filter_xxx_0_0_0, '0', mmse_resampler_xx_0, '0']
 - [fft_filter_xxx_0_0_0_0, '0', mmse_resampler_xx_0_0, '0']
+- [mmse_resampler_xx_0, '0', blocks_tag_debug_0, '0']
 - [mmse_resampler_xx_0, '0', epy_block_3_0, '0']
 - [mmse_resampler_xx_0, '0', virtual_sink_0, '0']
+- [mmse_resampler_xx_0_0, '0', blocks_tag_debug_0_0, '0']
 - [mmse_resampler_xx_0_0, '0', epy_block_3_0_0, '0']
 - [mmse_resampler_xx_0_0, '0', virtual_sink_0_1, '0']
 - [pdu_pdu_to_tagged_stream_0, '0', digital_crc32_bb_0, '0']
