@@ -35,6 +35,8 @@ import pkt_xmt_epy_block_1_0_0_1 as epy_block_1_0_0_1  # embedded python block
 import pkt_xmt_epy_block_1_1 as epy_block_1_1  # embedded python block
 import pkt_xmt_epy_block_2 as epy_block_2  # embedded python block
 import pkt_xmt_epy_block_2_0 as epy_block_2_0  # embedded python block
+import pkt_xmt_epy_block_3_0 as epy_block_3_0  # embedded python block
+import pkt_xmt_epy_block_3_0_0 as epy_block_3_0_0  # embedded python block
 import sip
 import threading
 
@@ -223,8 +225,10 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         self.fft_filter_xxx_0_0_0_0.declare_sample_delay(0)
         self.fft_filter_xxx_0_0_0 = filter.fft_filter_ccc(1, low_pass_filter_taps, 1)
         self.fft_filter_xxx_0_0_0.declare_sample_delay(0)
-        self.epy_block_2_0 = epy_block_2_0.Random_Packet_Generator(mean_interval=10, packet_size=52, user_id=2, log_file=log_file2)
-        self.epy_block_2 = epy_block_2.Random_Packet_Generator(mean_interval=3, packet_size=52, user_id=1, log_file=log_file1)
+        self.epy_block_3_0_0 = epy_block_3_0_0.blk(user_id=user_id2, samp_rate=usrp_rate, packet_samples=34078)
+        self.epy_block_3_0 = epy_block_3_0.blk(user_id=user_id1, samp_rate=usrp_rate, packet_samples=34078)
+        self.epy_block_2_0 = epy_block_2_0.Random_Packet_Generator(mean_interval=2.7, packet_size=52, user_id=2, log_file=log_file2)
+        self.epy_block_2 = epy_block_2.Random_Packet_Generator(mean_interval=6, packet_size=52, user_id=1, log_file=log_file1)
         self.epy_block_1_1 = epy_block_1_1.iq_logger_with_timestamp(iq_csv_filename=iq2_1)
         self.epy_block_1_0_0_1 = epy_block_1_0_0_1.iq_logger_with_timestamp(iq_csv_filename=iq_add)
         self.epy_block_1_0_0_0 = epy_block_1_0_0_0.iq_logger_with_timestamp(iq_csv_filename=iq2_2)
@@ -265,6 +269,7 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         self.blocks_repack_bits_bb_0_0 = blocks.repack_bits_bb(8, 1, "packet_len", False, gr.GR_MSB_FIRST)
         self.blocks_file_meta_sink_0_0 = blocks.file_meta_sink(gr.sizeof_gr_complex*1, 'iq_samples.dat', samp_rate, 1, blocks.GR_FILE_FLOAT, True, 1000000, pmt.make_dict(), True)
         self.blocks_file_meta_sink_0_0.set_unbuffered(True)
+        self.blocks_delay_1 = blocks.delay(gr.sizeof_gr_complex*1, 5)
         self.blocks_add_xx_0 = blocks.add_vcc(1)
 
 
@@ -274,6 +279,7 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         self.msg_connect((self.epy_block_2, 'pdu_out'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
         self.msg_connect((self.epy_block_2_0, 'pdu_out'), (self.pdu_pdu_to_tagged_stream_0_0, 'pdus'))
         self.connect((self.blocks_add_xx_0, 0), (self.blocks_throttle2_0, 0))
+        self.connect((self.blocks_delay_1, 0), (self.blocks_add_xx_0, 0))
         self.connect((self.blocks_repack_bits_bb_0_0, 0), (self.blocks_uchar_to_float_0_0_0_0, 0))
         self.connect((self.blocks_repack_bits_bb_0_0_0, 0), (self.blocks_uchar_to_float_0_0_0_0_0, 0))
         self.connect((self.blocks_tagged_stream_mux_0, 0), (self.blocks_repack_bits_bb_0_0, 0))
@@ -293,16 +299,18 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         self.connect((self.digital_protocol_formatter_bb_0, 0), (self.blocks_tagged_stream_mux_0, 0))
         self.connect((self.digital_protocol_formatter_bb_0_0, 0), (self.blocks_tagged_stream_mux_0_0, 0))
         self.connect((self.epy_block_1, 0), (self.fft_filter_xxx_0_0_0, 0))
-        self.connect((self.epy_block_1_0_0, 0), (self.blocks_add_xx_0, 0))
+        self.connect((self.epy_block_1_0_0, 0), (self.blocks_delay_1, 0))
         self.connect((self.epy_block_1_0_0_0, 0), (self.blocks_add_xx_0, 1))
         self.connect((self.epy_block_1_0_0_1, 0), (self.zeromq_pub_sink_0, 0))
         self.connect((self.epy_block_1_1, 0), (self.fft_filter_xxx_0_0_0_0, 0))
+        self.connect((self.epy_block_3_0, 0), (self.blocks_tag_debug_0, 0))
+        self.connect((self.epy_block_3_0, 0), (self.epy_block_1_0_0, 0))
+        self.connect((self.epy_block_3_0_0, 0), (self.blocks_tag_debug_0_0, 0))
+        self.connect((self.epy_block_3_0_0, 0), (self.epy_block_1_0_0_0, 0))
         self.connect((self.fft_filter_xxx_0_0_0, 0), (self.mmse_resampler_xx_0, 0))
         self.connect((self.fft_filter_xxx_0_0_0_0, 0), (self.mmse_resampler_xx_0_0, 0))
-        self.connect((self.mmse_resampler_xx_0, 0), (self.blocks_tag_debug_0, 0))
-        self.connect((self.mmse_resampler_xx_0, 0), (self.epy_block_1_0_0, 0))
-        self.connect((self.mmse_resampler_xx_0_0, 0), (self.blocks_tag_debug_0_0, 0))
-        self.connect((self.mmse_resampler_xx_0_0, 0), (self.epy_block_1_0_0_0, 0))
+        self.connect((self.mmse_resampler_xx_0, 0), (self.epy_block_3_0, 0))
+        self.connect((self.mmse_resampler_xx_0_0, 0), (self.epy_block_3_0_0, 0))
         self.connect((self.pdu_pdu_to_tagged_stream_0, 0), (self.digital_crc32_bb_0, 0))
         self.connect((self.pdu_pdu_to_tagged_stream_0_0, 0), (self.digital_crc32_bb_0_0, 0))
 
@@ -424,6 +432,8 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
     def set_usrp_rate(self, usrp_rate):
         self.usrp_rate = usrp_rate
         self.blocks_throttle2_0.set_sample_rate(self.usrp_rate)
+        self.epy_block_3_0.samp_rate = self.usrp_rate
+        self.epy_block_3_0_0.samp_rate = self.usrp_rate
         self.mmse_resampler_xx_0.set_resamp_ratio((1.0/((self.usrp_rate/self.samp_rate)*self.rs_ratio)))
         self.mmse_resampler_xx_0_0.set_resamp_ratio((1.0/((self.usrp_rate/self.samp_rate)*self.rs_ratio)))
 

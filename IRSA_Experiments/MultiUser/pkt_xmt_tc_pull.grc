@@ -211,7 +211,27 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [552, 2224.0]
+    coordinate: [728, 2312.0]
+    rotation: 0
+    state: enabled
+- name: blocks_delay_1
+  id: blocks_delay
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    delay: '5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_ports: '1'
+    showports: 'False'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [536, 2176.0]
     rotation: 0
     state: enabled
 - name: blocks_file_meta_sink_0
@@ -363,7 +383,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1584, 1672.0]
+    coordinate: [1584, 1596.0]
     rotation: 0
     state: enabled
 - name: blocks_tagged_stream_mux_0
@@ -424,7 +444,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1040, 2220.0]
+    coordinate: [984, 2208.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle2_0_0
@@ -497,7 +517,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [232, 748.0]
+    coordinate: [232, 752.0]
     rotation: 0
     state: enabled
 - name: digital_constellation_modulator_0_0
@@ -555,7 +575,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [592, 1544.0]
+    coordinate: [592, 1552.0]
     rotation: 0
     state: enabled
 - name: digital_protocol_formatter_bb_0
@@ -950,7 +970,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [240, 2204.0]
+    coordinate: [248, 2152.0]
     rotation: 0
     state: enabled
 - name: epy_block_1_0_0_0
@@ -993,7 +1013,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [248, 2384.0]
+    coordinate: [248, 2336.0]
     rotation: 0
     state: enabled
 - name: epy_block_1_0_0_1
@@ -1036,7 +1056,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1296, 2232.0]
+    coordinate: [1224, 2216.0]
     rotation: 0
     state: enabled
 - name: epy_block_1_1
@@ -1105,7 +1125,7 @@ blocks:
       \u2500\u2500\n        self.mean_interval = mean_interval\n        self.packet_size\
       \   = packet_size\n        self.user_id       = int(user_id) & 0xFFFF   # clamp\
       \ to uint16\n        self.log_file      = log_file\n        self.total_packets\
-      \ = 3\n\n        self.packet_count  = 0\n\n        # Header overhead: seq(2)\
+      \ = 2\n\n        self.packet_count  = 0\n\n        # Header overhead: seq(2)\
       \ + user_id(2) = 4 bytes\n        if packet_size <= 4:\n            raise ValueError(\n\
       \                f\"packet_size ({packet_size}) must be > 4 to fit the header\"\
       \n            )\n\n        # \u2500\u2500 Init CSV log \u2500\u2500\u2500\u2500\
@@ -1177,7 +1197,7 @@ blocks:
     comment: ''
     log_file: log_file1
     maxoutbuf: '0'
-    mean_interval: '3'
+    mean_interval: '6'
     minoutbuf: '0'
     packet_size: '52'
     user_id: '1'
@@ -1221,7 +1241,7 @@ blocks:
       \u2500\u2500\n        self.mean_interval = mean_interval\n        self.packet_size\
       \   = packet_size\n        self.user_id       = int(user_id) & 0xFFFF   # clamp\
       \ to uint16\n        self.log_file      = log_file\n        self.total_packets\
-      \ = 1\n        self.packet_count  = 0\n\n        # Header overhead: seq(2) +\
+      \ = 3\n        self.packet_count  = 0\n\n        # Header overhead: seq(2) +\
       \ user_id(2) = 4 bytes\n        if packet_size <= 4:\n            raise ValueError(\n\
       \                f\"packet_size ({packet_size}) must be > 4 to fit the header\"\
       \n            )\n\n        # \u2500\u2500 Init CSV log \u2500\u2500\u2500\u2500\
@@ -1293,7 +1313,7 @@ blocks:
     comment: ''
     log_file: log_file2
     maxoutbuf: '0'
-    mean_interval: '10'
+    mean_interval: '2.7'
     minoutbuf: '0'
     packet_size: '52'
     user_id: '2'
@@ -1311,7 +1331,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 1500.0]
+    coordinate: [16, 1488.0]
     rotation: 0
     state: enabled
 - name: epy_block_3
@@ -1413,107 +1433,405 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [760, 2288.0]
+    coordinate: [1088, 2384.0]
     rotation: 0
     state: disabled
 - name: epy_block_3_0
   id: epy_block
   parameters:
     _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
-      \ time\n\nclass blk(gr.sync_block):\n\n    def __init__(self, user_id=0, samp_rate=768000,\
+      \ time\n\nclass blk(gr.sync_block):\n    def __init__(self, user_id=0, samp_rate=768000,\
       \ packet_samples=100000):\n        gr.sync_block.__init__(\n            self,\n\
       \            name=\"seq_tagger\",\n            in_sig=[np.complex64],\n    \
-      \        out_sig=[np.complex64]\n        )\n        self.user_id         = user_id\n\
-      \        self.samp_rate       = samp_rate\n        self.packet_samples  = packet_samples\n\
-      \        self.seq_num         = 0\n        self.last_tag_offset = None\n   \
-      \     self.set_tag_propagation_policy(gr.TPP_ALL_TO_ALL)\n\n    def work(self,\
-      \ input_items, output_items):\n        inp = input_items[0]\n        out = output_items[0]\n\
-      \        out[:] = inp\n\n        # \u2500\u2500 Use pmt.intern() directly, NOT\
-      \ self.pmt_intern() \u2500\u2500\n        tags = self.get_tags_in_window(\n\
-      \            0, 0, len(inp),\n            pmt.intern(\"packet_len\")   # \u2190\
-      \ pmt.intern not self.pmt_intern\n        )\n\n        for tag in tags:\n  \
-      \          offset  = tag.offset\n\n            # Measure actual packet samples\
-      \ between tags\n            if self.last_tag_offset is not None:\n         \
-      \       measured = offset - self.last_tag_offset\n                #print(f\"\
-      [User {self.user_id}] \"\n                #      f\"Measured packet_samples\
-      \ = {measured}\")\n            self.last_tag_offset = offset\n\n           \
-      \ self.seq_num += 1\n\n            # Add user_id tag\n            self.add_item_tag(\n\
-      \                0, offset,\n                pmt.intern(\"user_id\"),      \
-      \   # \u2190 pmt.intern\n                pmt.from_long(self.user_id)    # \u2190\
-      \ pmt.from_long\n            )\n\n            # Add sequence number tag\n  \
-      \          self.add_item_tag(\n                0, offset,\n                pmt.intern(\"\
-      seq_num\"),\n                pmt.from_long(self.seq_num)\n            )\n\n\
-      \            # Add timestamp tag\n            self.add_item_tag(\n         \
-      \       0, offset,\n                pmt.intern(\"tx_time\"),\n             \
-      \   pmt.from_double(time.time())   # \u2190 pmt.from_double\n            )\n\
-      \n            print(f\"[User {self.user_id}] Tagged PKT \"\n               \
-      \   f\"seq={self.seq_num} offset={offset}\")\n\n        return len(inp)"
+      \        out_sig=[np.complex64]\n        )\n        self.samp_rate       = samp_rate\n\
+      \        self.packet_samples  = packet_samples\n        self.last_tag_offset\
+      \ = None\n        self.set_tag_propagation_policy(gr.TPP_ALL_TO_ALL)\n\n   \
+      \ def work(self, input_items, output_items):\n        inp = input_items[0]\n\
+      \        out = output_items[0]\n        out[:] = inp\n\n        tags = self.get_tags_in_window(\n\
+      \            0, 0, len(inp),\n            pmt.intern(\"packet_len\")\n     \
+      \   )\n\n        for tag in tags:\n            offset = tag.offset\n\n     \
+      \       if self.last_tag_offset is not None:\n                measured = offset\
+      \ - self.last_tag_offset\n                # print(f\"Measured packet_samples\
+      \ = {measured}\")\n\n            self.last_tag_offset = offset\n\n         \
+      \   now = time.time()\n            self.add_item_tag(\n                0, offset,\n\
+      \                pmt.intern(\"rx_time\"),\n                pmt.from_double(now)\n\
+      \            )\n            print(f\"[seq_tagger] PKT offset={offset} rx_time={now:.6f}\"\
+      )\n\n        return len(inp)"
     affinity: ''
     alias: ''
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    packet_samples: '34079'
-    samp_rate: samp_rate
+    packet_samples: '34078'
+    samp_rate: usrp_rate
     user_id: user_id1
   states:
     _io_cache: ('seq_tagger', 'blk', [('user_id', '0'), ('samp_rate', '768000'), ('packet_samples',
       '100000')], [('0', 'complex', 1)], [('0', 'complex', 1)], '', ['packet_samples',
-      'samp_rate', 'user_id'])
+      'samp_rate'])
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [1344, 876.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: epy_block_3_0_0
   id: epy_block
   parameters:
     _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
-      \ time\n\nclass blk(gr.sync_block):\n\n    def __init__(self, user_id=0, samp_rate=768000,\
+      \ time\n\nclass blk(gr.sync_block):\n    def __init__(self, user_id=0, samp_rate=768000,\
       \ packet_samples=100000):\n        gr.sync_block.__init__(\n            self,\n\
       \            name=\"seq_tagger\",\n            in_sig=[np.complex64],\n    \
-      \        out_sig=[np.complex64]\n        )\n        self.user_id         = user_id\n\
-      \        self.samp_rate       = samp_rate\n        self.packet_samples  = packet_samples\n\
-      \        self.seq_num         = 0\n        self.last_tag_offset = None\n   \
-      \     self.set_tag_propagation_policy(gr.TPP_ALL_TO_ALL)\n\n    def work(self,\
-      \ input_items, output_items):\n        inp = input_items[0]\n        out = output_items[0]\n\
-      \        out[:] = inp\n\n        # \u2500\u2500 Use pmt.intern() directly, NOT\
-      \ self.pmt_intern() \u2500\u2500\n        tags = self.get_tags_in_window(\n\
-      \            0, 0, len(inp),\n            pmt.intern(\"packet_len\")   # \u2190\
-      \ pmt.intern not self.pmt_intern\n        )\n\n        for tag in tags:\n  \
-      \          offset  = tag.offset\n\n            # Measure actual packet samples\
-      \ between tags\n            if self.last_tag_offset is not None:\n         \
-      \       measured = offset - self.last_tag_offset\n                #print(f\"\
-      [User {self.user_id}] \"\n                #      f\"Measured packet_samples\
-      \ = {measured}\")\n            self.last_tag_offset = offset\n\n           \
-      \ self.seq_num += 1\n\n            # Add user_id tag\n            self.add_item_tag(\n\
-      \                0, offset,\n                pmt.intern(\"user_id\"),      \
-      \   # \u2190 pmt.intern\n                pmt.from_long(self.user_id)    # \u2190\
-      \ pmt.from_long\n            )\n\n            # Add sequence number tag\n  \
-      \          self.add_item_tag(\n                0, offset,\n                pmt.intern(\"\
-      seq_num\"),\n                pmt.from_long(self.seq_num)\n            )\n\n\
-      \            # Add timestamp tag\n            self.add_item_tag(\n         \
-      \       0, offset,\n                pmt.intern(\"tx_time\"),\n             \
-      \   pmt.from_double(time.time())   # \u2190 pmt.from_double\n            )\n\
-      \n            print(f\"[User {self.user_id}] Tagged PKT \"\n               \
-      \   f\"seq={self.seq_num} offset={offset}\")\n\n        return len(inp)"
+      \        out_sig=[np.complex64]\n        )\n        self.samp_rate       = samp_rate\n\
+      \        self.packet_samples  = packet_samples\n        self.last_tag_offset\
+      \ = None\n        self.set_tag_propagation_policy(gr.TPP_ALL_TO_ALL)\n\n   \
+      \ def work(self, input_items, output_items):\n        inp = input_items[0]\n\
+      \        out = output_items[0]\n        out[:] = inp\n\n        tags = self.get_tags_in_window(\n\
+      \            0, 0, len(inp),\n            pmt.intern(\"packet_len\")\n     \
+      \   )\n\n        for tag in tags:\n            offset = tag.offset\n\n     \
+      \       if self.last_tag_offset is not None:\n                measured = offset\
+      \ - self.last_tag_offset\n                # print(f\"Measured packet_samples\
+      \ = {measured}\")\n\n            self.last_tag_offset = offset\n\n         \
+      \   now = time.time()\n            self.add_item_tag(\n                0, offset,\n\
+      \                pmt.intern(\"rx_time\"),\n                pmt.from_double(now)\n\
+      \            )\n            print(f\"[seq_tagger] PKT offset={offset} rx_time={now:.6f}\"\
+      )\n\n        return len(inp)"
     affinity: ''
     alias: ''
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    packet_samples: '34079'
-    samp_rate: samp_rate
+    packet_samples: '34078'
+    samp_rate: usrp_rate
     user_id: user_id2
   states:
     _io_cache: ('seq_tagger', 'blk', [('user_id', '0'), ('samp_rate', '768000'), ('packet_samples',
       '100000')], [('0', 'complex', 1)], [('0', 'complex', 1)], '', ['packet_samples',
-      'samp_rate', 'user_id'])
+      'samp_rate'])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1336, 1828.0]
+    coordinate: [1344, 1832.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_4
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nimport pmt\nfrom gnuradio import gr\n\nclass\
+      \ nonblocking_add(gr.basic_block):\n    \"\"\"\n    Drop-in replacement for\
+      \ the Add block in the channel flowgraph.\n    Uses gr.basic_block + forecast(0)\
+      \ so it never stalls waiting\n    for a bursty input. Whichever TX stream has\
+      \ no samples gets\n    zero-substituted for that work() call.\n    \"\"\"\n\
+      \    def __init__(self, vlen=1):\n        gr.basic_block.__init__(self,\n  \
+      \          name=\"nonblocking_add\",\n            in_sig=[np.complex64, np.complex64],\n\
+      \            out_sig=[np.complex64])\n        self.vlen = vlen\n\n    def forecast(self,\
+      \ noutput_items, ninput_items_required):\n        # *** KEY: declare 0 required\
+      \ from both inputs ***\n        # The scheduler will NOT block waiting for either\
+      \ stream.\n        # We handle the \"nothing available\" case in general_work.\n\
+      \        for i in range(len(ninput_items_required)):\n            ninput_items_required[i]\
+      \ = 0\n\n    def general_work(self, input_items, output_items):\n        avail0\
+      \ = len(input_items[0])   # samples available from TX1\n        avail1 = len(input_items[1])\
+      \   # samples available from TX2\n        n_out  = len(output_items[0])  # space\
+      \ in output buffer\n\n        # How many samples can we produce this call?\n\
+      \        # Take as many as the richer stream offers, capped by output space.\n\
+      \        # If both are empty we produce nothing \u2014 scheduler will retry.\n\
+      \        n = min(n_out, max(avail0, avail1))\n        if n == 0:\n         \
+      \   return 0   # both streams idle; yield back to scheduler\n\n        # Build\
+      \ TX1 contribution\n        if avail0 >= n:\n            sig0 = np.array(input_items[0][:n],\
+      \ dtype=np.complex64)\n            self.consume(0, n)\n        elif avail0 >\
+      \ 0:\n            # Partial data from TX1 \u2014 pad the rest with zeros\n \
+      \           sig0 = np.zeros(n, dtype=np.complex64)\n            sig0[:avail0]\
+      \ = input_items[0][:avail0]\n            self.consume(0, avail0)\n        else:\n\
+      \            # TX1 completely idle this call\n            sig0 = np.zeros(n,\
+      \ dtype=np.complex64)\n            # consume(0, 0) \u2014 nothing to consume\n\
+      \n        # Build TX2 contribution\n        if avail1 >= n:\n            sig1\
+      \ = np.array(input_items[1][:n], dtype=np.complex64)\n            self.consume(1,\
+      \ n)\n        elif avail1 > 0:\n            sig1 = np.zeros(n, dtype=np.complex64)\n\
+      \            sig1[:avail1] = input_items[1][:avail1]\n            self.consume(1,\
+      \ avail1)\n        else:\n            sig1 = np.zeros(n, dtype=np.complex64)\n\
+      \n        output_items[0][:n] = sig0 + sig1\n        return n\n    \n\"\"\"\n\
+      ## Wiring in GRC (Image 2 change)\n\nRemove the existing `Add` block. Place\
+      \ `nonblocking_add` in its position:\n\nVirtual Source (f_samp1) \u2500\u2500\
+      > iq_logger (badd1) \u2500\u2500\u2510\n                                   \
+      \                \u251C\u2500\u2500> nonblocking_add \u2500\u2500> Throttle\
+      \ \u2500\u2500> iq_logger (Aadd) \u2500\u2500> ZMQ PUB\nVirtual Source (f_samp2)\
+      \ \u2500\u2500> iq_logger (badd2) \u2500\u2500\u2518\n\"\"\"\n\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    _io_cache: ('nonblocking_add', 'nonblocking_add', [('vlen', '1')], [('0', 'complex',
+      1), ('1', 'complex', 1)], [('0', 'complex', 1)], '\n    Drop-in replacement
+      for the Add block in the channel flowgraph.\n    Uses gr.basic_block + forecast(0)
+      so it never stalls waiting\n    for a bursty input. Whichever TX stream has
+      no samples gets\n    zero-substituted for that work() call.\n    ', ['vlen'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 2216.0]
+    rotation: 0
+    state: disabled
+- name: epy_block_5
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nimport random\nimport pmt\nfrom gnuradio import\
+      \ gr\n\nclass stream_randomizer(gr.sync_block):\n    def __init__(self, sample_rate=768000,\
+      \ mean_interval_ms=100.0):\n        gr.sync_block.__init__(\n            self,\n\
+      \            name=\"stream_randomizer\",\n            in_sig=[np.complex64],\n\
+      \            out_sig=[np.complex64]\n        )\n        self.sample_rate = sample_rate\n\
+      \        self.mean_interval_ms = mean_interval_ms          # mean of exponential\
+      \ distribution\n\n        self._pad_remaining = 0\n        self._in_packet =\
+      \ False\n        self._pkt_remaining = 0\n        self._abs_offset = 0\n\n \
+      \       self.set_tag_propagation_policy(gr.TPP_DONT)\n\n    def _draw_gap_samples(self):\n\
+      \        \"\"\"Draw gap from Exp(1/mean) and convert to samples.\"\"\"\n   \
+      \     gap_ms = random.expovariate(1.0 / self.mean_interval_ms)\n        return\
+      \ int(gap_ms * self.sample_rate / 1000.0)\n\n    def work(self, input_items,\
+      \ output_items):\n        in0 = input_items[0]\n        out = output_items[0]\n\
+      \        nout = len(out)\n        n_written = 0\n        n_consumed = 0\n\n\
+      \        tags = self.get_tags_in_window(0, 0, len(in0), pmt.intern(\"packet_len\"\
+      ))\n\n        while n_written < nout:\n            if self._in_packet and self._pkt_remaining\
+      \ > 0:\n                available = len(in0) - n_consumed\n                chunk\
+      \ = min(self._pkt_remaining, nout - n_written, available)\n                if\
+      \ chunk == 0:\n                    break\n                out[n_written:n_written\
+      \ + chunk] = in0[n_consumed:n_consumed + chunk]\n                self._pkt_remaining\
+      \ -= chunk\n                n_written += chunk\n                n_consumed +=\
+      \ chunk\n                if self._pkt_remaining == 0:\n                    self._in_packet\
+      \ = False\n\n            else:\n                current_abs = self._abs_offset\
+      \ + n_consumed\n                remaining_tags = [t for t in tags if t.offset\
+      \ >= current_abs]\n                if not remaining_tags:\n                \
+      \    n_consumed = len(in0)\n                    break\n                tag =\
+      \ remaining_tags[0]\n                pkt_len = pmt.to_long(tag.value)\n    \
+      \            self._in_packet = True\n                self._pkt_remaining = pkt_len\n\
+      \                skip = int(tag.offset - current_abs)\n                n_consumed\
+      \ += skip\n\n        self._abs_offset += n_consumed\n        self.consume(0,\
+      \ n_consumed)\n        return n_written"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    mean_interval_ms: '5'
+    minoutbuf: '0'
+    sample_rate: usrp_rate
+  states:
+    _io_cache: ('stream_randomizer', 'stream_randomizer', [('sample_rate', '768000'),
+      ('mean_interval_ms', '100.0')], [('0', 'complex', 1)], [('0', 'complex', 1)],
+      '', ['mean_interval_ms', 'sample_rate'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1344, 1752.0]
+    rotation: 0
+    state: disabled
+- name: epy_block_5_0
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nimport random\nimport pmt\nfrom gnuradio import\
+      \ gr\n\nclass stream_randomizer(gr.sync_block):\n    \"\"\"\n    Inserts random\
+      \ zero-padding before each packet in the stream domain.\n    Input:  tagged\
+      \ stream of complex modulated samples (packet_len tagged)\n    Output: continuous\
+      \ stream with random silence gaps between packets\n    \"\"\"\n    def __init__(self,\
+      \ sample_rate=768000, min_gap_ms=5, max_gap_ms=50):\n        gr.sync_block.__init__(\n\
+      \            self,\n            name=\"stream_randomizer\",\n            in_sig=[np.complex64],\n\
+      \            out_sig=[np.complex64]\n        )\n        self.sample_rate = sample_rate\n\
+      \        self.min_gap = int(min_gap_ms * sample_rate / 1000)\n        self.max_gap\
+      \ = int(max_gap_ms * sample_rate / 1000)\n\n        # Internal state\n     \
+      \   self._pad_remaining = 0       # zeros still to emit\n        self._in_packet\
+      \ = False       # currently forwarding packet samples?\n        self._pkt_remaining\
+      \ = 0       # packet samples left to forward\n\n        self.set_tag_propagation_policy(gr.TPP_DONT)\
+      \  # suppress old tags\n\n    def work(self, input_items, output_items):\n \
+      \       in0 = input_items[0]\n        out = output_items[0]\n        nout =\
+      \ len(out)\n        n_written = 0\n        n_consumed = 0\n\n        tags =\
+      \ self.get_tags_in_window(0, 0, len(in0), pmt.intern(\"packet_len\"))\n\n  \
+      \      while n_written < nout:\n            if self._pad_remaining > 0:\n  \
+      \              # Emit zeros for the random delay\n                chunk = min(self._pad_remaining,\
+      \ nout - n_written)\n                out[n_written:n_written + chunk] = 0 +\
+      \ 0j\n                self._pad_remaining -= chunk\n                n_written\
+      \ += chunk\n\n            elif self._in_packet and self._pkt_remaining > 0:\n\
+      \                # Forward actual packet samples\n                available\
+      \ = len(in0) - n_consumed\n                chunk = min(self._pkt_remaining,\
+      \ nout - n_written, available)\n                if chunk == 0:\n           \
+      \         break\n                out[n_written:n_written + chunk] = in0[n_consumed:n_consumed\
+      \ + chunk]\n                self._pkt_remaining -= chunk\n                n_written\
+      \ += chunk\n                n_consumed += chunk\n                if self._pkt_remaining\
+      \ == 0:\n                    self._in_packet = False\n\n            else:\n\
+      \                # Look for next packet_len tag\n                remaining_tags\
+      \ = [t for t in tags if t.offset >= self._nitems_read(0) + n_consumed]\n   \
+      \             if not remaining_tags:\n                    # No more packets\
+      \ in this buffer \u2014 consume remainder, emit zeros\n                    n_consumed\
+      \ = len(in0)\n                    break\n                tag = remaining_tags[0]\n\
+      \                pkt_len = pmt.to_long(tag.value)\n                # Schedule:\
+      \ random gap THEN packet\n                gap = random.randint(self.min_gap,\
+      \ self.max_gap)\n                self._pad_remaining = gap\n               \
+      \ self._in_packet = True\n                self._pkt_remaining = pkt_len\n  \
+      \              # Skip input samples up to tag offset\n                skip =\
+      \ int(tag.offset - (self._nitems_read(0) + n_consumed))\n                n_consumed\
+      \ += skip\n\n        self.consume(0, n_consumed)\n        return n_written\n\
+      \n\"\"\"\n## Flowgraph Placement\n\n[Packet Source]\n      \u2193\n[CRC32 Append]\n\
+      \      \u2193\n[Protocol Formatter]\n      \u2193\n[PDU to Tagged Stream]\n\
+      \      \u2193\n[Chunks to Symbols / Repack]\n      \u2193\n[DBPSK Mod]\n   \
+      \   \u2193\n[stream_randomizer EPB]   \u2190 INSERT HERE (after mod, before\
+      \ ZMQ)\n      \u2193\n[ZMQ PUSH Sink]\n\n\"\"\"\n\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    max_gap_ms: '45'
+    maxoutbuf: '0'
+    min_gap_ms: '0'
+    minoutbuf: '0'
+    sample_rate: usrp_rate
+  states:
+    _io_cache: '(''stream_randomizer'', ''stream_randomizer'', [(''sample_rate'',
+      ''768000''), (''min_gap_ms'', ''5''), (''max_gap_ms'', ''50'')], [(''0'', ''complex'',
+      1)], [(''0'', ''complex'', 1)], ''\n    Inserts random zero-padding before each
+      packet in the stream domain.\n    Input:  tagged stream of complex modulated
+      samples (packet_len tagged)\n    Output: continuous stream with random silence
+      gaps between packets\n    '', [''sample_rate''])'
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1864, 1580.0]
+    rotation: 0
+    state: disabled
+- name: epy_block_6
+  id: epy_block
+  parameters:
+    T0: ''
+    _source_code: "\"\"\"\nzero_pad_inserter \u2014 corrected EPB for GNU Radio ALOHA\
+      \ simulation\n================================================================\n\
+      \nPURPOSE\n-------\nConverts a back-to-back packet stream (output of the TX\
+      \ modulator chain)\ninto a time-stamped stream where each packet begins at its\
+      \ correct absolute\nsample position.  When two such streams are fed into a GNU\
+      \ Radio `Add` block\nthe result correctly models ALOHA collision semantics:\n\
+      \  - overlapping packets are summed (collision)\n  - non-overlapping packets\
+      \ appear at their true positions (no spurious sum)\n\nKEY FIX vs original\n\
+      -------------------\nOld code:  drew a *random exponential gap* before each\
+      \ packet \u2192 wrong positions\nNew code:  computes pad = (rx_time \u2212 T0)\
+      \ \xD7 samp_rate \u2212 abs_out_offset\n\nSHARED T0 REQUIREMENT\n---------------------\n\
+      Every zero_pad_inserter instance in the flowgraph **must** receive the same\n\
+      T0 value.  Pass it as a constructor argument, e.g.:\n\n    inserter_tx1 = zero_pad_inserter(samp_rate=768e3,\
+      \ T0=shared_epoch)\n    inserter_tx2 = zero_pad_inserter(samp_rate=768e3, T0=shared_epoch)\n\
+      \nIf T0 is None the first instance that sees a packet establishes the epoch\
+      \ and\nyou must propagate that value to all other instances before their first\n\
+      packet arrives (use a message port or a shared module-level variable).\n\nTAGS\
+      \ EXPECTED ON INBOUND STREAM\n--------------------------------\nAt the same\
+      \ sample offset for each packet:\n  \u2022 \"packet_len\"  (long)   \u2014 number\
+      \ of samples in the packet body\n  \u2022 \"rx_time\"     (double) \u2014 absolute\
+      \ transmission time in seconds (epoch-free)\n                             Produced\
+      \ by seq_tagger / Random_Packet_Generator.\n\nVERIFIED AGAINST\n----------------\n\
+      CSV data (iq_badd1, iq_badd2, iq_Aadd) from 2026-03-19 run:\n  TX1 Pkt1 (isolated)\
+      \   \u2192 no collision  \u2713\n  TX1 Pkt2 vs TX2 Pkt1 \u2192 18 823 samples\
+      \ collision (24.5 ms)  \u2713\n  TX1 Pkt3 vs TX2 Pkt2 \u2192 18 957 samples\
+      \ collision (24.7 ms)  \u2713\n\"\"\"\n\nimport numpy as np\nimport pmt\nimport\
+      \ gnuradio.gr as gr\n\n\nclass zero_pad_inserter(gr.sync_block):\n    # Use\
+      \ gr.basic_block if this is message-only; sync_block for stream I/O.\n\n   \
+      \ def __init__(self, samp_rate: float = 768_000.0, T0: float = None):\n    \
+      \    gr.sync_block.__init__(\n            self,\n            name=\"zero_pad_inserter\"\
+      ,\n            in_sig=[np.complex64],\n            out_sig=[np.complex64],\n\
+      \        )\n        self._samp_rate     = float(samp_rate)\n        self._T0\
+      \            = T0          # absolute epoch in seconds; None \u2192 auto\n\n\
+      \        # \u2500\u2500 mutable state \u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\n        self._abs_in_offset  = 0   # total\
+      \ input  samples consumed so far\n        self._abs_out_offset = 0   # total\
+      \ output samples produced so far\n\n        self._pad_remaining  = 0   # zeros\
+      \ still to emit before current packet\n        self._in_packet      = False\n\
+      \        self._pkt_remaining  = 0   # packet body samples still to copy\n\n\
+      \    # \u2500\u2500 helpers \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\n\n    def _build_rx_time_map(self, in_len: int) -> dict:\n   \
+      \     \"\"\"Return {abs_offset: rx_time_seconds} for all rx_time tags in window.\"\
+      \"\"\n        result = {}\n        for t in self.get_tags_in_window(0, 0, in_len,\
+      \ pmt.intern(\"rx_time\")):\n            result[t.offset] = pmt.to_double(t.value)\n\
+      \        return result\n\n    # \u2500\u2500 main work function \u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\n    def work(self,\
+      \ input_items, output_items):\n        in0  = input_items[0]\n        out  =\
+      \ output_items[0]\n        nout = len(out)\n        n_written  = 0\n       \
+      \ n_consumed = 0\n\n        # Fetch all packet_len tags and rx_time tags in\
+      \ this window once.\n        plen_tags  = self.get_tags_in_window(\n       \
+      \     0, 0, len(in0), pmt.intern(\"packet_len\"))\n        rx_time_map = self._build_rx_time_map(len(in0))\n\
+      \n        while n_written < nout:\n\n            # \u2500\u2500 Phase 1: drain\
+      \ pending zero-pad \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\n            if self._pad_remaining > 0:\n\
+      \                chunk = min(self._pad_remaining, nout - n_written)\n      \
+      \          out[n_written : n_written + chunk] = 0 + 0j\n                self._pad_remaining\
+      \   -= chunk\n                n_written             += chunk\n             \
+      \   self._abs_out_offset  += chunk\n                continue\n\n           \
+      \ # \u2500\u2500 Phase 2: copy packet body \u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\n            if self._in_packet and self._pkt_remaining\
+      \ > 0:\n                available = len(in0) - n_consumed\n                chunk\
+      \ = min(self._pkt_remaining, nout - n_written, available)\n                if\
+      \ chunk == 0:\n                    break\n                out[n_written : n_written\
+      \ + chunk] = in0[n_consumed : n_consumed + chunk]\n                self._pkt_remaining\
+      \   -= chunk\n                n_written             += chunk\n             \
+      \   n_consumed            += chunk\n                self._abs_out_offset  +=\
+      \ chunk\n                if self._pkt_remaining == 0:\n                    self._in_packet\
+      \ = False\n                continue\n\n            # \u2500\u2500 Phase 3: locate\
+      \ next packet_len tag \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\n            current_abs = self._abs_in_offset + n_consumed\n\
+      \            upcoming = [t for t in plen_tags if t.offset >= current_abs]\n\
+      \            if not upcoming:\n                n_consumed = len(in0)\n     \
+      \           break\n\n            tag     = upcoming[0]\n            pkt_len\
+      \ = pmt.to_long(tag.value)\n\n            # \u2500\u2500 Compute absolute sample\
+      \ target from rx_time \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n            if tag.offset\
+      \ not in rx_time_map:\n                # Missing rx_time tag \u2014 upstream\
+      \ configuration error.\n                raise RuntimeError(\n              \
+      \      f\"zero_pad_inserter: no rx_time tag at offset {tag.offset}. \"\n   \
+      \                 f\"Available rx_time offsets: {sorted(rx_time_map.keys())}.\
+      \ \"\n                    f\"Ensure seq_tagger emits rx_time alongside packet_len.\"\
+      \n                )\n\n            rx_time_sec = rx_time_map[tag.offset]\n\n\
+      \            if self._T0 is None:\n                # Auto-establish epoch from\
+      \ first packet seen.\n                # WARNING: all inserter instances must\
+      \ end up with the same T0.\n                # Pass T0 explicitly in the constructor\
+      \ to avoid this race.\n                self._T0 = rx_time_sec\n\n          \
+      \  target = int((rx_time_sec - self._T0) * self._samp_rate)\n\n            #\
+      \ \u2500\u2500 Sanity: output must not go backward \u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\
+      \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n            pad = target -\
+      \ self._abs_out_offset\n            if pad < 0:\n                raise RuntimeError(\n\
+      \                    f\"zero_pad_inserter: negative pad ({pad:,}) at tag offset\
+      \ \"\n                    f\"{tag.offset}.  rx_time={rx_time_sec:.6f}  T0={self._T0:.6f}\
+      \  \"\n                    f\"target={target:,}  abs_out={self._abs_out_offset:,}.\
+      \  \"\n                    f\"Possible causes: out-of-order packets, wrong T0,\
+      \ or \"\n                    f\"sample-rate mismatch.\"\n                )\n\
+      \n            # \u2500\u2500 Skip inter-tag input samples (should be 0 in normal\
+      \ use) \u2500\u2500\u2500\u2500\n            skip = int(tag.offset - current_abs)\n\
+      \            assert skip >= 0\n            if skip > 0:\n                # Samples\
+      \ exist in the input stream between packets.\n                # These are not\
+      \ packet data \u2014 silently consume them but do NOT\n                # advance\
+      \ abs_out_offset (they produce no output).\n                n_consumed += skip\n\
+      \n            self._pad_remaining = pad\n            self._in_packet     = True\n\
+      \            self._pkt_remaining = pkt_len\n            # Loop back to Phase\
+      \ 1 to start emitting zeros.\n\n        self._abs_in_offset += n_consumed\n\
+      \        self.consume(0, n_consumed)\n        return n_written"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: usrp_rate
+  states:
+    _io_cache: ('zero_pad_inserter', 'zero_pad_inserter', [('samp_rate', '768000.0'),
+      ('T0', 'None')], [('0', 'complex', 1)], [('0', 'complex', 1)], '', [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1152, 2112.0]
     rotation: 0
     state: disabled
 - name: fft_filter_xxx_0_0_0
@@ -1533,7 +1851,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [776, 756.0]
+    coordinate: [776, 760.0]
     rotation: 0
     state: true
 - name: fft_filter_xxx_0_0_0_0
@@ -1553,7 +1871,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [776, 1708.0]
+    coordinate: [776, 1712.0]
     rotation: 0
     state: enabled
 - name: iq1_1
@@ -1742,7 +2060,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [320, 1528.0]
+    coordinate: [320, 1512.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -2125,7 +2443,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [40, 2256.0]
+    coordinate: [56, 2152.0]
     rotation: 0
     state: enabled
 - name: virtual_source_1_1_0
@@ -2138,7 +2456,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [40, 2328.0]
+    coordinate: [48, 2336.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0
@@ -2160,7 +2478,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1584, 2192.0]
+    coordinate: [1520, 2184.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0_0
@@ -2208,7 +2526,7 @@ blocks:
 
 connections:
 - [blocks_add_xx_0, '0', blocks_throttle2_0, '0']
-- [blocks_add_xx_0, '0', epy_block_3, '0']
+- [blocks_delay_1, '0', blocks_add_xx_0, '0']
 - [blocks_repack_bits_bb_0_0, '0', blocks_uchar_to_float_0_0_0_0, '0']
 - [blocks_repack_bits_bb_0_0_0, '0', blocks_uchar_to_float_0_0_0_0_0, '0']
 - [blocks_tagged_stream_mux_0, '0', virtual_sink_0_0, '0']
@@ -2232,24 +2550,27 @@ connections:
 - [epy_block_1, '0', fft_filter_xxx_0_0_0, '0']
 - [epy_block_1_0, '0', zeromq_pub_sink_0_0, '0']
 - [epy_block_1_0, '0', zeromq_push_sink_0, '0']
-- [epy_block_1_0_0, '0', blocks_add_xx_0, '0']
+- [epy_block_1_0_0, '0', blocks_delay_1, '0']
+- [epy_block_1_0_0, '0', epy_block_4, '0']
 - [epy_block_1_0_0_0, '0', blocks_add_xx_0, '1']
+- [epy_block_1_0_0_0, '0', epy_block_4, '1']
 - [epy_block_1_0_0_1, '0', zeromq_pub_sink_0, '0']
 - [epy_block_1_1, '0', fft_filter_xxx_0_0_0_0, '0']
 - [epy_block_2, pdu_out, blocks_message_debug_0, print]
 - [epy_block_2, pdu_out, pdu_pdu_to_tagged_stream_0, pdus]
 - [epy_block_2_0, pdu_out, blocks_message_debug_0_0, print]
 - [epy_block_2_0, pdu_out, pdu_pdu_to_tagged_stream_0_0, pdus]
+- [epy_block_3_0, '0', blocks_tag_debug_0, '0']
 - [epy_block_3_0, '0', virtual_sink_0, '0']
+- [epy_block_3_0_0, '0', blocks_tag_debug_0_0, '0']
 - [epy_block_3_0_0, '0', virtual_sink_0_1, '0']
+- [epy_block_4, '0', blocks_throttle2_0, '0']
+- [epy_block_5, '0', virtual_sink_0_1, '0']
 - [fft_filter_xxx_0_0_0, '0', mmse_resampler_xx_0, '0']
 - [fft_filter_xxx_0_0_0_0, '0', mmse_resampler_xx_0_0, '0']
-- [mmse_resampler_xx_0, '0', blocks_tag_debug_0, '0']
 - [mmse_resampler_xx_0, '0', epy_block_3_0, '0']
-- [mmse_resampler_xx_0, '0', virtual_sink_0, '0']
-- [mmse_resampler_xx_0_0, '0', blocks_tag_debug_0_0, '0']
 - [mmse_resampler_xx_0_0, '0', epy_block_3_0_0, '0']
-- [mmse_resampler_xx_0_0, '0', virtual_sink_0_1, '0']
+- [mmse_resampler_xx_0_0, '0', epy_block_5, '0']
 - [pdu_pdu_to_tagged_stream_0, '0', digital_crc32_bb_0, '0']
 - [pdu_pdu_to_tagged_stream_0_0, '0', digital_crc32_bb_0_0, '0']
 - [virtual_source_0, '0', blocks_repack_bits_bb_0_0, '0']
@@ -2259,7 +2580,6 @@ connections:
 - [virtual_source_1, '0', blocks_throttle2_0_0, '0']
 - [virtual_source_1_1, '0', epy_block_1_0_0, '0']
 - [virtual_source_1_1_0, '0', epy_block_1_0_0_0, '0']
-- [virtual_source_1_1_0, '0', epy_block_3, '2']
 
 metadata:
   file_format: 1
