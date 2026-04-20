@@ -1,0 +1,180 @@
+
+Generating: "E:\IIST\SEM 2\IDP\GNU Radio Companion\IRSA-GNU-RADIO\IRSA_Experiments\bpsk_hackRF\bpsk_stage6_ver2.py"
+
+Executing: C:\Users\venka\radioconda\python.exe -u E:\IIST\SEM 2\IDP\GNU Radio Companion\IRSA-GNU-RADIO\IRSA_Experiments\bpsk_hackRF\bpsk_stage6_ver2.py
+
+[1m[33m[WARNING] SoapyVOLKConverters: no VOLK config file found. Run volk_profile for best performance.[0m
+[INFO] Opening HackRF One #0 644064dc281847cd...
+
+>>> Done
+
+Generating: "E:\IIST\SEM 2\IDP\GNU Radio Companion\IRSA-GNU-RADIO\IRSA_Experiments\bpsk_hackRF\bpsk_stage6_ver2.py"
+
+Executing: C:\Users\venka\radioconda\python.exe -u E:\IIST\SEM 2\IDP\GNU Radio Companion\IRSA-GNU-RADIO\IRSA_Experiments\bpsk_hackRF\bpsk_stage6_ver2.py
+
+[1m[33m[WARNING] SoapyVOLKConverters: no VOLK config file found. Run volk_profile for best performance.[0m
+[INFO] Opening HackRF One #0 644064dc281847cd...
+
+>>> Done
+
+Generating: "E:\IIST\SEM 2\IDP\GNU Radio Companion\IRSA-GNU-RADIO\IRSA_Experiments\hackRF\RX_hackRF.py"
+
+Executing: C:\Users\venka\radioconda\python.exe -u E:\IIST\SEM 2\IDP\GNU Radio Companion\IRSA-GNU-RADIO\IRSA_Experiments\hackRF\RX_hackRF.py
+
+[1m[33m[WARNING] SoapyVOLKConverters: no VOLK config file found. Run volk_profile for best performance.[0m
+[INFO] Opening HackRF One #0 644064dc281847cd...
+***** VERBOSE PDU DEBUG PRINT ******
+()
+pdu length =        500 bytes
+pdu vector contents = 
+0000: 00 04 00 01 22 3a 14 26 5a d0 b3 24 89 8a 99 73 
+0010: 75 90 f0 eb 6b a8 6c 2d b8 4a a2 9e e7 00 23 16 
+0020: 4b 68 94 33 d3 ca 9b 54 1c 6a 20 7b 41 5f d6 62 
+0030: 5a 74 1b 7f 34 7b 3f 1a 4b cd 92 49 6c 2c 79 79 
+0040: d4 51 83 0e 3c bf a9 89 7e 8c c1 4e ae 02 64 a6 
+0050: 44 0f b2 28 15 b8 bd ce 79 7b 04 d7 2f ca 8e ec 
+0060: 8b 62 1c ce 04 7b 9e 9e b8 ba d9 a9 25 c4 58 41 
+0070: 7f f0 0c 0c 63 41 ff 05 1c 5f 62 0d 42 66 18 ea 
+0080: 84 b1 b3 12 50 ad 88 86 f3 e3 15 8a a4 78 97 19 
+0090: 9d 6e 01 6a ec ab a5 0c ad 3a e7 0f b3 81 65 03 
+00a0: c5 84 69 15 76 78 1f a7 e8 c4 0b 54 7d dd 85 48 
+00b0: c3 a3 82 ed b4 03 e1 c0 97 bc b7 06 0c 54 88 60 
+00c0: b1 8f 26 20 ef 83 91 7c 65 67 71 21 db 1d 7b ab 
+00d0: 01 02 fe 0e d2 94 c5 ac 09 87 97 5c 03 9a 89 2a 
+00e0: 32 2c a7 09 61 ec 70 45 cc e7 eb 94 d2 00 12 c8 
+00f0: be 00 18 ac 97 c3 38 ba f5 68 94 44 b2 7b 3e f0 
+0100: 80 d8 5b c4 30 60 6f bf f9 ff 21 a1 5f bd bc 51 
+0110: bc da 78 f2 48 70 5f 13 e1 f4 91 2d 45 5a 22 8b 
+0120: 94 e6 4c f2 2c 72 65 90 bf 18 a0 5d 2f 8a 60 59 
+0130: 11 4d 35 56 0c f4 3f 02 e5 c6 af 9c a3 47 59 30 
+0140: ce fc f3 50 b6 fb ce b0 c0 8f e5 a8 50 1a fd cf 
+0150: 31 dd 7d 6d 2b 37 de 96 59 ce 10 39 45 44 72 02 
+0160: 50 01 7a 2a 7d 96 bf 68 b2 bb f8 51 12 a4 ae f0 
+0170: 71 8c 81 da c7 1e 8a 91 b0 2b f3 b5 39 27 0b 36 
+0180: bd 35 7d 3f db 31 ad be 13 7e 27 3d 11 1e f6 c1 
+0190: 05 01 c9 b4 0f 71 32 fa 99 ef e1 b7 f3 0a 94 35 
+01a0: ec 4c 48 d4 24 81 1f 53 ae 3d 01 84 68 db eb 1d 
+01b0: 35 d0 ef 1e 71 c2 d3 d3 23 9f 2e b1 5b 7e 5c ca 
+01c0: 7e d2 f2 1a 50 e8 88 11 ad bf c1 0a 43 21 f9 6c 
+01d0: e4 09 bb a6 1c 88 ba cd b7 f3 ab 68 69 be 45 2e 
+01e0: 59 ac 99 15 e7 c8 ee 15 2f c8 b5 55 f2 43 05 77 
+01f0: af c7 b9 b1 
+************************************
+[RX 001] user_id=1 seq=0x0004 payload_len=496 | first 4B: ['00', '04', '00', '01']
+***** VERBOSE PDU DEBUG PRINT ******
+()
+pdu length =        500 bytes
+pdu vector contents = 
+0000: 00 05 00 01 c6 80 f7 5d 6e 09 39 cd 13 15 fc ed 
+0010: d3 24 52 59 1d 54 63 a1 92 d2 ee 4d df 35 6e 81 
+0020: e1 62 0f 5d 52 78 68 3c 81 c3 29 d0 56 ff aa b7 
+0030: 6b 65 e6 d1 71 9a d0 b6 c3 84 cb 04 9a 43 c0 60 
+0040: 34 c7 20 fc b7 b8 c0 dd 70 39 b8 a5 db e7 09 e3 
+0050: e8 9b c5 b2 74 3d 91 b9 3f cf 43 1d 4a df 4f 63 
+0060: 02 a3 0e d6 d9 fb 26 33 99 e6 9f d3 28 60 ef d6 
+0070: ad 42 03 32 61 ec d4 d1 ac 1a 9c cb 93 f8 c1 75 
+0080: 2e 83 55 81 ab 25 03 0c 33 f0 2e 9b 68 94 c0 d3 
+0090: 8c c3 8b 74 ae a2 73 fb cb 04 2b f1 30 e0 25 8a 
+00a0: ca ec 80 6c ef 56 aa 96 a5 5a ef fb 2a 1b f6 cc 
+00b0: 1f d0 13 c3 30 93 41 87 1b 6b a1 f0 26 cc 89 dd 
+00c0: 71 e7 48 63 6a 5b ab ef 10 44 7e 14 a8 db 49 23 
+00d0: be d8 e5 c4 66 4a 73 a3 1e 9c 29 08 07 77 9f fb 
+00e0: 50 8a 02 84 2a f0 b9 ca 78 49 6e ca 4a 10 41 75 
+00f0: ec 48 b6 5b 31 f5 b2 1c ae 6b 21 e5 ef c6 13 a9 
+0100: 2f 31 1a 41 dd e9 24 35 01 9b 43 86 1f 98 54 4c 
+0110: 21 24 aa e2 b1 00 8a e7 19 2c 68 4d 3a c4 f4 cc 
+0120: 8e 9a f0 59 cd db 9a c4 4c e9 b0 5a b7 e8 ff 9f 
+0130: 32 b6 1a f7 63 48 81 97 6b 54 3a f1 db 77 05 4b 
+0140: 95 56 c4 2c ad 59 8e 23 27 27 a3 c2 34 be 8a be 
+0150: 41 fd 13 65 fe fc 84 b2 68 4d e1 03 eb 6c 12 9e 
+0160: a8 16 90 57 9b 93 fb d9 2b 63 55 18 1d 9b 4a 2e 
+0170: 26 fa 04 ac d8 a0 8e 32 db d5 29 3b 57 03 a2 e4 
+0180: 76 e5 26 6f 9c b8 8d 0c 3f 46 7b a3 76 a7 d3 ea 
+0190: c0 f1 35 f1 30 e0 de 4f 9d a0 c1 3b 74 1c 14 ae 
+01a0: c4 bb bf 2d 9b ee b1 af 71 ad 29 91 0c 80 42 31 
+01b0: 55 0c e3 0f 4c ed 20 59 e0 6f d3 95 cb c9 e7 56 
+01c0: 7c 89 e8 c6 b4 79 66 eb 9a 22 c3 3d c4 88 47 75 
+01d0: 0d 3e 5b a2 79 9b 6a 12 b4 19 79 8b 13 49 40 4f 
+01e0: 95 ee cf 7c 29 a0 23 ee 2e 70 8b 07 b3 09 6b b5 
+01f0: a5 a9 5f 9d 
+************************************
+[RX 002] user_id=1 seq=0x0005 payload_len=496 | first 4B: ['00', '05', '00', '01']
+***** VERBOSE PDU DEBUG PRINT ******
+()
+pdu length =        500 bytes
+pdu vector contents = 
+0000: 00 0d 00 01 b9 bc a7 bb d4 60 5f 5c 94 6a 4b 38 
+0010: 80 fa ab 3f 5e 67 f5 77 85 09 15 52 a4 c7 de 70 
+0020: 08 fb 4f c0 08 f1 7c b6 09 5c ea 56 f5 f3 05 14 
+0030: 75 2b 97 8b 10 a8 14 19 09 4b ae df f9 01 2c 5d 
+0040: 5f f0 3b 8f dd 98 c5 5d 3e 34 e7 ba 81 75 3b 94 
+0050: 1a af 3c db 7d 77 80 a3 2f f2 52 28 04 b5 ab 03 
+0060: 4d 32 85 cb 42 56 0d e4 99 62 78 75 6d 0a ea 56 
+0070: 75 f0 5d a5 df d5 47 42 21 c0 cd 81 6d 23 4c 6c 
+0080: 8f b1 eb ef 85 f2 ba b1 ca 50 99 6d 8f c0 14 16 
+0090: 2c 26 31 11 00 f8 60 23 8f 08 33 dd da 78 ee 92 
+00a0: 11 c4 0d 80 15 73 6d 4a 07 14 36 74 e6 2c b1 3e 
+00b0: 6b f1 31 7e 61 2d ed 3a 91 3e 1e c5 65 47 f0 06 
+00c0: 92 8e 9b 83 e6 1e 4c a7 ec cf f5 a1 14 23 f5 77 
+00d0: 46 6b 2d 9f b3 dc 74 cf 58 9b ec f7 17 d4 94 58 
+00e0: 52 bd 08 21 c1 0f 8f 40 aa 44 48 e8 5f 1c fc db 
+00f0: 1c 7f 40 80 60 41 01 39 1b 08 2e 00 e9 47 cc 30 
+0100: 17 a1 43 29 1d 21 48 ba 0a 08 c4 e4 d4 16 08 b8 
+0110: e5 97 61 40 12 09 f6 00 cd 0e a9 72 ea 45 aa 58 
+0120: 00 00 56 4f 93 9a a4 8f 09 27 c9 b3 91 6e d6 74 
+0130: f9 fa 81 74 c9 2e 15 7e 22 7a 0f c7 cb fb a6 6a 
+0140: c8 21 04 4e 0b b7 3c 31 f0 b8 8f cd f8 4e 06 4c 
+0150: 2f a2 39 db 2b a9 78 76 ef 63 a0 cb a2 00 84 8a 
+0160: 5b 3b 85 62 48 a0 bb ab 08 f8 aa e8 52 c5 f4 bd 
+0170: 4c db f0 1b 8e 52 6c 5f 59 90 24 59 38 3f 5f b6 
+0180: 2a cc 90 09 ab c4 ec 5d 79 a0 1f a4 c1 05 bd 3d 
+0190: 67 6d 11 bb 83 ae 10 6b d1 b1 c6 d2 f1 6c f5 cb 
+01a0: 68 0f 8b 8a 93 7b 0e a4 2d b0 33 2c 49 91 e9 fb 
+01b0: b8 9b 74 d1 fe 35 94 45 4b 49 7d b2 85 20 c1 5e 
+01c0: d2 a1 6b b3 e7 5b 15 1d d1 33 c8 dd e8 f9 a0 c6 
+01d0: 66 57 96 ae bf a9 5a 0e 6b 99 a9 bf 54 ed be e8 
+01e0: fd ff b8 43 7b 0f 51 5f c0 5a 69 0e b7 4e 44 d9 
+01f0: ea 7e 45 7f 
+************************************
+[RX 003] user_id=1 seq=0x000d payload_len=496 | first 4B: ['00', '0D', '00', '01']
+***** VERBOSE PDU DEBUG PRINT ******
+()
+pdu length =        500 bytes
+pdu vector contents = 
+0000: 00 0e 00 01 53 14 00 56 ea 07 db 0c 8a cc cd 7a 
+0010: 8b 75 2e 68 7b b3 d8 16 6c ae e2 27 0e be d7 a1 
+0020: 24 7b c5 28 53 b8 81 4a 36 4c 57 53 ff 66 89 d8 
+0030: f1 00 05 72 0c f8 a6 53 87 c0 9a 9a e4 74 5a 8e 
+0040: 7b 76 2c d1 27 99 fa 7f 65 8b 1f 94 98 56 23 97 
+0050: 96 b0 ac 9d 34 55 e9 39 33 a1 01 da c9 47 eb ef 
+0060: 57 38 b3 36 f8 1c d6 8a 2b ef 36 be fd b6 82 a4 
+0070: 0e 36 ce 38 c9 46 55 4f 2c 51 17 7e 63 61 88 26 
+0080: 35 9d 30 b4 d7 46 19 4f b9 50 4e 09 44 cf b3 4f 
+0090: 90 95 1e af c7 ca 47 10 48 7c 9e 66 e5 3e 76 88 
+00a0: a9 f1 6c 3b 36 f2 47 60 e7 ac dc 61 ba bf ca 1e 
+00b0: 6f 22 72 2c 9f f2 23 57 08 43 a2 0a c4 3d b2 b1 
+00c0: 6f d2 2e c4 97 7e 18 a4 38 b0 98 af b4 1b 6d de 
+00d0: e2 0a fe e4 70 9a 2c e7 60 21 c5 67 70 ae b1 58 
+00e0: 7f 96 b9 65 15 5b ab 9a 66 a7 8c 33 8c 94 2f 9b 
+00f0: 52 62 f8 47 53 6c 82 cf d8 a8 a9 82 0b 40 6c dc 
+0100: 82 97 49 d9 64 ec 3e ac 58 a6 14 10 2d 38 ba 16 
+0110: bb c1 eb 6f 90 6e d3 8e 2a b4 ae dd 3a 20 af b3 
+0120: 37 1f ef 22 eb fc 71 79 69 80 7f 3e 8f 01 dd 4a 
+0130: 72 37 dc 7a 4e d5 9d 9b a9 be 81 a7 15 f8 e8 0f 
+0140: 32 40 08 35 dc d2 16 e4 9a d9 8e ea 9c cb b9 63 
+0150: 72 0c d2 13 f3 2a 7c 0f 03 7d 45 21 16 c7 35 c8 
+0160: 51 8f 9b 84 c1 1b b5 60 10 05 b0 60 a6 f8 b4 61 
+0170: f0 02 e8 6c e0 11 2c bd 39 2e 85 0d 56 9a da 00 
+0180: 26 54 aa 02 01 95 50 73 e6 48 06 98 78 9d 48 31 
+0190: 9f ed 69 bd f3 02 b1 32 0c bd 08 ff 8e e1 bf ff 
+01a0: 45 e9 f8 73 e1 0f d1 81 88 fb 31 28 c3 2b 3f 0a 
+01b0: 05 56 8e a6 cb c6 05 0b b3 ce 0d 3c 0f a8 9f c5 
+01c0: a0 b4 87 77 95 de 28 d0 95 5e fb c0 f9 7c 56 b7 
+01d0: ac b7 1b 12 6f 89 e0 66 49 05 d1 99 cb f6 68 4d 
+01e0: 2b 12 0c 58 20 35 7f 78 6e c7 31 95 a2 12 b8 d5 
+01f0: a6 de 2e 36 
+************************************
+[RX 004] user_id=1 seq=0x000e payload_len=496 | first 4B: ['00', '0E', '00', '01']
+[IQ Logger] Finished. Total samples logged: 34728312
+
+>>> Done

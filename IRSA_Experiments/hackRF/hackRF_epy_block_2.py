@@ -23,7 +23,7 @@ class Random_Packet_Generator(gr.basic_block):
                  mean_interval=0.1,
                  packet_size=100,
                  user_id=1,
-                 log_file="transmitted_packets.csv"):
+                 log_file="transmitted_packets.csv",total_packets = 5):
 
         gr.basic_block.__init__(self,
             name="random_packet_generator",
@@ -37,7 +37,7 @@ class Random_Packet_Generator(gr.basic_block):
         self.packet_size   = packet_size
         self.user_id       = int(user_id) & 0xFFFF   # clamp to uint16
         self.log_file      = log_file
-        self.total_packets = 5
+        self.total_packets = total_packets
 
         self.packet_count  = 0
 

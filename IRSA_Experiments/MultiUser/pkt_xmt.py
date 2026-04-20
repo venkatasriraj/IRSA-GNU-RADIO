@@ -97,11 +97,11 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         ##################################################
         self.samp_rate = samp_rate = 48000
         self.access_key = access_key = '11100001010110101110100010010011'
-        self.usrp_rate = usrp_rate = 768000
+        self.usrp_rate = usrp_rate = 2500000
         self.user_id2 = user_id2 = 2
         self.user_id1 = user_id1 = 1
         self.sps = sps = 4
-        self.rs_ratio = rs_ratio = 1.040
+        self.rs_ratio = rs_ratio = 1.04
         self.low_pass_filter_taps = low_pass_filter_taps = firdes.low_pass(1.0, samp_rate, 20000, 2000, window.WIN_HAMMING, 6.76)
         self.hdr_format = hdr_format = digital.header_format_default(access_key, 0)
         self.excess_bw = excess_bw = 0.35
@@ -219,8 +219,8 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
             self.top_grid_layout.setColumnStretch(c, 1)
         self.pdu_pdu_to_tagged_stream_0_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
         self.pdu_pdu_to_tagged_stream_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
+        self.mmse_resampler_xx_0_0_0 = filter.mmse_resampler_cc(0, (1.0  / ( ( usrp_rate / samp_rate ) * rs_ratio )))
         self.mmse_resampler_xx_0_0 = filter.mmse_resampler_cc(0, (1.0/((usrp_rate/samp_rate)*rs_ratio)))
-        self.mmse_resampler_xx_0 = filter.mmse_resampler_cc(0, (1.0/((usrp_rate/samp_rate)*rs_ratio)))
         self.fft_filter_xxx_0_0_0_0 = filter.fft_filter_ccc(1, low_pass_filter_taps, 1)
         self.fft_filter_xxx_0_0_0_0.declare_sample_delay(0)
         self.fft_filter_xxx_0_0_0 = filter.fft_filter_ccc(1, low_pass_filter_taps, 1)
@@ -228,7 +228,7 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         self.epy_block_3_0_0 = epy_block_3_0_0.blk(user_id=user_id2, samp_rate=usrp_rate, packet_samples=34078)
         self.epy_block_3_0 = epy_block_3_0.blk(user_id=user_id1, samp_rate=usrp_rate, packet_samples=34078)
         self.epy_block_2_0 = epy_block_2_0.Random_Packet_Generator(mean_interval=2.7, packet_size=52, user_id=2, log_file=log_file2)
-        self.epy_block_2 = epy_block_2.Random_Packet_Generator(mean_interval=6, packet_size=52, user_id=1, log_file=log_file1)
+        self.epy_block_2 = epy_block_2.Random_Packet_Generator(mean_interval=0.6, packet_size=52, user_id=1, log_file=log_file1)
         self.epy_block_1_1 = epy_block_1_1.iq_logger_with_timestamp(iq_csv_filename=iq2_1)
         self.epy_block_1_0_0_1 = epy_block_1_0_0_1.iq_logger_with_timestamp(iq_csv_filename=iq_add)
         self.epy_block_1_0_0_0 = epy_block_1_0_0_0.iq_logger_with_timestamp(iq_csv_filename=iq2_2)
@@ -307,10 +307,10 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         self.connect((self.epy_block_3_0, 0), (self.epy_block_1_0_0, 0))
         self.connect((self.epy_block_3_0_0, 0), (self.blocks_tag_debug_0_0, 0))
         self.connect((self.epy_block_3_0_0, 0), (self.epy_block_1_0_0_0, 0))
-        self.connect((self.fft_filter_xxx_0_0_0, 0), (self.mmse_resampler_xx_0, 0))
+        self.connect((self.fft_filter_xxx_0_0_0, 0), (self.mmse_resampler_xx_0_0_0, 0))
         self.connect((self.fft_filter_xxx_0_0_0_0, 0), (self.mmse_resampler_xx_0_0, 0))
-        self.connect((self.mmse_resampler_xx_0, 0), (self.epy_block_3_0, 0))
         self.connect((self.mmse_resampler_xx_0_0, 0), (self.epy_block_3_0_0, 0))
+        self.connect((self.mmse_resampler_xx_0_0_0, 0), (self.epy_block_3_0, 0))
         self.connect((self.pdu_pdu_to_tagged_stream_0, 0), (self.digital_crc32_bb_0, 0))
         self.connect((self.pdu_pdu_to_tagged_stream_0_0, 0), (self.digital_crc32_bb_0_0, 0))
 
@@ -414,8 +414,8 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
         self.set_low_pass_filter_taps(firdes.low_pass(1.0, self.samp_rate, 20000, 2000, window.WIN_HAMMING, 6.76))
-        self.mmse_resampler_xx_0.set_resamp_ratio((1.0/((self.usrp_rate/self.samp_rate)*self.rs_ratio)))
         self.mmse_resampler_xx_0_0.set_resamp_ratio((1.0/((self.usrp_rate/self.samp_rate)*self.rs_ratio)))
+        self.mmse_resampler_xx_0_0_0.set_resamp_ratio((1.0  / ( ( self.usrp_rate / self.samp_rate ) * self.rs_ratio )))
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
         self.qtgui_time_sink_x_0_0.set_samp_rate(self.samp_rate)
 
@@ -434,8 +434,8 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
         self.blocks_throttle2_0.set_sample_rate(self.usrp_rate)
         self.epy_block_3_0.samp_rate = self.usrp_rate
         self.epy_block_3_0_0.samp_rate = self.usrp_rate
-        self.mmse_resampler_xx_0.set_resamp_ratio((1.0/((self.usrp_rate/self.samp_rate)*self.rs_ratio)))
         self.mmse_resampler_xx_0_0.set_resamp_ratio((1.0/((self.usrp_rate/self.samp_rate)*self.rs_ratio)))
+        self.mmse_resampler_xx_0_0_0.set_resamp_ratio((1.0  / ( ( self.usrp_rate / self.samp_rate ) * self.rs_ratio )))
 
     def get_user_id2(self):
         return self.user_id2
@@ -460,8 +460,8 @@ class pkt_xmt(gr.top_block, Qt.QWidget):
 
     def set_rs_ratio(self, rs_ratio):
         self.rs_ratio = rs_ratio
-        self.mmse_resampler_xx_0.set_resamp_ratio((1.0/((self.usrp_rate/self.samp_rate)*self.rs_ratio)))
         self.mmse_resampler_xx_0_0.set_resamp_ratio((1.0/((self.usrp_rate/self.samp_rate)*self.rs_ratio)))
+        self.mmse_resampler_xx_0_0_0.set_resamp_ratio((1.0  / ( ( self.usrp_rate / self.samp_rate ) * self.rs_ratio )))
 
     def get_low_pass_filter_taps(self):
         return self.low_pass_filter_taps
