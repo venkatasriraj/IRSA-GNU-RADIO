@@ -383,7 +383,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1584, 1596.0]
+    coordinate: [1584, 1664.0]
     rotation: 0
     state: enabled
 - name: blocks_tagged_stream_mux_0
@@ -1515,7 +1515,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1344, 1832.0]
+    coordinate: [1312, 1744.0]
     rotation: 0
     state: enabled
 - name: epy_block_4

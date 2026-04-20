@@ -559,6 +559,24 @@ blocks:
     coordinate: [1944, 644.0]
     rotation: 0
     state: bypassed
+- name: fec_ber_bf_0
+  id: fec_ber_bf
+  parameters:
+    affinity: ''
+    alias: ''
+    berlimit: '-7.0'
+    berminerrors: '100'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    test_mode: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1816, 304.0]
+    rotation: 0
+    state: enabled
 - name: fft_filter_xxx_0_0_0
   id: fft_filter_xxx
   parameters:
