@@ -37,7 +37,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '''11100001010110101110100010010011'''
+    value: '''1010101010101010101010101010101011100001010110101110100010010011'''
   states:
     bus_sink: false
     bus_source: false
@@ -65,6 +65,18 @@ blocks:
     coordinate: [360, 12.0]
     rotation: 0
     state: true
+- name: bw
+  id: variable
+  parameters:
+    comment: ''
+    value: (1+excess_bw)*(samp_rate//sps)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1048, 256.0]
+    rotation: 0
+    state: enabled
 - name: excess_bw
   id: variable
   parameters:
@@ -94,11 +106,11 @@ blocks:
   parameters:
     beta: '6.76'
     comment: ''
-    cutoff_freq: '20000'
+    cutoff_freq: (bw//2)+5e3
     gain: '1.0'
     samp_rate: samp_rate
     value: ''
-    width: '2000'
+    width: 10e3
     win: window.WIN_HAMMING
   states:
     bus_sink: false
@@ -123,7 +135,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '48000'
+    value: 48e3
   states:
     bus_sink: false
     bus_source: false
@@ -164,7 +176,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 380.0]
+    coordinate: [1120, 96.0]
     rotation: 0
     state: enabled
 - name: usrp_rate
@@ -176,7 +188,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 88.0]
+    coordinate: [184, 96.0]
     rotation: 0
     state: true
 - name: InFile
@@ -211,27 +223,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 2312.0]
-    rotation: 0
-    state: enabled
-- name: blocks_delay_1
-  id: blocks_delay
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    delay: '5'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_ports: '1'
-    showports: 'False'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [536, 2176.0]
+    coordinate: [536, 2144.0]
     rotation: 0
     state: enabled
 - name: blocks_file_meta_sink_0
@@ -275,7 +267,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [496, 1808.0]
+    coordinate: [504, 1616.0]
     rotation: 0
     state: enabled
 - name: blocks_message_debug_0
@@ -325,7 +317,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 1028.0]
+    coordinate: [160, 888.0]
     rotation: 0
     state: true
 - name: blocks_repack_bits_bb_0_0_0
@@ -345,7 +337,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [224, 1980.0]
+    coordinate: [240, 1792.0]
     rotation: 0
     state: enabled
 - name: blocks_tag_debug_0
@@ -364,7 +356,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1600, 720.0]
+    coordinate: [1912, 668.0]
     rotation: 0
     state: enabled
 - name: blocks_tag_debug_0_0
@@ -383,7 +375,45 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1584, 1664.0]
+    coordinate: [1296, 1448.0]
+    rotation: 0
+    state: enabled
+- name: blocks_tagged_stream_multiply_length_0
+  id: blocks_tagged_stream_multiply_length
+  parameters:
+    affinity: ''
+    alias: ''
+    c: sps*8
+    comment: ''
+    lengthtagname: packet_len
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1376, 904.0]
+    rotation: 0
+    state: enabled
+- name: blocks_tagged_stream_multiply_length_1
+  id: blocks_tagged_stream_multiply_length
+  parameters:
+    affinity: ''
+    alias: ''
+    c: sps*8
+    comment: ''
+    lengthtagname: packet_len
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1256, 1640.0]
     rotation: 0
     state: enabled
 - name: blocks_tagged_stream_mux_0
@@ -423,7 +453,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1184, 1544.0]
+    coordinate: [1192, 1352.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle2_0
@@ -444,7 +474,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [984, 2208.0]
+    coordinate: [664, 2144.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle2_0_0
@@ -468,6 +498,27 @@ blocks:
     coordinate: [248, 1248.0]
     rotation: 0
     state: disabled
+- name: blocks_throttle2_0_1
+  id: blocks_throttle2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    limit: auto
+    maximum: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: usrp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2032, 1972.0]
+    rotation: 0
+    state: enabled
 - name: blocks_uchar_to_float_0_0_0_0
   id: blocks_uchar_to_float
   parameters:
@@ -480,7 +531,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [440, 1048.0]
+    coordinate: [376, 904.0]
     rotation: 0
     state: enabled
 - name: blocks_uchar_to_float_0_0_0_0_0
@@ -495,7 +546,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [464, 2000.0]
+    coordinate: [464, 1808.0]
     rotation: 0
     state: enabled
 - name: digital_constellation_modulator_0
@@ -539,7 +590,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [224, 1700.0]
+    coordinate: [192, 1512.0]
     rotation: 0
     state: enabled
 - name: digital_crc32_bb_0
@@ -575,7 +626,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [592, 1552.0]
+    coordinate: [600, 1360.0]
     rotation: 0
     state: enabled
 - name: digital_protocol_formatter_bb_0
@@ -609,7 +660,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [880, 1504.0]
+    coordinate: [888, 1312.0]
     rotation: 0
     state: enabled
 - name: epy_block_0
@@ -957,7 +1008,7 @@ blocks:
       \           ])\n\n        self.sample_count += num_samples\n\n        # Pass\
       \ samples through unchanged\n        out0[:] = in0\n        return len(out0)\n\
       \n    def stop(self):\n        print(f\"[IQ Logger] Finished. Total samples\
-      \ logged: {self.sample_count}\")\n        return True\n"
+      \ logged: {self.sample_count}\")\n        return True"
     affinity: ''
     alias: ''
     comment: ''
@@ -970,7 +1021,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [248, 2152.0]
+    coordinate: [224, 2120.0]
     rotation: 0
     state: enabled
 - name: epy_block_1_0_0_0
@@ -1013,7 +1064,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [248, 2336.0]
+    coordinate: [232, 2200.0]
     rotation: 0
     state: enabled
 - name: epy_block_1_0_0_1
@@ -1056,7 +1107,50 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1224, 2216.0]
+    coordinate: [928, 2152.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_1_0_0_2
+  id: epy_block
+  parameters:
+    _source_code: "#!/usr/bin/env python\nfrom gnuradio import gr\nimport numpy as\
+      \ np\nimport time\nimport csv\n\nclass iq_logger_with_timestamp(gr.sync_block):\n\
+      \    def __init__(self, iq_csv_filename=\"iq_samples.csv\"):\n        gr.sync_block.__init__(\n\
+      \            self,\n            name=\"iq_logger_with_timestamp\",\n       \
+      \     in_sig=[np.complex64],\n            out_sig=[np.complex64]\n        )\n\
+      \n        self.iq_csv_filename = iq_csv_filename\n        self.sample_count\
+      \ = 0\n\n        # Initialize CSV with header (same pattern as Random_Packet_Generator)\n\
+      \        with open(self.iq_csv_filename, 'w', newline='') as f:\n          \
+      \  writer = csv.writer(f)\n            writer.writerow([\n                'sample_index',\n\
+      \                'timestamp',\n                'num_samples',\n            \
+      \    'i_values',\n                'q_values'\n            ])\n\n    def work(self,\
+      \ input_items, output_items):\n        in0 = input_items[0]\n        out0 =\
+      \ output_items[0]\n\n        # Timestamp with millisecond precision (matches\
+      \ Random_Packet_Generator style)\n        timestamp = time.strftime('%Y-%m-%d\
+      \ %H:%M:%S') + \\\n                    f\".{int((time.time() % 1) * 1000):03d}\"\
+      \n\n        num_samples = len(in0)\n\n        # Split complex64 into separate\
+      \ I and Q lists\n        i_values = in0.real.tolist()\n        q_values = in0.imag.tolist()\n\
+      \n        # Append row to CSV\n        with open(self.iq_csv_filename, 'a',\
+      \ newline='') as f:\n            writer = csv.writer(f)\n            writer.writerow([\n\
+      \                self.sample_count,\n                timestamp,\n          \
+      \      num_samples,\n                i_values,\n                q_values\n \
+      \           ])\n\n        self.sample_count += num_samples\n\n        # Pass\
+      \ samples through unchanged\n        out0[:] = in0\n        return len(out0)\n\
+      \n    def stop(self):\n        print(f\"[IQ Logger] Finished. Total samples\
+      \ logged: {self.sample_count}\")\n        return True"
+    affinity: ''
+    alias: ''
+    comment: ''
+    iq_csv_filename: iq1_2
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('iq_logger_with_timestamp', 'iq_logger_with_timestamp', [('iq_csv_filename',
+      "'iq_samples.csv'")], [('0', 'complex', 1)], [('0', 'complex', 1)], '', ['iq_csv_filename'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1704, 1984.0]
     rotation: 0
     state: enabled
 - name: epy_block_1_1
@@ -1099,7 +1193,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [496, 1728.0]
+    coordinate: [432, 1536.0]
     rotation: 0
     state: enabled
 - name: epy_block_2
@@ -1197,10 +1291,10 @@ blocks:
     comment: ''
     log_file: log_file1
     maxoutbuf: '0'
-    mean_interval: '0.6'
+    mean_interval: '1.6'
     minoutbuf: '0'
-    packet_size: '52'
-    total_packets: '5'
+    packet_size: '20'
+    total_packets: '3'
     user_id: '1'
   states:
     _io_cache: "('random_packet_generator', 'Random_Packet_Generator', [('mean_interval',\
@@ -1217,7 +1311,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [24, 560.0]
+    coordinate: [16, 560.0]
     rotation: 0
     state: enabled
 - name: epy_block_2_1
@@ -1315,10 +1409,10 @@ blocks:
     comment: ''
     log_file: log_file1
     maxoutbuf: '0'
-    mean_interval: '2.7'
+    mean_interval: '1.6'
     minoutbuf: '0'
-    packet_size: '52'
-    total_packets: '5'
+    packet_size: '20'
+    total_packets: '3'
     user_id: '2'
   states:
     _io_cache: "('random_packet_generator', 'Random_Packet_Generator', [('mean_interval',\
@@ -1335,7 +1429,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [56, 1480.0]
+    coordinate: [64, 1288.0]
     rotation: 0
     state: enabled
 - name: epy_block_3
@@ -1444,11 +1538,10 @@ blocks:
   id: epy_block
   parameters:
     _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
-      \ time\n\nclass blk(gr.sync_block):\n    def __init__(self, user_id=0, samp_rate=768000,\
-      \ packet_samples=100000):\n        gr.sync_block.__init__(\n            self,\n\
-      \            name=\"seq_tagger\",\n            in_sig=[np.complex64],\n    \
-      \        out_sig=[np.complex64]\n        )\n        self.samp_rate       = samp_rate\n\
-      \        self.packet_samples  = packet_samples\n        self.last_tag_offset\
+      \ time\n\nclass blk(gr.sync_block):\n    def __init__(self, user_id=0, samp_rate=48000):\n\
+      \        gr.sync_block.__init__(\n            self,\n            name=\"seq_tagger\"\
+      ,\n            in_sig=[np.complex64],\n            out_sig=[np.complex64]\n\
+      \        )\n        self.samp_rate       = samp_rate\n        self.last_tag_offset\
       \ = None\n        self.set_tag_propagation_policy(gr.TPP_ALL_TO_ALL)\n\n   \
       \ def work(self, input_items, output_items):\n        inp = input_items[0]\n\
       \        out = output_items[0]\n        out[:] = inp\n\n        tags = self.get_tags_in_window(\n\
@@ -1466,28 +1559,25 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    packet_samples: '34078'
     samp_rate: usrp_rate
     user_id: user_id1
   states:
-    _io_cache: ('seq_tagger', 'blk', [('user_id', '0'), ('samp_rate', '768000'), ('packet_samples',
-      '100000')], [('0', 'complex', 1)], [('0', 'complex', 1)], '', ['packet_samples',
-      'samp_rate'])
+    _io_cache: ('seq_tagger', 'blk', [('user_id', '0'), ('samp_rate', '48000')], [('0',
+      'complex', 1)], [('0', 'complex', 1)], '', ['samp_rate'])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1336, 792.0]
+    coordinate: [1240, 800.0]
     rotation: 0
     state: enabled
-- name: epy_block_3_0_0
+- name: epy_block_3_0_1
   id: epy_block
   parameters:
     _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
-      \ time\n\nclass blk(gr.sync_block):\n    def __init__(self, user_id=0, samp_rate=768000,\
-      \ packet_samples=100000):\n        gr.sync_block.__init__(\n            self,\n\
-      \            name=\"seq_tagger\",\n            in_sig=[np.complex64],\n    \
-      \        out_sig=[np.complex64]\n        )\n        self.samp_rate       = samp_rate\n\
-      \        self.packet_samples  = packet_samples\n        self.last_tag_offset\
+      \ time\n\nclass blk(gr.sync_block):\n    def __init__(self, user_id=0, samp_rate=48000):\n\
+      \        gr.sync_block.__init__(\n            self,\n            name=\"seq_tagger\"\
+      ,\n            in_sig=[np.complex64],\n            out_sig=[np.complex64]\n\
+      \        )\n        self.samp_rate       = samp_rate\n        self.last_tag_offset\
       \ = None\n        self.set_tag_propagation_policy(gr.TPP_ALL_TO_ALL)\n\n   \
       \ def work(self, input_items, output_items):\n        inp = input_items[0]\n\
       \        out = output_items[0]\n        out[:] = inp\n\n        tags = self.get_tags_in_window(\n\
@@ -1505,17 +1595,15 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    packet_samples: '34078'
     samp_rate: usrp_rate
     user_id: user_id2
   states:
-    _io_cache: ('seq_tagger', 'blk', [('user_id', '0'), ('samp_rate', '768000'), ('packet_samples',
-      '100000')], [('0', 'complex', 1)], [('0', 'complex', 1)], '', ['packet_samples',
-      'samp_rate'])
+    _io_cache: ('seq_tagger', 'blk', [('user_id', '0'), ('samp_rate', '48000')], [('0',
+      'complex', 1)], [('0', 'complex', 1)], '', ['samp_rate'])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1312, 1744.0]
+    coordinate: [1096, 1560.0]
     rotation: 0
     state: enabled
 - name: epy_block_4
@@ -1838,6 +1926,104 @@ blocks:
     coordinate: [1152, 2112.0]
     rotation: 0
     state: disabled
+- name: epy_block_7
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
+      \ queue\n\nclass blk(gr.basic_block):\n    \"\"\"\n    PDU Passthrough \u2014\
+      \ accepts PDU burst from Tagged Stream to PDU,\n    outputs the raw IQ samples\
+      \ as a stream. No zero-padding, no ALOHA logic.\n    Use this to verify PDU\
+      \ \u2192 stream conversion is working correctly.\n    \"\"\"\n\n    def __init__(self):\n\
+      \        gr.basic_block.__init__(\n            self,\n            name=\"PDU\
+      \ Passthrough\",\n            in_sig=[],\n            out_sig=[np.complex64]\n\
+      \        )\n        self.message_port_register_in(pmt.intern(\"burst_in\"))\n\
+      \        self.set_msg_handler(pmt.intern(\"burst_in\"), self._handle_pdu)\n\n\
+      \        self._queue        = queue.Queue()\n        self._burst        = None\n\
+      \        self._burst_offset = 0\n\n    def _handle_pdu(self, msg):\n       \
+      \ try:\n            payload = pmt.cdr(msg)\n            samples = np.array(pmt.c32vector_elements(payload),\
+      \ dtype=np.complex64)\n            self._queue.put(samples)\n            print(f\"\
+      [PDU Passthrough] received burst: {len(samples)} samples\")\n        except\
+      \ Exception as e:\n            print(f\"[PDU Passthrough] error: {e}\")\n\n\
+      \    def general_work(self, input_items, output_items):\n        out      =\
+      \ output_items[0]\n        n_out    = len(out)\n        produced = 0\n\n   \
+      \     while produced < n_out:\n            if self._burst is None:\n       \
+      \         try:\n                    self._burst        = self._queue.get_nowait()\n\
+      \                    self._burst_offset = 0\n                except queue.Empty:\n\
+      \                    out[produced:n_out] = np.complex64(0)\n               \
+      \     produced = n_out\n                    break\n\n            burst_remaining\
+      \ = len(self._burst) - self._burst_offset\n            space_left      = n_out\
+      \ - produced\n            n_copy          = min(burst_remaining, space_left)\n\
+      \n            out[produced : produced + n_copy] = \\\n                self._burst[self._burst_offset\
+      \ : self._burst_offset + n_copy]\n\n            self._burst_offset += n_copy\n\
+      \            produced           += n_copy\n\n            if self._burst_offset\
+      \ >= len(self._burst):\n                self._burst        = None\n        \
+      \        self._burst_offset = 0\n\n        return produced"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: "('PDU Passthrough', 'blk', [], [('burst_in', 'message', 1)], [('0',\
+      \ 'complex', 1)], '\\n    PDU Passthrough \u2014 accepts PDU burst from Tagged\
+      \ Stream to PDU,\\n    outputs the raw IQ samples as a stream. No zero-padding,\
+      \ no ALOHA logic.\\n    Use this to verify PDU \u2192 stream conversion is working\
+      \ correctly.\\n    ', [])"
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1760, 816.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_7_0
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
+      \ queue\n\nclass blk(gr.basic_block):\n    \"\"\"\n    PDU Passthrough \u2014\
+      \ accepts PDU burst from Tagged Stream to PDU,\n    outputs the raw IQ samples\
+      \ as a stream. No zero-padding, no ALOHA logic.\n    Use this to verify PDU\
+      \ \u2192 stream conversion is working correctly.\n    \"\"\"\n\n    def __init__(self):\n\
+      \        gr.basic_block.__init__(\n            self,\n            name=\"PDU\
+      \ Passthrough\",\n            in_sig=[],\n            out_sig=[np.complex64]\n\
+      \        )\n        self.message_port_register_in(pmt.intern(\"burst_in\"))\n\
+      \        self.set_msg_handler(pmt.intern(\"burst_in\"), self._handle_pdu)\n\n\
+      \        self._queue        = queue.Queue()\n        self._burst        = None\n\
+      \        self._burst_offset = 0\n\n    def _handle_pdu(self, msg):\n       \
+      \ try:\n            payload = pmt.cdr(msg)\n            samples = np.array(pmt.c32vector_elements(payload),\
+      \ dtype=np.complex64)\n            self._queue.put(samples)\n            print(f\"\
+      [PDU Passthrough] received burst: {len(samples)} samples\")\n        except\
+      \ Exception as e:\n            print(f\"[PDU Passthrough] error: {e}\")\n\n\
+      \    def general_work(self, input_items, output_items):\n        out      =\
+      \ output_items[0]\n        n_out    = len(out)\n        produced = 0\n\n   \
+      \     while produced < n_out:\n            if self._burst is None:\n       \
+      \         try:\n                    self._burst        = self._queue.get_nowait()\n\
+      \                    self._burst_offset = 0\n                except queue.Empty:\n\
+      \                    out[produced:n_out] = np.complex64(0)\n               \
+      \     produced = n_out\n                    break\n\n            burst_remaining\
+      \ = len(self._burst) - self._burst_offset\n            space_left      = n_out\
+      \ - produced\n            n_copy          = min(burst_remaining, space_left)\n\
+      \n            out[produced : produced + n_copy] = \\\n                self._burst[self._burst_offset\
+      \ : self._burst_offset + n_copy]\n\n            self._burst_offset += n_copy\n\
+      \            produced           += n_copy\n\n            if self._burst_offset\
+      \ >= len(self._burst):\n                self._burst        = None\n        \
+      \        self._burst_offset = 0\n\n        return produced"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: "('PDU Passthrough', 'blk', [], [('burst_in', 'message', 1)], [('0',\
+      \ 'complex', 1)], '\\n    PDU Passthrough \u2014 accepts PDU burst from Tagged\
+      \ Stream to PDU,\\n    outputs the raw IQ samples as a stream. No zero-padding,\
+      \ no ALOHA logic.\\n    Use this to verify PDU \u2192 stream conversion is working\
+      \ correctly.\\n    ', [])"
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1720, 1576.0]
+    rotation: 0
+    state: enabled
 - name: fft_filter_xxx_0_0_0
   id: fft_filter_xxx
   parameters:
@@ -1875,7 +2061,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [776, 1712.0]
+    coordinate: [672, 1520.0]
     rotation: 0
     state: enabled
 - name: iq1_1
@@ -2012,7 +2198,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1048, 1736.0]
+    coordinate: [904, 1544.0]
     rotation: 0
     state: enabled
 - name: mmse_resampler_xx_0_0_0
@@ -2064,7 +2250,41 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [320, 1512.0]
+    coordinate: [328, 1320.0]
+    rotation: 0
+    state: enabled
+- name: pdu_tagged_stream_to_pdu_0
+  id: pdu_tagged_stream_to_pdu
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1456, 808.0]
+    rotation: 0
+    state: enabled
+- name: pdu_tagged_stream_to_pdu_0_0
+  id: pdu_tagged_stream_to_pdu
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1480, 1568.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -2161,7 +2381,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [624, 1012.0]
+    coordinate: [584, 872.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0_0
@@ -2258,7 +2478,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [712, 1964.0]
+    coordinate: [720, 1776.0]
     rotation: 0
     state: enabled
 - name: soapy_hackrf_sink_0
@@ -2366,19 +2586,6 @@ blocks:
     coordinate: [896, 260.0]
     rotation: 0
     state: true
-- name: virtual_sink_0
-  id: virtual_sink
-  parameters:
-    alias: ''
-    comment: ''
-    stream_id: f_samp1
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1600, 808.0]
-    rotation: 0
-    state: enabled
 - name: virtual_sink_0_0
   id: virtual_sink
   parameters:
@@ -2402,7 +2609,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1472, 1552.0]
+    coordinate: [1480, 1360.0]
     rotation: 0
     state: enabled
 - name: virtual_sink_0_1
@@ -2415,7 +2622,20 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1584, 1760.0]
+    coordinate: [1872, 1568.0]
+    rotation: 0
+    state: enabled
+- name: virtual_sink_0_1_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: f_samp1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1976, 808.0]
     rotation: 0
     state: enabled
 - name: virtual_source_0
@@ -2441,7 +2661,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [32, 1728.0]
+    coordinate: [40, 1536.0]
     rotation: 0
     state: enabled
 - name: virtual_source_1
@@ -2467,7 +2687,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [56, 2152.0]
+    coordinate: [32, 2120.0]
     rotation: 0
     state: enabled
 - name: virtual_source_1_1_0
@@ -2480,7 +2700,20 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [48, 2336.0]
+    coordinate: [32, 2200.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_1_1_1
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: f_samp1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1424, 1984.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0
@@ -2502,7 +2735,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1520, 2184.0]
+    coordinate: [1224, 2120.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0_0
@@ -2527,6 +2760,28 @@ blocks:
     coordinate: [880, 1168.0]
     rotation: 0
     state: disabled
+- name: zeromq_pub_sink_0_1
+  id: zeromq_pub_sink
+  parameters:
+    address: tcp://127.0.0.1:49203
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    drop_on_hwm: 'True'
+    hwm: '-1'
+    key: ''
+    pass_tags: 'False'
+    timeout: '100'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2360, 1936.0]
+    rotation: 0
+    state: enabled
 - name: zeromq_push_sink_0
   id: zeromq_push_sink
   parameters:
@@ -2550,13 +2805,15 @@ blocks:
 
 connections:
 - [blocks_add_xx_0, '0', blocks_throttle2_0, '0']
-- [blocks_delay_1, '0', blocks_add_xx_0, '0']
 - [blocks_repack_bits_bb_0_0, '0', blocks_uchar_to_float_0_0_0_0, '0']
 - [blocks_repack_bits_bb_0_0_0, '0', blocks_uchar_to_float_0_0_0_0_0, '0']
+- [blocks_tagged_stream_multiply_length_0, '0', pdu_tagged_stream_to_pdu_0, '0']
+- [blocks_tagged_stream_multiply_length_1, '0', pdu_tagged_stream_to_pdu_0_0, '0']
 - [blocks_tagged_stream_mux_0, '0', virtual_sink_0_0, '0']
 - [blocks_tagged_stream_mux_0_0, '0', virtual_sink_0_0_0, '0']
 - [blocks_throttle2_0, '0', epy_block_1_0_0_1, '0']
 - [blocks_throttle2_0_0, '0', epy_block_1_0, '0']
+- [blocks_throttle2_0_1, '0', zeromq_pub_sink_0_1, '0']
 - [blocks_uchar_to_float_0_0_0_0, '0', qtgui_time_sink_x_0, '0']
 - [blocks_uchar_to_float_0_0_0_0_0, '0', qtgui_time_sink_x_0_0, '0']
 - [digital_constellation_modulator_0, '0', blocks_file_meta_sink_0, '0']
@@ -2574,28 +2831,33 @@ connections:
 - [epy_block_1, '0', fft_filter_xxx_0_0_0, '0']
 - [epy_block_1_0, '0', zeromq_pub_sink_0_0, '0']
 - [epy_block_1_0, '0', zeromq_push_sink_0, '0']
-- [epy_block_1_0_0, '0', blocks_delay_1, '0']
+- [epy_block_1_0_0, '0', blocks_add_xx_0, '0']
 - [epy_block_1_0_0, '0', epy_block_4, '0']
 - [epy_block_1_0_0_0, '0', blocks_add_xx_0, '1']
 - [epy_block_1_0_0_0, '0', epy_block_4, '1']
 - [epy_block_1_0_0_1, '0', zeromq_pub_sink_0, '0']
+- [epy_block_1_0_0_2, '0', blocks_throttle2_0_1, '0']
 - [epy_block_1_1, '0', fft_filter_xxx_0_0_0_0, '0']
 - [epy_block_2, pdu_out, blocks_message_debug_0, print]
 - [epy_block_2, pdu_out, pdu_pdu_to_tagged_stream_0, pdus]
 - [epy_block_2_1, pdu_out, pdu_pdu_to_tagged_stream_0_0, pdus]
-- [epy_block_3_0, '0', blocks_tag_debug_0, '0']
-- [epy_block_3_0, '0', virtual_sink_0, '0']
-- [epy_block_3_0_0, '0', blocks_tag_debug_0_0, '0']
-- [epy_block_3_0_0, '0', virtual_sink_0_1, '0']
+- [epy_block_3_0, '0', blocks_tagged_stream_multiply_length_0, '0']
+- [epy_block_3_0_1, '0', blocks_tag_debug_0_0, '0']
+- [epy_block_3_0_1, '0', blocks_tagged_stream_multiply_length_1, '0']
 - [epy_block_4, '0', blocks_throttle2_0, '0']
 - [epy_block_5, '0', virtual_sink_0_1, '0']
+- [epy_block_7, '0', blocks_tag_debug_0, '0']
+- [epy_block_7, '0', virtual_sink_0_1_0, '0']
+- [epy_block_7_0, '0', virtual_sink_0_1, '0']
 - [fft_filter_xxx_0_0_0, '0', mmse_resampler_xx_0_0_0, '0']
 - [fft_filter_xxx_0_0_0_0, '0', mmse_resampler_xx_0_0, '0']
-- [mmse_resampler_xx_0_0, '0', epy_block_3_0_0, '0']
+- [mmse_resampler_xx_0_0, '0', epy_block_3_0_1, '0']
 - [mmse_resampler_xx_0_0, '0', epy_block_5, '0']
 - [mmse_resampler_xx_0_0_0, '0', epy_block_3_0, '0']
 - [pdu_pdu_to_tagged_stream_0, '0', digital_crc32_bb_0, '0']
 - [pdu_pdu_to_tagged_stream_0_0, '0', digital_crc32_bb_0_0, '0']
+- [pdu_tagged_stream_to_pdu_0, pdus, epy_block_7, burst_in]
+- [pdu_tagged_stream_to_pdu_0_0, pdus, epy_block_7_0, burst_in]
 - [virtual_source_0, '0', blocks_repack_bits_bb_0_0, '0']
 - [virtual_source_0, '0', digital_constellation_modulator_0, '0']
 - [virtual_source_0_0, '0', blocks_repack_bits_bb_0_0_0, '0']
@@ -2603,6 +2865,7 @@ connections:
 - [virtual_source_1, '0', blocks_throttle2_0_0, '0']
 - [virtual_source_1_1, '0', epy_block_1_0_0, '0']
 - [virtual_source_1_1_0, '0', epy_block_1_0_0_0, '0']
+- [virtual_source_1_1_1, '0', epy_block_1_0_0_2, '0']
 
 metadata:
   file_format: 1

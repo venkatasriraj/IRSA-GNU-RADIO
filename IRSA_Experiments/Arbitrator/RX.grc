@@ -117,7 +117,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '768000'
+    value: 48e3
   states:
     bus_sink: false
     bus_source: false
@@ -142,26 +142,6 @@ blocks:
     coordinate: [640, 12.0]
     rotation: 0
     state: enabled
-- name: analog_agc_xx_0
-  id: analog_agc_xx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    gain: '1.0'
-    max_gain: '2.0'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    rate: 1e-4
-    reference: '1.0'
-    type: complex
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [672, 228.0]
-    rotation: 0
-    state: true
 - name: blocks_file_sink_0
   id: blocks_file_sink
   parameters:
@@ -233,7 +213,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [488, 244.0]
+    coordinate: [520, 248.0]
     rotation: 0
     state: true
 - name: blocks_uchar_to_float_0_0
@@ -351,7 +331,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1424, 380.0]
+    coordinate: [1416, 384.0]
     rotation: 0
     state: enabled
 - name: digital_fll_band_edge_cc_0
@@ -1084,7 +1064,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [264, 228.0]
+    coordinate: [264, 232.0]
     rotation: 0
     state: true
 - name: rx_log
@@ -1144,7 +1124,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1664, 400.0]
+    coordinate: [1640, 392.0]
     rotation: 0
     state: true
 - name: virtual_sink_1
@@ -1219,14 +1199,13 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 216.0]
+    coordinate: [40, 224.0]
     rotation: 0
     state: true
 
 connections:
-- [analog_agc_xx_0, '0', digital_fll_band_edge_cc_0, '0']
 - [blocks_repack_bits_bb_1_0, '0', digital_crc32_bb_0_0, '0']
-- [blocks_throttle2_0, '0', analog_agc_xx_0, '0']
+- [blocks_throttle2_0, '0', digital_fll_band_edge_cc_0, '0']
 - [blocks_uchar_to_float_0_0, '0', qtgui_time_sink_x_0_2, '0']
 - [blocks_uchar_to_float_0_0_0, '0', qtgui_time_sink_x_0_0, '0']
 - [digital_constellation_decoder_cb_0, '0', digital_diff_decoder_bb_0, '0']
